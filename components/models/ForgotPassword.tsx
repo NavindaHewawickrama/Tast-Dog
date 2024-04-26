@@ -1,0 +1,155 @@
+"use client";
+
+import React, { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
+import ChangePassword from "./ChangePassword";
+
+interface ModalProps {
+  open: boolean;
+  onClose: () => void; // Add the onClose function prop
+}
+
+const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
+  const router = useRouter();
+  const [nextModel, setNextModel] = useState(true);
+  const [changeModel, setChangeModel] = useState(false);
+
+  const handleClick = () => {
+    setChangeModel(true);
+  };
+
+  const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
+  const focusNextInput = (index: number) => {
+    if (inputRefs.current[index + 1]) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  if (!open) return null;
+  if (changeModel)
+    return (
+      <ChangePassword
+        open={changeModel}
+        onClose={() => setChangeModel(false)}
+      />
+    );
+
+  return (
+    <>
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+        onClick={onClose}
+      >
+        {nextModel ? (
+          <div
+            className="min-w-[400px] md:w-[500px] bg-white px-[45px] py-[25px] rounded-2xl"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <div className="flex flex-row justify-between">
+              <h4 className="text-[15px] capitalize">forget password</h4>
+              <p
+                className="text-[15px] cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.3] hover:text-red-600"
+                onClick={onClose}
+              >
+                X
+              </p>
+            </div>
+            <div className="mt-[150px] flex flex-col">
+              <h4 className="text-[15px] font-medium text-[#000000]">
+                Enter Your Mobile Number Or Email To get a verification code to
+                reset your password
+              </h4>
+              <p className="text-[12px] text-inputText mt-4">
+                Mobile Number or Email
+              </p>
+              <div className="w-full h-[48px] bg-inputBlue mt-1 rounded-lg border-2 border-inputBorder">
+                <input
+                  type="text"
+                  className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+                />
+              </div>
+              <button
+                className="w-full h-[38px] bg-buttonGreen text-white rounded-lg mt-[70px] mb-5 transition-transform duration-300 ease-in-out transform hover:scale-95"
+                onClick={(e) => setNextModel(false)}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div
+            className="min-w-[400px] md:w-[500px] bg-white px-[45px] py-[25px] rounded-2xl"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <div className="flex flex-row justify-between">
+              <h4 className="text-[15px] font-bold capitalize">
+                forget password
+              </h4>
+              <p
+                className="text-[15px] cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.3] hover:text-red-600"
+                onClick={onClose}
+              >
+                X
+              </p>
+            </div>
+            <div className=" w-full flex flex-col mt-[50px]">
+              <h4 className="text-[15px] font-medium text-[#000000] capitalize">
+                Enter the four digit code we sent you at
+              </h4>
+              <p className="text-[14px] text-primary underline">
+                samplemail@gmail.com
+              </p>
+              <p className="text-[12px] text-inputText mt-2 capitalize">
+                resend attempts:3
+              </p>
+              <div className="flex flex-row gap-4">
+                {[...Array(4)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="w-[81px] h-[81px] bg-inputBlue mt-5 rounded-lg border-2 border-inputBorder"
+                  >
+                    <input
+                      type="text"
+                      maxLength={1}
+                      ref={(el) => (inputRefs.current[index] = el)}
+                      className="w-full outline-none bg-transparent h-full font-normal text-[25px] text-center text-inputText px-4"
+                      onInput={(e) => {
+                        if (
+                          e.currentTarget.value.length >=
+                          e.currentTarget.maxLength
+                        ) {
+                          focusNextInput(index);
+                        }
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+              <p className="text-[12px] text-green-600 capitalize mt-2">
+                I didnt recived a call{" "}
+              </p>
+              <button
+                className="w-full h-[38px] bg-buttonGreen text-white rounded-lg mt-[70px] mb-5 transition-transform duration-300 ease-in-out transform hover:scale-95"
+                onClick={handleClick}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <ChangePassword
+        open={changeModel}
+        onClose={() => setChangeModel(false)}
+      />
+    </>
+  );
+};
+
+export default ForgotPassword;

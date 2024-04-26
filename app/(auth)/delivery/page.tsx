@@ -1,0 +1,122 @@
+"use client";
+
+import Image from "next/image";
+import React from "react";
+import { IoLocation } from "react-icons/io5";
+import { useRouter } from "next/navigation";
+
+const DeliveryDetails = () => {
+  const router = useRouter();
+
+  return (
+    <div className="w-screen h-screen hidden md:flex flex-row overflow-hidden">
+      <div className=" relative lg:w-[50%] md:w-[60%] flex flex-col items-center justify-center shadow-2xl shadow-black overflow-hidden">
+        <Image src="/Logo.png" alt="logo" width={330} height={94} />
+        <div className="w-[444px] flex flex-col items-center justify-center mt-[30px]">
+          <h2 className="text-[28px] font-Lato font-bold leading-4  text-[#3C3939] capitalize">
+            delivery details
+          </h2>
+
+          <div className="w-full h-[48px] flex flex-row mt-10 rounded-lg border-2 border-inputBorder">
+            <div className="w-[8%] flex flex-col items-center justify-center">
+              <p className="text-lightGray">
+                <IoLocation className="w-[25px] h-[25px] " />
+              </p>
+            </div>
+
+            <input
+              type="search"
+              placeholder="Search Your Location"
+              className="w-[92%] outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+            />
+          </div>
+
+          <h2 className="text-[28px] font-Lato font-bold leading-4 mt-10 mb-2 bg-inputBlue  text-customGreen capitalize">
+            delivery address
+          </h2>
+
+          <div className="w-full h-[48px] mt-5 rounded-lg border-2 bg-inputBlue border-inputBorder">
+            <input
+              type="text"
+              placeholder="Street Address"
+              className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+            />
+          </div>
+
+          <div className="w-full h-[48px] flex items-center  mt-3 rounded-lg bg-inputBlue border-2 border-inputBorder">
+            <input
+              type="text"
+              placeholder="Street Address Line 2"
+              className="w-[90%] outline-none bg-transparent h-full font-normal text-[14px] text-inputText  px-4"
+            />
+          </div>
+
+          <div className="flex flex-row items-center gap-4 mt-3">
+            <div className="w-[214px] h-[48px] flex items-center rounded-lg border-2  border-inputBorder">
+              <select className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4">
+                <option value="" disabled selected className="text-inputText">
+                  City
+                </option>
+                <option value="Colombo" className="text-inputText">
+                  Colombo
+                </option>
+                <option value="Kandy" className="text-inputText">
+                  kandy
+                </option>
+              </select>
+            </div>
+
+            <div className="w-[214px] h-[48px] flex items-center rounded-lg border-2  border-inputBorder">
+              <select className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4">
+                <option value="" disabled selected>
+                  State/province
+                </option>
+                <option value="1">1</option>
+                <option value="1">1</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="w-full h-[48px] flex items-center  mt-3 rounded-lg border-2 bg-inputBlue border-inputBorder">
+            <input
+              type="text"
+              placeholder="Land Mark"
+              className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+            />
+          </div>
+          <button
+            onClick={() => router.push("/home")}
+            className="w-full h-[41px] bg-[#DE7230] mt-10 text-center rounded-lg text-slate-50 text-[18px] font-bold capitalize transition-transform duration-300 ease-in-out transform hover:scale-[0.97]"
+          >
+            confirm
+          </button>
+        </div>
+        <p className="text-center text-[12px] mt-12 text-lightGray">
+          Developed by Foxtxcore
+        </p>
+
+        <div className="absolute top-[-70px] left-[-215px] rotate-[-25deg] opacity-30">
+          <Image
+            src="/shapes.png"
+            alt="shapes"
+            width={300}
+            height={300}
+            className="opacity-[30px]"
+          />
+        </div>
+        <div className="absolute top-[-150px] right-[-170px] rotate-[-60deg] opacity-30">
+          <Image src="/shapes.png" alt="shapes" width={300} height={300} />
+        </div>
+        <div className="absolute bottom-[-250px] left-[-290px] opacity-30">
+          <Image src="/shapes.png" alt="shapes" width={400} height={400} />
+        </div>
+        <div className="absolute bottom-[-250px] right-[-290px] opacity-30">
+          <Image src="/shapes.png" alt="shapes" width={400} height={400} />
+        </div>
+      </div>
+      <div className="lg:w-[50%] md:w-[40%] flex flex-col md:h-screen items-center justify-center bg-auth-pattern bg-cover bg-no-repeat bg-center"></div>
+    </div>
+  );
+};
+
+export default DeliveryDetails;

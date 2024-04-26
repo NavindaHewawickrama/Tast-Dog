@@ -1,0 +1,187 @@
+"use client";
+
+import Image from "next/image";
+import React, { useState } from "react";
+import { CiCirclePlus } from "react-icons/ci";
+import { FaCcVisa } from "react-icons/fa6";
+import { RiDeleteBinLine } from "react-icons/ri";
+import ChangePassword from "./models/AccountModels/ChangePassword";
+import DeleteAccount from "./models/AccountModels/DeleteAccount";
+import AddNewPayment from "./models/AccountModels/AddNewPayment";
+import EditAccountInfo from "./models/AccountModels/EditAccountInfo";
+import AddNewAddress from "./models/AccountModels/AddNewAddress";
+import ChangeAddress from "./models/AccountModels/ChangeAddress";
+import { MdEdit } from "react-icons/md";
+import PageTransition from "./PageTransition";
+
+const MyAccount = () => {
+  const [openPassword, setOpenPassword] = useState(false);
+  const [deleteModel, setDeleteModel] = useState(false);
+  const [newPaymentModel, setNewPaymentModel] = useState(false);
+  const [updateAccountModal, setUpdateAccountModal] = useState(false);
+  const [newAddress, setNewAddress] = useState(false);
+  const [changeAddress, setChangeAddress] = useState(false);
+
+  return (
+    <>
+      <PageTransition>
+        <div className="relative max-w-[775px] flex flex-col gap-10">
+          <h2 className="text-[24px] font-semibold capitalize">my profile</h2>
+          <div className="relative w-[146px] h-[146px] rounded-full mb-2">
+            <Image
+              src="/profilePic.webp"
+              alt="profile-pic"
+              width={146}
+              height={146}
+              className="rounded-full"
+            />
+            <button className="absolute bottom-0 right-0 w-[33px] h-[33px] bg-button2 rounded-full flex justify-center items-center transition-transform duration-300 ease-in-out transform hover:scale-[1.1]">
+              <MdEdit size={23} color="white" />
+            </button>
+          </div>
+
+          <div className="w-full flex flex-col gap-3">
+            <div className="w-full flex justify-between items-center">
+              <h3 className="text-[16px] font-semibold capitalize">
+                personal info
+              </h3>
+              <button
+                className="w-[91px] h-[31px] bg-none border-2 border-button2 text-[14px] text-center rounded-xl transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
+                onClick={() => setUpdateAccountModal(true)}
+              >
+                Edit
+              </button>
+            </div>
+            <div className="w-full h-[90px] shadow-xl  flex justify-center items-center gap-10">
+              <div className="flex items-center gap-4">
+                <p className="text-[16px] text-inputText capitalize">
+                  full name:
+                </p>
+                <p className="text-[16px] text-detail capitalize">john doe</p>
+              </div>
+              <div className="flex items-center gap-4">
+                <p className="text-[16px] text-inputText capitalize">
+                  Phone Number:
+                </p>
+                <p className="text-[16px] text-detail capitalize">
+                  0222 222 222
+                </p>
+              </div>
+              <div className="flex items-center gap-4">
+                <p className="text-[16px] text-inputText capitalize">email:</p>
+                <p className="text-[16px] text-detail capitalize">
+                  sample@gmail.com
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="w-full flex flex-col gap-5">
+            <h3 className="text-[16px] font-semibold capitalize">
+              address bank
+            </h3>
+            <div className="flex flex-row gap-4">
+              <div className="w-[377px] h-full px-[50px] py-[25px] bg-orangeLight ">
+                <div className="w-full flex justify-between">
+                  <p className="text-[14px] text-inputText capitalize">
+                    default delivery access{" "}
+                  </p>
+                  <p
+                    className="text-[14px] text-button2 underline cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.1] "
+                    onClick={() => setChangeAddress(true)}
+                  >
+                    Edit
+                  </p>
+                </div>
+                <div className="mt-[30px] flex flex-col gap-1">
+                  <h3 className="text-[20px] font-semibold capitalize text-detail">
+                    john doe
+                  </h3>
+                  <p className="text-[17px] capitalize text-detail">
+                    No.2/222, anywhere street, Melbourn
+                  </p>
+                  <p className="text-[17px] capitalize text-detail">
+                    0222 222 222
+                  </p>
+                </div>
+              </div>
+              <div
+                className="w-[377px]  px-[50px] py-[25px] bg-orangeLight rounded-lg flex flex-col justify-center items-center gap-2 cursor-pointer"
+                onClick={() => setNewAddress(true)}
+              >
+                <CiCirclePlus className="w-[50px] h-[50px] text-inputText transition-transform duration-300 ease-in-out transform hover:scale-[1.1]" />
+                <h3 className="text-[16px] capitalize text-inputText">
+                  Add New Address
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div className="w-full">
+            <h3 className="text-[16px] font-semibold capitalize text-detail">
+              Payment Method
+            </h3>
+            <div className="flex flex-col gap-2 mt-7">
+              <h3 className="text-[14px] text-detail capitalize">
+                saved cards
+              </h3>
+              <div className="w-full flex justify-between px-[25px] py-[10px] border border-lightGray rounded-md items-center">
+                <div className="w-full flex gap-4">
+                  <FaCcVisa className="text-[50px] text-blue-800" />
+                  <div className="flex flex-col justify-center">
+                    <p className="text-[16px]">11231*******2321</p>
+                    <p className="text-[13px] text-inputText ">Expires 04/27</p>
+                  </div>
+                </div>
+                <RiDeleteBinLine className="text-[20px] cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.2]" />
+              </div>
+              <p
+                className="t-[14px] text-button2 underline capitalize cursor-pointer"
+                onClick={() => setNewPaymentModel(true)}
+              >
+                Add New Payment Method
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-5 mt-5">
+            <button
+              className="w-[320px] h-[50px] text-center text-white bg-Green2 rounded-lg capitalize text-[20px] transition-transform duration-300 ease-in-out transform hover:scale-95"
+              onClick={() => setOpenPassword(true)}
+            >
+              change password
+            </button>
+            <button
+              className="w-[320px] h-[50px] text-center text-red-600 bg-none rounded-lg capitalize text-[20px] border-2 border-red-600 transition-transform duration-300 ease-in-out transform hover:scale-95"
+              onClick={() => setDeleteModel(true)}
+            >
+              delete account
+            </button>
+          </div>
+        </div>
+      </PageTransition>
+
+      <DeleteAccount open={deleteModel} onClose={() => setDeleteModel(false)} />
+
+      <ChangePassword
+        open={openPassword}
+        onClose={() => setOpenPassword(false)}
+      />
+
+      <DeleteAccount open={deleteModel} onClose={() => setDeleteModel(false)} />
+
+      <AddNewPayment
+        open={newPaymentModel}
+        onClose={() => setNewPaymentModel(false)}
+      />
+      <EditAccountInfo
+        open={updateAccountModal}
+        onClose={() => setUpdateAccountModal(false)}
+      />
+      <AddNewAddress open={newAddress} onClose={() => setNewAddress(false)} />
+      <ChangeAddress
+        open={changeAddress}
+        onClose={() => setChangeAddress(false)}
+      />
+    </>
+  );
+};
+
+export default MyAccount;
