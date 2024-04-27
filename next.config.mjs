@@ -1,4 +1,33 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+// // /** @type {import('next').NextConfig} **/
+// // Import the default export from 'next/config.js'
+// import pkg from 'next/config.js';
 
-export default nextConfig;
+// // Destructure the default export to access 'nextConfig'
+// const { nextConfig } = pkg;
+
+
+// export default nextConfig({
+//     images:{
+//         domains:['res.cloudinary.com'],
+//     },
+// });
+import nextConfig from 'next/config.js';
+
+const { images } = nextConfig; // Destructure images object
+
+export default {
+    images: {
+        remotePatterns: [
+          {
+            protocol: 'https',
+            hostname: 'res.cloudinary.com',
+            pathname: '**',
+          },
+          {
+            protocol: 'https',
+            hostname: 'example.com',
+            pathname: '**',
+          },
+        ],
+      },
+};

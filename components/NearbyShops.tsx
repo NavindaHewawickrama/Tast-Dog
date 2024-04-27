@@ -21,11 +21,13 @@ const NearbyShops = () => {
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/shops/shops/getTopRatedShops",{method:"POST"});
       const data = await response.json();
-      console.log(data);
+      //console.log(data);
       if(!response.ok){
         console.log(data.message || "An error occurred.");
       }else{
-        setShops(data.shops);
+        
+        setShops(data);
+        console.log(data);
       }
     }catch(error){
       console.log("An error occurred. Please try again later." , error);
@@ -46,11 +48,12 @@ const NearbyShops = () => {
           navigation
         >
           {Shop && Shop.map((item) => (
+            
             <SwiperSlide
               key={item.shopId}
               onClick={() => router.push("/home/shopview")}
             >
-              <div className="w-[146px] py-3 flex flex-col gap-2 items-center justify-center mx-auto bg-[#f5f5f5] rounded-xl shadow-xl border-[#f3f3f3] cursor-pointer ">
+              <div className="w-[46px] py-3 flex flex-col gap-2 items-center justify-center mx-auto bg-[#f5f5f5] rounded-xl shadow-xl border-[#f3f3f3] cursor-pointer ">
                 <div className="w-[95px] h-[95px]">
                   <Image
                     src={item.imageUrl}
@@ -80,7 +83,7 @@ const NearbyShops = () => {
         <Swiper
           modules={[Navigation]}
           spaceBetween={25}
-          slidesPerView={3}
+          slidesPerView={7}
           navigation
         >
           {Shop && Shop.map((item) => (

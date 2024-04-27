@@ -12,9 +12,6 @@ const Home = () => {
   useEffect(() => {
     const userID = localStorage.getItem("userId");
     const userName = localStorage.getItem("userName");
-
-    console.log(userID);
-    console.log(userName);
     setUserName(userName);
   },[]);
   

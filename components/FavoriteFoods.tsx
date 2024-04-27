@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import TopFoods from "@/constants/TopFoods";
+import React, { useState,useEffect } from "react";
+// import TopFoods from "@/constants/TopFoods";
 import Image from "next/image";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa6";
@@ -16,7 +16,27 @@ const FavoriteFoods = () => {
   const [toggle, setToggle] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const [visibleItems, setVisibleItems] = useState(TopFoods.slice(0, 8));
+  const [visibleItems, setVisibleItems] = useState<any[]>([]);
+
+
+  useEffect(() => {
+    handleTopRatedFoods();
+  }, []);
+
+  const handleTopRatedFoods = async () => {
+    try{
+      const response = await fetch("https://tasty-dog.onrender.com/api/v1/shops/shops/getTopRatedShopItems",{method:"POST"});
+      const data = await response.json();
+      if(!response.ok){
+        console.log(data.message || "An error occurred.");
+      }else{
+        setVisibleItems(data);
+        console.log(data);
+      }
+    }catch(error){
+
+    }
+  }
 
   const handleToggle = () => {
     setToggle(true);
@@ -57,14 +77,14 @@ const FavoriteFoods = () => {
           <div className="grid  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  xl:gap-10 lg:gap-5 md:gap-5">
             {visibleItems.map((item) => (
               <div
-                key={item.id}
+                key={item._id}
                 className="lg:w-full md:w-full xl:w-[95%] h-[300px] rounded-xl mb-5 shadow-lg z-0 cursor-pointer"
                 onClick={() => router.push("/home/productview")}
               >
                 <div className="relative w-full h-[189px] rounded-t-xl z-0">
                   <Image
-                    src={item.image}
-                    alt={item.Name}
+                    src={item.itemImages}
+                    alt={item.itemName}
                     width={252}
                     height={189}
                     className="w-full h-full rounded-t-xl z-0"
@@ -77,8 +97,8 @@ const FavoriteFoods = () => {
                     }}
                   >
                     <Image
-                      src={item.logo}
-                      alt={item.Name}
+                      src={item.shopProfilePhoto}
+                      alt={item.itemName}
                       fill
                       className="rounded-full"
                     />
@@ -86,7 +106,7 @@ const FavoriteFoods = () => {
                 </div>
                 <div className="py-3 px-3">
                   <h3 className="text-[15px] text-detail capitalize font-medium">
-                    {item.Name}
+                    {item.itemName}
                   </h3>
                   <h3 className="text-[20px] font-bold text-black ">
                     {item.price}
@@ -95,9 +115,9 @@ const FavoriteFoods = () => {
                     <div className="flex items-center ">
                       <FaStar className="w-[12px] h-[12px] text-ratings" />
                       <p className="text-[13px] text-detail font-medium ml-1">
-                        {item.rating}
+                      {item.averageRating}
                       </p>
-                      <p className="text-[13px] text-detail"> {item.rates}</p>
+                      <p className="text-[13px] text-detail">({item.totalRatings})</p>
                     </div>
                     <button
                       onClick={(e) => {
