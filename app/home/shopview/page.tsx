@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import TopFoods from "@/constants/TopFoods";
 import { FaStar } from "react-icons/fa6";
 import { FaCartShopping } from "react-icons/fa6";
@@ -19,8 +19,61 @@ import PageTransition from "@/components/PageTransition";
 
 const ShopView = () => {
   const router = useRouter();
-
+  const[shopId, setShopId] = useState<any | null>(null);
   const [toggle, setToggle] = useState(false);
+  const [shopName, setShopName] = useState<string | null>(null);
+  const[shopData, setShopData] = useState<any[]>([]);
+  const[userName, setUserName] = useState<string | null>(null);
+  const [ShopReviews, setShopReviews] = useState<any[]>([]);
+
+  useEffect(() => {
+    const id = localStorage.getItem("shopId");
+    const name = localStorage.getItem("shopName");
+    const userName = setUserName(localStorage.getItem("userName"));
+    if (id && name) {
+      setShopId(id);
+      setShopName(name);
+      fetchApiCall(id);
+      handleShopReviews(id)
+    }
+  }, []);
+
+
+  const fetchApiCall = async (id: any) => {
+    setShopId(localStorage.getItem("shopId"));
+    try{
+      // const response = await fetch(`https://tasty-dog.onrender.com//api/v1/shops/shop-items-shop/${id}`); // this should be the correct url to fetch the data but data not inserted yet 
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shop-items-shop/6614c26524b13332f73edc7e`);
+      const data = await response.json();
+      //console.log(data);
+      if(!response.ok){
+        console.log(data.message || "An error occurred.");
+      }else{
+        console.log(data);
+        setShopData(data);
+      }
+    }catch(error){
+      console.log("An error occurred. Please try again later." , error);
+    }
+    //console.log(shopId);
+  }
+
+  const handleShopReviews = async (id: string) => {
+    try{
+      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/${id}`);
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/6614eae1637fe5068da340ba`);
+      const dataReviews = await response.json();
+      //console.log(dataReviews);
+      if(!response.ok){
+        console.log(dataReviews.message || "An error occurred.");
+      }else{
+        setShopReviews(dataReviews);
+      }
+    }catch(error){
+      console.log("An error occurred. Please try again later." , error);
+    }
+  };
+
 
   const handleToggle = () => {
     setToggle(true);
@@ -34,7 +87,7 @@ const ShopView = () => {
           <div className="mt-10 w-full flex xl:gap-[70px] md:gap-[30px]">
             <div className="x:w-[50%] md:w-[60%] h-full ">
               <div className="w-full grid grid-cols-2 xl:gap-6 md:gap-2">
-                {TopFoods.map((item) => (
+                {shopData.map((item) => (
                   <div
                     key={item.id}
                     className="w-full h-full rounded-xl mb-10 shadow-lg z-0 cursor-pointer "
@@ -42,8 +95,8 @@ const ShopView = () => {
                   >
                     <div className="relative w-full h-[189px] rounded-t-xl z-0">
                       <Image
-                        src={item.image}
-                        alt={item.Name}
+                        src={item.itemImages}
+                        alt={item.itemName}
                         width={252}
                         height={189}
                         className="w-full h-full rounded-t-xl z-0"
@@ -51,7 +104,7 @@ const ShopView = () => {
                     </div>
                     <div className="w-full mb-[-20px] py-3 px-3">
                       <h3 className="text-[15px] text-detail capitalize font-medium">
-                        {item.Name}
+                        {item.itemName}
                       </h3>
                       <h3 className="text-[20px] font-bold text-black ">
                         {item.price}
@@ -104,7 +157,7 @@ const ShopView = () => {
                   </div>
                   <div className="flex flex-col gap-2 justify-center">
                     <h2 className="text-white text-[24px] capitalize">
-                      Domino’s Pizza
+                      {shopName}
                     </h2>
                     <div className="flex items-center gap-1">
                       <FaStar className="text-starColor text-[22px]" />
@@ -145,7 +198,7 @@ const ShopView = () => {
                           </div>
                           <div className="w-full">
                             <h2 className="text-[17px] font-semibold capitalize">
-                              John Doe
+                              {userName}
                             </h2>
                             <p className="text-[11px] text-inputText mt-2 text-justify">
                               {item.review}
@@ -187,7 +240,7 @@ const ShopView = () => {
                           </div>
                           <div className="w-full">
                             <h2 className="text-[17px] font-semibold capitalize">
-                              John Doe
+                              {userName}
                             </h2>
                             <p className="text-[11px] text-inputText mt-2 text-justify">
                               {item.review}
@@ -216,7 +269,7 @@ const ShopView = () => {
                     height={75}
                   />
                 </div>
-                <h3 className="text-[18px] font-medium mt-2">Domino’s Pizza</h3>
+                <h3 className="text-[18px] font-medium mt-2">{shopName}</h3>
                 <div className="flex items-center gap-2 mt-5">
                   <FaStar className="text-starColor lg:text-[32px] md:text-[30px]" />
                   <FaStar className="text-starColor lg:text-[32px] md:text-[30px]" />
@@ -224,8 +277,9 @@ const ShopView = () => {
                   <FaStar className="text-starColor lg:text-[32px] md:text-[30px]" />
                   <FaRegStar className="text-starColor lg:text-[32px] md:text-[30px]" />
                 </div>
-
-                <div className="flex flex-col justify-center gap-3 mt-10">
+                {ShopReviews.map((item)=>(
+                <div key={item._id} className="flex flex-col justify-center gap-3 mt-10">
+                  
                   <div className="flex items-center justify-center lg:gap-5 md:gap-2">
                     <p className="text-[14px] text-primary font-semibold">
                       5 Stars
@@ -235,8 +289,9 @@ const ShopView = () => {
                       <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[85%]"></div>
                     </div>
 
-                    <p className="text-[14px] text-inputText">(20)</p>
+                    <p className="text-[14px] text-inputText">({item.fiveStarCount})</p>
                   </div>
+
                   <div className="flex items-center lg:gap-5 md:gap-2">
                     <p className="text-[14px] text-primary font-semibold">
                       4 Stars
@@ -246,7 +301,7 @@ const ShopView = () => {
                       <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[60%]"></div>
                     </div>
 
-                    <p className="text-[14px] text-inputText">(20)</p>
+                    <p className="text-[14px] text-inputText">({item.fourStarCount})</p>
                   </div>
                   <div className="flex items-center lg:gap-5 md:gap-2">
                     <p className="text-[14px] text-primary font-semibold">
@@ -257,7 +312,7 @@ const ShopView = () => {
                       <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[35%]"></div>
                     </div>
 
-                    <p className="text-[14px] text-inputText">(20)</p>
+                    <p className="text-[14px] text-inputText">({item.threeStarCount})</p>
                   </div>
                   <div className="flex items-center lg:gap-5 md:gap-2">
                     <p className="text-[14px] text-primary font-semibold">
@@ -268,7 +323,7 @@ const ShopView = () => {
                       <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[25%]"></div>
                     </div>
 
-                    <p className="text-[14px] text-inputText">(20)</p>
+                    <p className="text-[14px] text-inputText">({item.twoStarCount})</p>
                   </div>
                   <div className="flex items-center lg:gap-5 md:gap-2">
                     <p className="text-[14px] text-primary font-semibold">
@@ -279,9 +334,10 @@ const ShopView = () => {
                       <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[10%]"></div>
                     </div>
 
-                    <p className="text-[14px] text-inputText">(20)</p>
+                    <p className="text-[14px] text-inputText">({item.oneStarCount})</p>
                   </div>
                 </div>
+                ))}
               </div>
 
               <button className="md:w-[80%] h-[48px] mx-auto bg-none border border-lightGray rounded-lg lg:text-[20px] md:text-[16px] text-primary flex justify-center items-center lg:gap-5 md:gap-3 mt-[100px] mb-[25px] font-medium transition-transform duration-300 ease-in-out transform hover:scale-95">

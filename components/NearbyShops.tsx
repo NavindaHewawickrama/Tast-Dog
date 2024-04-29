@@ -25,14 +25,18 @@ const NearbyShops = () => {
       if(!response.ok){
         console.log(data.message || "An error occurred.");
       }else{
-        
         setShops(data);
-        console.log(data);
       }
     }catch(error){
       console.log("An error occurred. Please try again later." , error);
       
     }
+  };
+
+  const handlePush = (id: string, name: string) => {
+    localStorage.setItem("shopId", id);
+    localStorage.setItem("shopName",name)
+    router.push("/home/shopview/");
   };
 
   return (
@@ -44,14 +48,15 @@ const NearbyShops = () => {
         <Swiper
           modules={[Navigation]}
           spaceBetween={25}
-          slidesPerView={7}
+          slidesPerView={2}
           navigation
         >
           {Shop && Shop.map((item) => (
             
             <SwiperSlide
               key={item.shopId}
-              onClick={() => router.push("/home/shopview")}
+              // onClick={() => router.push("/home/shopview")}
+              onClick={() => handlePush(item.shopId, item.name)}
             >
               <div className="w-[46px] py-3 flex flex-col gap-2 items-center justify-center mx-auto bg-[#f5f5f5] rounded-xl shadow-xl border-[#f3f3f3] cursor-pointer ">
                 <div className="w-[95px] h-[95px]">
@@ -83,13 +88,13 @@ const NearbyShops = () => {
         <Swiper
           modules={[Navigation]}
           spaceBetween={25}
-          slidesPerView={7}
+          slidesPerView={2}
           navigation
         >
           {Shop && Shop.map((item) => (
             <SwiperSlide
               key={item.shopId}
-              onClick={() => router.push("/home/shopview")}
+              onClick={ () => handlePush(item.shopId,item.name)}
             >
               <div className="w-full py-3 flex flex-col gap-2 items-center justify-center mx-auto bg-[#f5f5f5] rounded-xl shadow-xl border-[#f3f3f3] cursor-pointer ">
                 <div className="w-[85px] h-[85px] ">

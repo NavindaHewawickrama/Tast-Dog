@@ -15,9 +15,8 @@ const SearchResults = () => {
   const [query, setQuery] = useState<string | null>(null);
 
   useEffect(() => { 
-    // setQuery(localStorage.getItem("searchQuery"));
-    // setResults(localStorage.getItem("searchResults")); 
-    localStorage.getItem("allData");
+    setResults(localStorage.getItem("searchResults")); 
+    console.log(results) ;
   }, []);
 
   

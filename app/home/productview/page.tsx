@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaRegStar } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
 import Reviews from "@/constants/Reviews";
@@ -16,60 +16,99 @@ import AddToCart from "@/components/models/AddToCart";
 
 const ProductView = () => {
   const router = useRouter();
-
+  const [favouriteFoodId ,setFavouriteFoodId] = useState<string | null>(null);
+  const [foodData, setFoodData] =  useState<any[]>([]);
   const [toggle, setToggle] = useState(false);
+  const[userName, setUserName] = useState<string | null>(null);
+  const [shopName, setShopName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const foodId = localStorage.getItem("productIDFavouriteFoods");
+    const userName = setUserName(localStorage.getItem("userName"));
+    const name = localStorage.getItem("shopName");
+
+    if(foodId){
+      setFavouriteFoodId(foodId);
+      fetchApiCalls(foodId);
+      setShopName(name);
+    } 
+  }, []);
+
+  const fetchApiCalls = async (foodId: any) => {
+    try {
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/item/6614ccb0abae72dc9d05bb77`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok.');
+      }
+      const data = await response.json();
+      //console.log(data); // Check the data in the console
+      setFoodData(data); // Update the state with the fetched data
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setFoodData([]); // Update state with an empty array in case of an error
+    }
+  };
+
+  // const handleTest =()=>{
+  //   console.log(foodData);
+  // };
+
 
   return (
     <>
       <PageTransition>
+        
         <div className="w-full px-[70px] py-[50px]">
           <div className="max-w-[1075px] flex flex-col">
             <div className="w-full h-full flex xl:gap-7 md:gap-4 ">
-              <div className="xl:w-[50%] md:w-[60%] h-full ">
-                <div className="max-w-[550px] h-[450px]">
-                  <img
-                    src="/prodcut.webp"
-                    alt="product"
-                    className="w-full h-full rounded-2xl"
-                  />
-                </div>
-              </div>
-              <div className=" xl:w-[50%] md:w-[40%] py-[25px]">
-                <div className="xl:w-[337px] md:w-[250px] flex flex-col md:mx-auto">
-                  <h2 className="xl:text-[30px] md:text-[22px] font-semibold capitalize mb-2">
-                    Spicy Chicken Ramen
-                  </h2>
-                  <h2 className="xl:text-[30px] md:text-[25px] font-semibold text-primary capitalize mb-2">
-                    $ 8.00
-                  </h2>
-                  <div className="flex item-center gap-2">
-                    <FaStar className="text-[30px] text-starColor" />
-                    <FaStar className="text-[30px] text-starColor" />
-                    <FaStar className="text-[30px] text-starColor" />
-                    <FaStar className="text-[30px] text-starColor" />
-                    <FaRegStar className="text-[30px] text-starColor" />
-                  </div>
-                  <div className="flex flex-col gap-2 mt-[75px]">
-                    <button
-                      className="w-full h-[45px] text-center text-white bg-buttonGreen text-20px capitalize rounded-xl transition-transform duration-300 ease-in-out transform hover:scale-95"
-                      onClick={() =>
-                        router.push("/home/productview/placeOrder")
-                      }
-                    >
-                      buy now
-                    </button>
-                    <button
-                      onClick={() => setToggle(true)}
-                      className="w-full h-[45px] text-center text-button2 bg-none text-20px capitalize rounded-xl border-2 border-button2 transition-transform duration-300 ease-in-out transform hover:scale-95"
-                    >
-                      add to cart
-                    </button>
-                    <button className="w-full h-[45px] text-center text-buttonGreen bg-none text-20px capitalize rounded-xl border-2 border-buttonGreen transition-transform duration-300 ease-in-out transform hover:scale-95">
-                      mark as favorite
-                    </button>
+              
+                <div className="xl:w-[50%] md:w-[60%] h-full ">
+                  <div className="max-w-[550px] h-[450px]">
+                    <img
+                      src={foodData?.itemImages}
+                      alt={foodData?.itemNames}
+                      className="w-full h-full rounded-2xl"
+                    />
                   </div>
                 </div>
-              </div>
+                <div className=" xl:w-[50%] md:w-[40%] py-[25px]">
+                  <div className="xl:w-[337px] md:w-[250px] flex flex-col md:mx-auto">
+                    <h2 className="xl:text-[30px] md:text-[22px] font-semibold capitalize mb-2">
+                    {foodData?.itemName}
+                    </h2>
+                    <h2 className="xl:text-[30px] md:text-[25px] font-semibold text-primary capitalize mb-2">
+                     {foodData?.price}
+                    </h2>
+                    <div className="flex item-center gap-2">
+                      <FaStar className="text-[30px] text-starColor" />
+                      <FaStar className="text-[30px] text-starColor" />
+                      <FaStar className="text-[30px] text-starColor" />
+                      <FaStar className="text-[30px] text-starColor" />
+                      <FaRegStar className="text-[30px] text-starColor" />
+                    </div>
+                    <div className="flex flex-col gap-2 mt-[75px]">
+                      <button
+                        className="w-full h-[45px] text-center text-white bg-buttonGreen text-20px capitalize rounded-xl transition-transform duration-300 ease-in-out transform hover:scale-95"
+                        onClick={() =>
+                          router.push("/home/productview/placeOrder")
+                        }
+                        // onClick={()=>handleTest()}
+                      >
+                        buy now
+                      </button>
+                      <button
+                        onClick={() => setToggle(true)}
+                        className="w-full h-[45px] text-center text-button2 bg-none text-20px capitalize rounded-xl border-2 border-button2 transition-transform duration-300 ease-in-out transform hover:scale-95"
+                      >
+                        add to cart
+                      </button>
+                      <button className="w-full h-[45px] text-center text-buttonGreen bg-none text-20px capitalize rounded-xl border-2 border-buttonGreen transition-transform duration-300 ease-in-out transform hover:scale-95">
+                        mark as favorite
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
             </div>
           </div>
           <div className="max-w-[1150px] flex  mt-[50px]">
@@ -80,27 +119,21 @@ const ProductView = () => {
                 </h3>
               </div>
               <p className="text-[16px] text-inputText">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                sunt in culpa qui officia deserunt mollit anim id est laborum.
+                {foodData?.itemDesc}
               </p>
             </div>
             <div className="w-[50%]">
               <div className="w-full flex flex-col items-center">
                 <div className="w-[55px] h-[55px] rounded-full ">
                   <Image
-                    src="/prodcut.webp"
+                    src={foodData?.itemImage}
                     alt="prouct"
                     width={55}
                     height={55}
                     className="rounded-full w-full h-full"
                   />
                 </div>
-                <h3 className="text-[18px] font-medium ">Domino’s Pizza</h3>
+                <h3 className="text-[18px] font-medium ">{shopName}</h3>
                 <div className="flex items-center gap-2 mt-1">
                   <FaStar className="text-starColor text-[25px]" />
                   <FaStar className="text-starColor text-[25px]" />
@@ -198,7 +231,7 @@ const ProductView = () => {
                       </div>
                       <div className="w-full">
                         <h2 className="text-[17px] font-semibold capitalize">
-                          John Doe
+                          {userName}
                         </h2>
                         <p className="text-[11px] text-inputText mt-2 text-left">
                           {item.review}
@@ -241,7 +274,7 @@ const ProductView = () => {
                       </div>
                       <div className="w-full">
                         <h2 className="text-[17px] font-semibold capitalize">
-                          John Doe
+                          {userName}
                         </h2>
                         <p className="text-[11px] text-inputText mt-2 text-justify">
                           {item.review}

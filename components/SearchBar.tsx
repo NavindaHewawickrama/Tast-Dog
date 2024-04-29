@@ -41,13 +41,15 @@ const SearchBar: React.FC = () => {
         filteredResults.push(allData[i]);
       }
     }
-
-    setSearchResults(filteredResults);
-    // Redirect to search results page if needed
-    //console.log(searchResults);
-    localStorage.setItem("searchResults", JSON.stringify(filteredResults));
-    localStorage.setItem("searchQuery", query);
-    router.push("/home/SearchResults");
+    if(filteredResults.length === 0){
+      setSearchResults(filteredResults);
+      localStorage.setItem("searchResults", query);
+      router.push("/home/SearchResults");
+    }else{
+      setSearchResults(filteredResults);
+      localStorage.setItem("searchResults", JSON.stringify(filteredResults));
+      router.push("/home/SearchResults");
+    }
 };
 
   return (

@@ -31,10 +31,9 @@ const FavoriteFoods = () => {
         console.log(data.message || "An error occurred.");
       }else{
         setVisibleItems(data);
-        console.log(data);
       }
     }catch(error){
-
+      console.log("An error occurred. Please try again later." , error);
     }
   }
 
@@ -44,6 +43,11 @@ const FavoriteFoods = () => {
 
   const handleShopViewClick = () => {
     router.push("/home/shopview");
+  };
+
+  const handleProductViewClick = (id: string) => {
+    localStorage.setItem("productIDFavouriteFoods", id);
+    router.push("/home/productview");
   };
 
   return (
@@ -79,7 +83,7 @@ const FavoriteFoods = () => {
               <div
                 key={item._id}
                 className="lg:w-full md:w-full xl:w-[95%] h-[300px] rounded-xl mb-5 shadow-lg z-0 cursor-pointer"
-                onClick={() => router.push("/home/productview")}
+                onClick={() => handleProductViewClick(item._id)}
               >
                 <div className="relative w-full h-[189px] rounded-t-xl z-0">
                   <Image
