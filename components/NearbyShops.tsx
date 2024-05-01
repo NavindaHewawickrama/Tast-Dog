@@ -33,9 +33,12 @@ const NearbyShops = () => {
     }
   };
 
-  const handlePush = (id: string, name: string) => {
+  
+
+  const handlePush = (id: string, name: string, image: string) => {
     localStorage.setItem("shopId", id);
     localStorage.setItem("shopName",name)
+    localStorage.setItem("shopImage",image)
     router.push("/home/shopview/");
   };
 
@@ -56,7 +59,7 @@ const NearbyShops = () => {
             <SwiperSlide
               key={item.shopId}
               // onClick={() => router.push("/home/shopview")}
-              onClick={() => handlePush(item.shopId, item.name)}
+              onClick={() => handlePush(item.shopId, item.name,item.imageUrl)}
             >
               <div className="w-[46px] py-3 flex flex-col gap-2 items-center justify-center mx-auto bg-[#f5f5f5] rounded-xl shadow-xl border-[#f3f3f3] cursor-pointer ">
                 <div className="w-[95px] h-[95px]">
@@ -94,7 +97,7 @@ const NearbyShops = () => {
           {Shop && Shop.map((item) => (
             <SwiperSlide
               key={item.shopId}
-              onClick={ () => handlePush(item.shopId,item.name)}
+              onClick={() => handlePush(item.shopId, item.name,item.imageUrl)}
             >
               <div className="w-full py-3 flex flex-col gap-2 items-center justify-center mx-auto bg-[#f5f5f5] rounded-xl shadow-xl border-[#f3f3f3] cursor-pointer ">
                 <div className="w-[85px] h-[85px] ">

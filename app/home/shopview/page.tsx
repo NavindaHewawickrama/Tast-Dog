@@ -22,22 +22,44 @@ const ShopView = () => {
   const[shopId, setShopId] = useState<any | null>(null);
   const [toggle, setToggle] = useState(false);
   const [shopName, setShopName] = useState<string | null>(null);
+  const[shopImage, setShopImage] = useState<string | null>(null);
   const[shopData, setShopData] = useState<any[]>([]);
   const[userName, setUserName] = useState<string | null>(null);
   const [ShopReviews, setShopReviews] = useState<any[]>([]);
+  const[ShopComments,setShopComments] = useState<any[]>([]);
 
   useEffect(() => {
     const id = localStorage.getItem("shopId");
     const name = localStorage.getItem("shopName");
     const userName = setUserName(localStorage.getItem("userName"));
+    const image = localStorage.getItem("shopImage");
     if (id && name) {
       setShopId(id);
       setShopName(name);
       fetchApiCall(id);
       handleShopReviews(id)
+      handleShopComments(id);
+      setShopImage(image)
     }
   }, []);
 
+
+  const handleShopComments = async (id: string) => {
+    try{
+      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-reviews/shop-reviews/${id}`);
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-reviews/shop-reviews/6614c26524b13332f73edc7e`);
+      const dataComments = await response.json();
+      //console.log(dataComments);
+      if(!response.ok){
+        console.log(dataComments.message || "An error occurred.");
+      }else{
+        // console.log(dataComments);
+        setShopComments(dataComments);
+      }
+    }catch(error){
+      console.log("An error occurred. Please try again later." , error);
+    }
+  }
 
   const fetchApiCall = async (id: any) => {
     setShopId(localStorage.getItem("shopId"));
@@ -181,15 +203,15 @@ const ShopView = () => {
                     slidesPerView={2}
                     navigation
                   >
-                    {Reviews.map((item) => (
+                    {ShopComments.map((item) => (
                       <SwiperSlide
-                        key={item.id}
+                        key={item._id}
                         className="w-[230px] px-3 py-4 bg-lighterGreen rounded-lg"
                       >
                         <div className="flex  gap-5">
                           <div className="w-[30px] h-[30px] rounded-full">
                             <Image
-                              src={item.image}
+                              src={item.userId.profilePhoto}
                               alt="reviewer profile pic"
                               width={30}
                               height={30}
@@ -198,10 +220,10 @@ const ShopView = () => {
                           </div>
                           <div className="w-full">
                             <h2 className="text-[17px] font-semibold capitalize">
-                              {userName}
+                              {item.userId.fullName}
                             </h2>
                             <p className="text-[11px] text-inputText mt-2 text-justify">
-                              {item.review}
+                              {item.comment}
                             </p>
                             <div className="flex flex-row items-center mt-3">
                               <FaStar className="text-starColor2 text-[15px]" />
@@ -209,6 +231,7 @@ const ShopView = () => {
                               <FaStar className="text-starColor2 text-[15px]" />
                               <FaStar className="text-starColor2 text-[15px]" />
                               <FaRegStar className="text-starColor2 text-[15px]" />
+                              
                             </div>
                           </div>
                         </div>
@@ -223,15 +246,15 @@ const ShopView = () => {
                     slidesPerView={1}
                     navigation
                   >
-                    {Reviews.map((item) => (
+                    {ShopComments.map((item) => (
                       <SwiperSlide
-                        key={item.id}
+                        key={item._id}
                         className="w-full px-3 py-4 bg-lighterGreen rounded-lg"
                       >
                         <div className="flex  gap-5">
                           <div className="w-[30px] h-[30px] rounded-full">
                             <Image
-                              src={item.image}
+                              src={item.userId.profilePhoto}
                               alt="reviewer profile pic"
                               width={30}
                               height={30}
@@ -240,10 +263,10 @@ const ShopView = () => {
                           </div>
                           <div className="w-full">
                             <h2 className="text-[17px] font-semibold capitalize">
-                              {userName}
+                            {item.userId.fullName}
                             </h2>
                             <p className="text-[11px] text-inputText mt-2 text-justify">
-                              {item.review}
+                            {item.comment}
                             </p>
                             <div className="flex flex-row items-center mt-3">
                               <FaStar className="text-starColor2 text-[15px]" />
