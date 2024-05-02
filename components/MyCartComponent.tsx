@@ -1,11 +1,24 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import MyCart from "@/constants/MyCart";
 import { FaRegStopCircle } from "react-icons/fa";
 import Image from "next/image";
 
 const MyCartComponent = () => {
   const [checkedIndex, setCheckedIndex] = useState<number | null>(null);
+  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [shopName, setShopName] = useState<string>("");
+  const [qty, setQty] = useState<number>(1);
+
+  useEffect(()=>{
+    const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+    setCartItems(cartItems);
+
+    const shopName = localStorage.getItem("shopName") || "";
+    setShopName(shopName);
+  },[]);
+
+  // Function to toggle the checked state of a checkbox
 
   const toggleChecked = (index: number) => {
     if (index === checkedIndex) {
@@ -14,11 +27,22 @@ const MyCartComponent = () => {
     } else {
       setCheckedIndex(index);
     }
+    
+  };
+
+  const incrementQty = (index: number) => {
+    var qtyp  = qty + 1;
+    setQty(qtyp);
+  };
+
+  const decrementQty = (index: number) => {
+    var qtyp  = qty - 1;
+    setQty(qtyp);
   };
 
   return (
     <div className="w-full flex flex-col">
-      {MyCart.map((item, index) => (
+      {cartItems.map((item, index) => (
         <div
           className="flex justify-between items-center py-[25px] px-[10px] shadow-xl"
           key={index}
@@ -36,7 +60,7 @@ const MyCartComponent = () => {
               </div>
 
               <Image
-                src={item.image}
+                src={item.itemImages}
                 alt="order_image"
                 width={125}
                 height={125}
@@ -45,20 +69,30 @@ const MyCartComponent = () => {
             </div>
             <div className="flex flex-col justify-center">
               <h3 className="text-[24px] capitalize font-medium">
-                {item.Name}
+                {item.itemName}
               </h3>
-              <p className="text-[15px] text-inputText">{item.brand}</p>
+              <p className="text-[15px] text-inputText">{shopName}</p>
               <h3 className="text-[28px] text-primary font-medium mt-4">
-                {item.price}
+                ${item.price}
               </h3>
             </div>
           </div>
           <div className="flex items-center justify-center gap-7 px-[40px]">
             <p className="text-[18px] text-inputText">qty</p>
             <div className="flex items-center gap-4">
-              <p className="text-[20px] text-inputText cursor-pointer">-</p>
-              <p className="text-[18px] text-inputText">{item.qty}</p>
-              <p className="text-[20px] text-inputText cursor-pointer">+</p>
+              <button
+                className="text-[20px] text-inputText cursor-pointer"
+                onClick={() => decrementQty(index)}
+              >
+                -
+              </button>
+              <p className="text-[18px] text-inputText">{qty}</p>
+              <button
+                className="text-[20px] text-inputText cursor-pointer"
+                onClick={() => incrementQty(index)}
+              >
+                +
+              </button>
             </div>
           </div>
         </div>

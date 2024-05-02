@@ -21,18 +21,54 @@ const ProductView = () => {
   const [toggle, setToggle] = useState(false);
   const[userName, setUserName] = useState<string | null>(null);
   const [shopName, setShopName] = useState<string | null>(null);
+  const [ShopRating, setShopRatings] = useState<any[]>([]);
+  const[itemComments,setItemComments] = useState<any[]>([]);
 
   useEffect(() => {
     const foodId = localStorage.getItem("productIDFavouriteFoods");
     const userName = setUserName(localStorage.getItem("userName"));
     const name = localStorage.getItem("shopName");
-
+    const image = localStorage.getItem("shopImage");
     if(foodId){
       setFavouriteFoodId(foodId);
       fetchApiCalls(foodId);
       setShopName(name);
+      handleReview(foodId);
+      handleFoodComments(foodId);
     } 
   }, []);
+
+  const handleFoodComments = async(foodId:any)=>{
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-comments/shop-comments/${foodId}`);
+      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-item-reviews/shop-item-reviews/6614ccb0abae72dc9d05bb77`);
+      const dataComments = await response.json();
+      //console.log(dataComments);
+      if(!response.ok){
+        console.log(dataComments.message || "An error occurred.");
+      }else{
+        setItemComments(dataComments);
+      }
+    }catch(error){
+      console.log("An error occurred. Please try again later." , error);
+    }
+  };
+
+  const handleReview = async(id:any)=>{
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/${id}`);
+      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/6614eae1637fe5068da340ba`);
+      const dataReviews = await response.json();
+      //console.log(dataReviews);
+      if(!response.ok){
+        console.log(dataReviews.message || "An error occurred.");
+      }else{
+        setShopRatings(dataReviews);
+      }
+    }catch(error){
+      console.log("An error occurred. Please try again later." , error);
+    }
+  }
 
   const fetchApiCalls = async (foodId: any) => {
     try {
@@ -141,8 +177,8 @@ const ProductView = () => {
                   <FaStar className="text-starColor text-[25px]" />
                   <FaRegStar className="text-starColor text-[25px]" />
                 </div>
-
-                <div className="flex flex-col justify-center gap-1 mt-2">
+                {ShopRating.map((item)=>(
+                <div key={item._id} className="flex flex-col justify-center gap-1 mt-2">
                   <div className="flex items-center justify-center gap-5">
                     <p className="text-[13px] text-primary font-semibold">
                       5 Stars
@@ -152,7 +188,7 @@ const ProductView = () => {
                       <div className="bg-buttonGreen h-[15px] rounded-full w-[85%]"></div>
                     </div>
 
-                    <p className="text-[13px] text-inputText">(20)</p>
+                    <p className="text-[13px] text-inputText">({item.fiveStarCount})</p>
                   </div>
                   <div className="flex items-center justify-center gap-5">
                     <p className="text-[13px] text-primary font-semibold">
@@ -163,7 +199,7 @@ const ProductView = () => {
                       <div className="bg-buttonGreen h-[15px] rounded-full w-[60%]"></div>
                     </div>
 
-                    <p className="text-[13px] text-inputText">(6)</p>
+                    <p className="text-[13px] text-inputText">({item.fourStarCount})</p>
                   </div>
                   <div className="flex items-center justify-center gap-5">
                     <p className="text-[13px] text-primary font-semibold">
@@ -174,7 +210,7 @@ const ProductView = () => {
                       <div className="bg-buttonGreen h-[15px] rounded-full w-[35%]"></div>
                     </div>
 
-                    <p className="text-[13px] text-inputText">(10)</p>
+                    <p className="text-[13px] text-inputText">({item.threeStarCount})</p>
                   </div>
                   <div className="flex items-center justify-center gap-5">
                     <p className="text-[13px] text-primary font-semibold">
@@ -185,7 +221,7 @@ const ProductView = () => {
                       <div className="bg-buttonGreen h-[15px] rounded-full w-[25%]"></div>
                     </div>
 
-                    <p className="text-[13px] text-inputText">(1)</p>
+                    <p className="text-[13px] text-inputText">({item.twoStarCount})</p>
                   </div>
                   <div className="flex items-center justify-center gap-5">
                     <p className="text-[13px] text-primary font-semibold">
@@ -196,9 +232,10 @@ const ProductView = () => {
                       <div className="bg-buttonGreen h-[15px] rounded-full w-[10%]"></div>
                     </div>
 
-                    <p className="text-[13px] text-inputText">(0)</p>
+                    <p className="text-[13px] text-inputText">({item.oneStarCount})</p>
                   </div>
                 </div>
+                ))}
               </div>
             </div>
           </div>
@@ -214,9 +251,9 @@ const ProductView = () => {
                 slidesPerView={4}
                 navigation
               >
-                {Reviews.map((item) => (
+                {itemComments.map((item) => (
                   <SwiperSlide
-                    key={item.id}
+                    key={item._id}
                     className="w-[230px] px-3 py-4 bg-lighterGreen rounded-lg"
                   >
                     <div className="flex  gap-5">
@@ -234,7 +271,7 @@ const ProductView = () => {
                           {userName}
                         </h2>
                         <p className="text-[11px] text-inputText mt-2 text-left">
-                          {item.review}
+                          {item.comment}
                         </p>
                         <div className="flex flex-row items-center mt-3">
                           <FaStar className="text-starColor2 text-[15px]" />
@@ -257,9 +294,9 @@ const ProductView = () => {
                 slidesPerView={3}
                 navigation
               >
-                {Reviews.map((item) => (
+                {itemComments.map((item) => (
                   <SwiperSlide
-                    key={item.id}
+                    key={item._id}
                     className="w-[230px] px-3 py-4 bg-lighterGreen rounded-lg"
                   >
                     <div className="flex  gap-5">
@@ -274,10 +311,10 @@ const ProductView = () => {
                       </div>
                       <div className="w-full">
                         <h2 className="text-[17px] font-semibold capitalize">
-                          {userName}
+                          {/* {userName} */}
                         </h2>
                         <p className="text-[11px] text-inputText mt-2 text-justify">
-                          {item.review}
+                          {item.comment}
                         </p>
                         <div className="flex flex-row items-center mt-3">
                           <FaStar className="text-starColor2 text-[15px]" />

@@ -37,7 +37,17 @@ const FavoriteFoods = () => {
     }
   }
 
-  const handleToggle = () => {
+  const handleToggle = (id: string) => {
+    // Retrieve the existing cart items array from localStorage
+    const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+    // Add the new item ID to the cart items array
+    cartItems.push(id);
+
+    // Store the updated cart items array back in localStorage
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+
+    // Set the toggle state to open the AddToCart component
     setToggle(true);
   };
 
@@ -126,7 +136,7 @@ const FavoriteFoods = () => {
                     <button
                       onClick={(e) => {
                         e.stopPropagation(); // Prevent event bubbling to parent div
-                        handleToggle();
+                        handleToggle(item);
                       }}
                       className="w-[86px] h-[27px] flex justify-center items-center bg-button2 rounded-xl text-[10px] text-white gap-2 transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
                     >

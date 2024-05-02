@@ -25,7 +25,7 @@ const ShopView = () => {
   const[shopImage, setShopImage] = useState<string | null>(null);
   const[shopData, setShopData] = useState<any[]>([]);
   const[userName, setUserName] = useState<string | null>(null);
-  const [ShopReviews, setShopReviews] = useState<any[]>([]);
+  const [ShopRating, setShopRatings] = useState<any[]>([]);
   const[ShopComments,setShopComments] = useState<any[]>([]);
 
   useEffect(() => {
@@ -46,8 +46,8 @@ const ShopView = () => {
 
   const handleShopComments = async (id: string) => {
     try{
-      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-reviews/shop-reviews/${id}`);
-      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-reviews/shop-reviews/6614c26524b13332f73edc7e`);
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-reviews/shop-reviews/${id}`);
+      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-reviews/shop-reviews/6614c26524b13332f73edc7e`);
       const dataComments = await response.json();
       //console.log(dataComments);
       if(!response.ok){
@@ -63,15 +63,16 @@ const ShopView = () => {
 
   const fetchApiCall = async (id: any) => {
     setShopId(localStorage.getItem("shopId"));
+    // console.log(id);
     try{
-      // const response = await fetch(`https://tasty-dog.onrender.com//api/v1/shops/shop-items-shop/${id}`); // this should be the correct url to fetch the data but data not inserted yet 
-      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shop-items-shop/6614c26524b13332f73edc7e`);
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shop-items-shop/${id}`); // this should be the correct url to fetch the data but data not inserted yet 
+      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shop-items-shop/6614c26524b13332f73edc7e`);
       const data = await response.json();
       //console.log(data);
       if(!response.ok){
         console.log(data.message || "An error occurred.");
       }else{
-        console.log(data);
+        // console.log(data);
         setShopData(data);
       }
     }catch(error){
@@ -81,15 +82,16 @@ const ShopView = () => {
   }
 
   const handleShopReviews = async (id: string) => {
+    console.log(id);
     try{
-      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/${id}`);
-      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/6614eae1637fe5068da340ba`);
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/${id}`);
+      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/6614eae1637fe5068da340ba`);
       const dataReviews = await response.json();
       //console.log(dataReviews);
       if(!response.ok){
         console.log(dataReviews.message || "An error occurred.");
       }else{
-        setShopReviews(dataReviews);
+        setShopRatings(dataReviews);
       }
     }catch(error){
       console.log("An error occurred. Please try again later." , error);
@@ -300,7 +302,7 @@ const ShopView = () => {
                   <FaStar className="text-starColor lg:text-[32px] md:text-[30px]" />
                   <FaRegStar className="text-starColor lg:text-[32px] md:text-[30px]" />
                 </div>
-                {ShopReviews.map((item)=>(
+                {ShopRating.map((item)=>(
                 <div key={item._id} className="flex flex-col justify-center gap-3 mt-10">
                   
                   <div className="flex items-center justify-center lg:gap-5 md:gap-2">
