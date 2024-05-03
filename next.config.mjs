@@ -28,6 +28,11 @@ export default {
             hostname: 'example.com',
             pathname: '**',
           },
+          {
+            protocol: 'https',
+            hostname: 'source.unsplash.com',
+            pathname: '**',
+          },
         ],
       },
 };

@@ -72,7 +72,7 @@ const ProductView = () => {
 
   const fetchApiCalls = async (foodId: any) => {
     try {
-      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/item/6614ccb0abae72dc9d05bb77`);
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/item/${foodId}`);
       if (!response.ok) {
         throw new Error('Network response was not ok.');
       }
@@ -101,8 +101,8 @@ const ProductView = () => {
                 <div className="xl:w-[50%] md:w-[60%] h-full ">
                   <div className="max-w-[550px] h-[450px]">
                     <img
-                      src={foodData?.itemImages}
-                      alt={foodData?.itemNames}
+                      src={Array.isArray(foodData?.itemImages) ? foodData?.itemImages[0] : foodData?.itemImages}
+                      alt={foodData?.itemName}
                       className="w-full h-full rounded-2xl"
                     />
                   </div>
@@ -162,7 +162,7 @@ const ProductView = () => {
               <div className="w-full flex flex-col items-center">
                 <div className="w-[55px] h-[55px] rounded-full ">
                   <Image
-                    src={foodData?.itemImage}
+                    src={Array.isArray(foodData?.itemImages) ? foodData?.itemImages[0] : foodData?.itemImages}
                     alt="prouct"
                     width={55}
                     height={55}

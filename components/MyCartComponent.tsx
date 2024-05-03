@@ -9,35 +9,55 @@ const MyCartComponent = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [shopName, setShopName] = useState<string>("");
   const [qty, setQty] = useState<number>(1);
+  const [quantities, setQuantities] = useState<number[]>([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
     setCartItems(cartItems);
 
     const shopName = localStorage.getItem("shopName") || "";
     setShopName(shopName);
-  },[]);
+
+    // Initialize quantities array with default quantities for each item
+    const initialQuantities = cartItems.map((cartItem: any) => cartItem.quantity);
+    setQuantities(initialQuantities);
+  }, []);
 
   // Function to toggle the checked state of a checkbox
-
   const toggleChecked = (index: number) => {
-    if (index === checkedIndex) {
-      // If the clicked checkbox is already checked, uncheck it
-      setCheckedIndex(null);
-    } else {
-      setCheckedIndex(index);
-    }
-    
+    setCheckedIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
   const incrementQty = (index: number) => {
-    var qtyp  = qty + 1;
-    setQty(qtyp);
+    setQuantities((prevQuantities) =>
+      prevQuantities.map((qty, i) => (i === index ? qty + 1 : qty))
+    );
+    updateLocalStorage(index, quantities[index] + 1);
   };
 
   const decrementQty = (index: number) => {
-    var qtyp  = qty - 1;
-    setQty(qtyp);
+    setQuantities((prevQuantities) =>
+      prevQuantities.map((qty, i) => (i === index && qty > 0 ? qty - 1 : qty))
+    );
+    if (quantities[index] === 0) {
+      removeItem(index);
+    } else {
+      updateLocalStorage(index, quantities[index] - 1);
+    }
+  };
+
+  const updateLocalStorage = (index: number, quantity: number) => {
+    const updatedCartItems = [...cartItems];
+    updatedCartItems[index].quantity = quantity;
+    setCartItems(updatedCartItems);
+    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+  };
+
+  const removeItem = (index: number) => {
+    const updatedCartItems = cartItems.filter((_, i) => i !== index);
+    setCartItems(updatedCartItems);
+    setQuantities(quantities.filter((_, i) => i !== index));
+    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
   };
 
   return (
@@ -86,7 +106,7 @@ const MyCartComponent = () => {
               >
                 -
               </button>
-              <p className="text-[18px] text-inputText">{qty}</p>
+              <p className="text-[18px] text-inputText">{quantities[index]}</p>
               <button
                 className="text-[20px] text-inputText cursor-pointer"
                 onClick={() => incrementQty(index)}
