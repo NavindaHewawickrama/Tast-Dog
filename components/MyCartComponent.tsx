@@ -28,14 +28,14 @@ const MyCartComponent = () => {
     setCheckedIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
-  const incrementQty = (index: number) => {
+  const incrementQty = (index: any) => {
     setQuantities((prevQuantities) =>
       prevQuantities.map((qty, i) => (i === index ? qty + 1 : qty))
     );
     updateLocalStorage(index, quantities[index] + 1);
   };
 
-  const decrementQty = (index: number) => {
+  const decrementQty = (index: any) => {
     setQuantities((prevQuantities) =>
       prevQuantities.map((qty, i) => (i === index && qty > 0 ? qty - 1 : qty))
     );

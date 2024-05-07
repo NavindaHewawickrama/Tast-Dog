@@ -9,22 +9,31 @@ const CartTotal = () => {
   const router = useRouter();
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const[userName,setUserName]=useState<string>("");
+  const[userId,setUserId]=useState<string>("");
 
   useEffect(() => {
+    const userID = localStorage.getItem("userId") ?? "";
+    const userNames = localStorage.getItem("userName") ?? "";
     const storedCartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
     setCartItems(storedCartItems);
-    
+    setUserName(userNames);
+    setUserId(userID);
     let total = 0;
     storedCartItems.forEach((item: any) => {
       total += item.price * item.quantity;
     });
+
+    total = parseFloat(total.toFixed(2));
     setTotalPrice(total);
   }, []);
 
   const handleClick=()=>{
-    localStorage.setItem("totalPriceFrom Cart", totalPrice.toString());
-    // router.push('/home/checkout');
-  }
+    const cart = localStorage.getItem("cartItems");
+    // try{
+    //   //const response = await fetch("https://tasty-dog.onrender.com/api/v1/payments/placeOrder",{method:"POST",body:cart}); 
+    // }
+  };
 
   
 
@@ -68,8 +77,7 @@ const CartTotal = () => {
         // onClick={() => handleClick()}
         href="/home/checkout"
         className="w-full flex justify-center items-center bg-buttonGreen text-white h-[45px] text-[20px] cursor-pointer capitalize mt-8 rounded-xl transition-transform duration-300 ease-in-out transform hover:scale-95"
-      >
-        place order
+      ><button onClick={()=>handleClick()}>place order</button>
       </Link>
     </div>
   );

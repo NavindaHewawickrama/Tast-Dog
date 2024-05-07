@@ -30,6 +30,8 @@ const Login = () => {
         }),
       });
       const data = await response.json();
+      localStorage.setItem("userEmail", emailOrPhoneNumber);
+      localStorage.setItem("pwReg", password);
       if(!response.ok){
         setError(data.message || "An error occurred.");
         window.alert("Login UnSuccessful");
@@ -42,10 +44,9 @@ const Login = () => {
        
         localStorage.setItem("userId", data.customer._id);
         localStorage.setItem("userName", data.customer.fullName);
-        console.log(data.customer.fullName);
-        router.push("/home");
-       
         
+        console.log(data.customer.fullName);
+        router.push("/home"); 
       }
     }catch(error){
       setError("An error occurred. Please try again later.");

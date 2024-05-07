@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
 import { FaCcVisa } from "react-icons/fa6";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -13,6 +13,7 @@ import AddNewAddress from "./models/AccountModels/AddNewAddress";
 import ChangeAddress from "./models/AccountModels/ChangeAddress";
 import { MdEdit } from "react-icons/md";
 import PageTransition from "./PageTransition";
+import { get } from "http";
 
 const MyAccount = () => {
   const [openPassword, setOpenPassword] = useState(false);
@@ -21,6 +22,74 @@ const MyAccount = () => {
   const [updateAccountModal, setUpdateAccountModal] = useState(false);
   const [newAddress, setNewAddress] = useState(false);
   const [changeAddress, setChangeAddress] = useState(false);
+  const [userName, setUserName] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+  const [password, setPassword] = useState<string | null>(null);
+  const [address1, setAddress1] = useState<string | null>(null);
+  const [address2, setAddress2] = useState<string | null>(null);
+  const [city, setCity] = useState<string | null>(null);
+  const [stateProvince, setStateProvince] = useState<string | null>(null);
+  const [landMark, setLandMark] = useState<string | null>(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+
+  useEffect(() => {
+    getUserInfor();
+    getUserAddress();
+  },[]);
+
+  const getUserInfor = async () => {
+    const emails = localStorage.getItem("userEmail");
+    const pkey = localStorage.getItem("pwReg");
+    try{
+      const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/login",{
+        method:"POST",
+        headers: {
+          "Content-Type":"application/json",
+        },
+        body: JSON.stringify({
+          emailOrPhoneNumber: emails,
+          password: pkey,
+        }),
+      });
+      const data = await response.json();
+      if(!response.ok){
+       // console.log(data);
+       window.alert("Some kind of problem occured. Please try again.");
+       console.log(data);
+      }else{
+        //console.log(data.customer._id);
+        setUserId(data.customer._id);
+        setUserName(data.customer.fullName);
+        setEmail(data.customer.emailOrPhoneNumber);
+        setImageUrl(data.customer.profilePhoto);
+      }
+    }catch(error){
+      console.error(error);
+    }
+  };
+
+  const getUserAddress = async () => {
+    const id = localStorage.getItem("userId");
+    try{
+      const response2 = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/${id}`);
+      const data2 = await response2.json();
+      if(!response2.ok){
+        window.alert("Some kind of problem occured. Please try again.");
+        console.log(data2);
+      }else{
+        console.log(data2);
+        setAddress1(data2.aptSuite);
+        setAddress2(data2.streetAddress);
+        setCity(data2.city);
+        setStateProvince(data2.state);
+        setLandMark(data2.landmark);
+      }
+    }catch(error){
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -29,7 +98,7 @@ const MyAccount = () => {
           <h2 className="text-[24px] font-semibold capitalize">my profile</h2>
           <div className="relative w-[146px] h-[146px] rounded-full mb-2">
             <Image
-              src="/profilePic.webp"
+              src={imageUrl || "/profile.png"}
               alt="profile-pic"
               width={146}
               height={146}
@@ -57,7 +126,7 @@ const MyAccount = () => {
                 <p className="text-[16px] text-inputText capitalize">
                   full name:
                 </p>
-                <p className="text-[16px] text-detail capitalize">john doe</p>
+                <p className="text-[16px] text-detail capitalize">{userName}</p>
               </div>
               <div className="flex items-center gap-4">
                 <p className="text-[16px] text-inputText capitalize">
@@ -69,8 +138,8 @@ const MyAccount = () => {
               </div>
               <div className="flex items-center gap-4">
                 <p className="text-[16px] text-inputText capitalize">email:</p>
-                <p className="text-[16px] text-detail capitalize">
-                  sample@gmail.com
+                <p className="text-[16px] text-detail ">
+                  {email}
                 </p>
               </div>
             </div>
@@ -92,17 +161,26 @@ const MyAccount = () => {
                     Edit
                   </p>
                 </div>
-                <div className="mt-[30px] flex flex-col gap-1">
+                {/* <div className="mt-[30px] flex flex-col gap-1">
                   <h3 className="text-[20px] font-semibold capitalize text-detail">
-                    john doe
+                    {userName}
                   </h3>
                   <p className="text-[17px] capitalize text-detail">
-                    No.2/222, anywhere street, Melbourn
+                    {address1}
                   </p>
                   <p className="text-[17px] capitalize text-detail">
                     0222 222 222
                   </p>
-                </div>
+                </div> */}
+                {address1 && (
+                  <div className="flex flex-col gap-1">
+                    <h3 className="text-[20px] font-semibold text-detail">{userName}</h3>
+                    <p className="text-[17px] text-detail">{address1}</p>
+                    <p className="text-[17px] text-detail">{address2}</p>
+                    <p className="text-[17px] text-detail">{city}, {stateProvince}</p>
+                    <p className="text-[17px] text-detail">{landMark}</p>
+                  </div>
+                )}
               </div>
               <div
                 className="w-[377px]  px-[50px] py-[25px] bg-orangeLight rounded-lg flex flex-col justify-center items-center gap-2 cursor-pointer"

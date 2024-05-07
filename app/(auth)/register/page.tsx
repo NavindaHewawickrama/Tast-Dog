@@ -35,9 +35,13 @@ const Register = () => {
           throw new Error('Registration failed');
         }else{
             // Registration successful
-          userId = data.customer._id;
+          // userId = data.customer._id;
           window.alert("Registration Successful");
-          router.push(`/delivery?userId=${userId}`);
+          localStorage.setItem("userName", fullName);
+          // localStorage.setItem("userIdReg", userId);
+          localStorage.setItem("userEmail",email);
+          localStorage.setItem("pwReg", password);
+          router.push('/delivery');
         }
       } catch (error) {
         console.error(error);

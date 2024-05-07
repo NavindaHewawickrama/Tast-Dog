@@ -1,12 +1,96 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
+import React, { useEffect,useState } from "react";
 import { IoLocation } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 
 const DeliveryDetails = () => {
   const router = useRouter();
+  const [userName, setUserName] = useState<string | null>(null);
+  const [pkey, setPkey] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+  const [city, setCity] = useState<string | null>(null);
+  const [stateProvince, setStateProvince] = useState<string | null>(null);
+  const [landMark, setLandMark] = useState<string | null>(null);
+  const [address1, setAddress1] = useState<string | null>(null);
+  const [address2, setAddress2] = useState<string | null>(null);
+
+  useEffect(() => {
+    const userName = localStorage.getItem("userName");
+    const email = localStorage.getItem("userEmail");
+    const pwkey = localStorage.getItem("pwReg");
+    setPkey(pwkey);
+    setEmail(email);
+    setUserName(userName);
+    getUserID();
+  }, );
+
+  const getUserID = async () => {
+    try{
+      const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/login",{
+        method:"POST",
+        headers: {
+          "Content-Type":"application/json",
+        },
+        body: JSON.stringify({
+          emailOrPhoneNumber: email,
+          password: pkey,
+        }),
+      });
+      const data = await response.json();
+      if(!response.ok){
+       // console.log(data);
+       window.alert("Some kind of problem occured. Please try again.");
+       console.log(data);
+      }else{
+        //console.log(data.customer._id);
+        setUserId(data.customer._id);
+        localStorage.setItem("userId",data.customer._id);
+        localStorage.setItem("userName",data.customer.fullName);
+      }
+    }catch(error){
+      console.error(error);
+    }
+    
+  };
+
+  const handeClick = async () =>{
+    try{
+      const response = await fetch('https://tasty-dog.onrender.com/api/v1/addresses/addAddress', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: userId,
+            userName: userName,
+            mobileNumber: email,
+            aptSuite: address1,
+            streetAddress: address2,
+            city: city,
+            state: stateProvince,
+            landmark: landMark
+          }),
+        });
+        if (!response.ok) {
+          throw new Error('Registration failed');
+        }else{
+          const data = response.json();
+          console.log(data);
+          localStorage.setItem("address1", address1 ?? "");
+          localStorage.setItem("address2", address2 ?? "");
+          localStorage.setItem("city", city ?? "");
+          localStorage.setItem("stateProvince", stateProvince ?? "");
+          localStorage.setItem("landMark", landMark ?? "");
+          window.alert("Address Added Successfully");
+          router.push(`/home`);
+        }
+    }catch(error){
+      console.error(error);
+    }
+  };
 
   return (
     <div className="w-screen h-screen hidden md:flex flex-row overflow-hidden">
@@ -40,6 +124,7 @@ const DeliveryDetails = () => {
               type="text"
               placeholder="Street Address"
               className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+              onChange={(e) => setAddress1(e.target.value)}
             />
           </div>
 
@@ -48,12 +133,15 @@ const DeliveryDetails = () => {
               type="text"
               placeholder="Street Address Line 2"
               className="w-[90%] outline-none bg-transparent h-full font-normal text-[14px] text-inputText  px-4"
+              onChange={(e) => setAddress2(e.target.value)}
             />
           </div>
 
           <div className="flex flex-row items-center gap-4 mt-3">
             <div className="w-[214px] h-[48px] flex items-center rounded-lg border-2  border-inputBorder">
-              <select className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4">
+              <select className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+                onChange={(e) => setCity(e.target.value)}
+              >
                 <option value="" disabled selected className="text-inputText">
                   City
                 </option>
@@ -67,7 +155,9 @@ const DeliveryDetails = () => {
             </div>
 
             <div className="w-[214px] h-[48px] flex items-center rounded-lg border-2  border-inputBorder">
-              <select className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4">
+              <select className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+                onChange={(e) => setStateProvince(e.target.value)}
+              >
                 <option value="" disabled selected>
                   State/province
                 </option>
@@ -82,10 +172,12 @@ const DeliveryDetails = () => {
               type="text"
               placeholder="Land Mark"
               className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+              onChange={(e) => setLandMark(e.target.value)}
             />
           </div>
           <button
-            onClick={() => router.push("/home")}
+            // onClick={() => router.push("/home")}
+            onClick={()=>handeClick()}
             className="w-full h-[41px] bg-[#DE7230] mt-10 text-center rounded-lg text-slate-50 text-[18px] font-bold capitalize transition-transform duration-300 ease-in-out transform hover:scale-[0.97]"
           >
             confirm
