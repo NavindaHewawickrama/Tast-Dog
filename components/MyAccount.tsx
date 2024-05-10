@@ -26,12 +26,12 @@ const MyAccount = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
-  const [address1, setAddress1] = useState<string | null>(null);
-  const [address2, setAddress2] = useState<string | null>(null);
-  const [city, setCity] = useState<string | null>(null);
-  const [stateProvince, setStateProvince] = useState<string | null>(null);
-  const [landMark, setLandMark] = useState<string | null>(null);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [address1, setAddress1] = useState<string | null>("Road none");
+  const [address2, setAddress2] = useState<string | null>("Road 2 nnoe");
+  const [city, setCity] = useState<string | null>("");
+  const [stateProvince, setStateProvince] = useState<string | null>("");
+  const [landMark, setLandMark] = useState<string | null>("");
+  const [imageUrl, setImageUrl] = useState<string | null>("");
 
 
   useEffect(() => {
@@ -74,17 +74,17 @@ const MyAccount = () => {
     const id = localStorage.getItem("userId");
     try{
       const response2 = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/${id}`);
-      const data2 = await response2.json();
+      const data = await response2.json();
       if(!response2.ok){
         window.alert("Some kind of problem occured. Please try again.");
-        console.log(data2);
+        console.log(data);
       }else{
-        console.log(data2);
-        setAddress1(data2.aptSuite);
-        setAddress2(data2.streetAddress);
-        setCity(data2.city);
-        setStateProvince(data2.state);
-        setLandMark(data2.landmark);
+        console.log(data);
+        setAddress1(data.aptSuite);
+        setAddress2(data.streetAddress);
+        setCity(data.city);
+        setStateProvince(data.state);
+        setLandMark(data.landmark);
       }
     }catch(error){
       console.error(error);
@@ -161,18 +161,19 @@ const MyAccount = () => {
                     Edit
                   </p>
                 </div>
-                {/* <div className="mt-[30px] flex flex-col gap-1">
+                <div className="mt-[30px] flex flex-col gap-1">
                   <h3 className="text-[20px] font-semibold capitalize text-detail">
                     {userName}
                   </h3>
                   <p className="text-[17px] capitalize text-detail">
-                    {address1}
+                    {address1} <br/>{address2}
                   </p>
+                  
                   <p className="text-[17px] capitalize text-detail">
                     0222 222 222
                   </p>
-                </div> */}
-                {address1 && (
+                </div>
+                {/* {address1 && (
                   <div className="flex flex-col gap-1">
                     <h3 className="text-[20px] font-semibold text-detail">{userName}</h3>
                     <p className="text-[17px] text-detail">{address1}</p>
@@ -180,7 +181,7 @@ const MyAccount = () => {
                     <p className="text-[17px] text-detail">{city}, {stateProvince}</p>
                     <p className="text-[17px] text-detail">{landMark}</p>
                   </div>
-                )}
+                )} */}
               </div>
               <div
                 className="w-[377px]  px-[50px] py-[25px] bg-orangeLight rounded-lg flex flex-col justify-center items-center gap-2 cursor-pointer"

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { MdKeyboardArrowUp } from "react-icons/md";
@@ -12,6 +12,12 @@ import { MdLogout } from "react-icons/md";
 
 const DropDownList = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [name, setName] = useState<string>("");
+
+  useEffect(() => {
+    const userName = localStorage.getItem("userName");
+    setName(userName || ""); 
+  });
 
   return (
     <>
@@ -26,7 +32,7 @@ const DropDownList = () => {
               className="rounded-full h-auto transition-transform duration-300 ease-in-out transform hover:scale-[1.2]"
             />
             <h3 className="text-[14px] font-medium capitalize text-detail">
-              john doe
+              {name}
             </h3>
           </Link>
 

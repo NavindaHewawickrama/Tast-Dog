@@ -85,9 +85,12 @@ const ProductView = () => {
     }
   };
 
-  // const handleTest =()=>{
-  //   console.log(foodData);
-  // };
+  const handleToggle =(id: string)=>{
+    const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+    cartItems.push(id);
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    setToggle(true);
+  };
 
 
   return (
@@ -133,7 +136,7 @@ const ProductView = () => {
                         buy now
                       </button>
                       <button
-                        onClick={() => setToggle(true)}
+                        onClick={() => handleToggle(foodData)}
                         className="w-full h-[45px] text-center text-button2 bg-none text-20px capitalize rounded-xl border-2 border-button2 transition-transform duration-300 ease-in-out transform hover:scale-95"
                       >
                         add to cart

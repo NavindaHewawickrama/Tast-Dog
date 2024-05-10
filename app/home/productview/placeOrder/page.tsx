@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { CiEdit } from "react-icons/ci";
 import { HiGiftTop } from "react-icons/hi2";
@@ -11,6 +11,41 @@ import PageTransition from "@/components/PageTransition";
 
 const PlaceOrder = () => {
   const [toggle, setToggle] = useState(false);
+  const [address1, setAddress1] = useState<string | null>("Road none");
+  const [address2, setAddress2] = useState<string | null>("Road 2 nnoe");
+  const [city, setCity] = useState<string | null>("");
+  const [stateProvince, setStateProvince] = useState<string | null>("");
+  const [landMark, setLandMark] = useState<string | null>("");
+  const [userName, setUserName] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+
+  const getUserAddress = async () => {
+    const id = localStorage.getItem("userId");
+    console.log(id);
+    setUserId(id);
+    try{
+      const response2 = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/${id}`);
+      const data = await response2.json();
+      if(!response2.ok){
+        window.alert("Some kind of problem occured. Please try again.");
+        console.log(data);
+      }else{
+        console.log(data);
+        setAddress1(data.aptSuite);
+        setAddress2(data.streetAddress);
+        setCity(data.city);
+        setStateProvince(data.state);
+        setLandMark(data.landmark);
+      }
+    }catch(error){
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserAddress();
+  },[]);
 
   return (
     <>
@@ -23,10 +58,10 @@ const PlaceOrder = () => {
                   <FaLocationDot className="text-[25px] text-button2" />
                   <div className="flex flex-col justify-center gap-1">
                     <h3 className="text-[14px] fpnt-semibold">
-                      No 222/1, Somewhere street, Melbourn
+                      {address1} , {address2}, {city}, {stateProvince}, {landMark},
                     </h3>
                     <p className="text-[12px] text-inputText">
-                      John Doe: +94 222 222 222
+                      {userName}: +94 222 222 222
                     </p>
                   </div>
                 </div>
