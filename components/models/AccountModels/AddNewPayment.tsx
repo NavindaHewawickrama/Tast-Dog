@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
 import { useRouter } from "next/navigation";
@@ -12,6 +12,59 @@ interface ModalProps {
 
 const AddNewPayment: React.FC<ModalProps> = ({ open, onClose }) => {
   if (!open) return null;
+  const [cardNumber, setCardNumber] = useState("");
+  const [name,setName] = useState("");
+  const [date,setDate] = useState("");
+  const [cvv,setCvv] = useState("");
+  const cardType = "Visa";
+  const [saveForFuture,setSaveForFuture] = useState(false);
+
+  const handleClick = ()=>{
+    const uId = localStorage.getItem("userId");
+    try{
+      const response = fetch("https://tasty-dog.onrender.com/api/v1/cards/addCard",{
+        method:"POST",
+        headers: {
+          "Content-Type":"application/json",
+        },
+        body: JSON.stringify({
+          userId: uId,
+          cardNumber: cardNumber,
+          cardType: cardType,
+          cardholderName: name,
+          expirationDate: date,
+        }),
+      });
+      if(!response){
+        window.alert("Some kind of problem occured. Please try again.");
+        console.log(response);
+      }else{
+        window.alert("Payment method added successfully.");
+        console.log(response);
+        window.location.reload();
+      }
+    }catch(error){
+      window.alert("Error in adding payment method");
+      console.log(error);
+    }
+
+  };
+
+  const handleSaveForFuture = () => {
+    // Toggle the saveForFuture state
+    setSaveForFuture(!saveForFuture);
+  
+    if (!saveForFuture) {
+      // If checkbox is checked, save card details in localStorage or state variable
+      localStorage.setItem("savedCardDetails", JSON.stringify({ cardNumber, name, date, cvv }));
+    } else {
+      // If checkbox is unchecked, remove saved card details
+      localStorage.removeItem("savedCardDetails");
+    }
+  };
+
+
+  
 
   return (
     <div
@@ -64,6 +117,7 @@ const AddNewPayment: React.FC<ModalProps> = ({ open, onClose }) => {
                 <input
                   type="text"
                   className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+                  onChange={(e)=>setName(e.target.value)}
                 />
               </div>
             </div>
@@ -75,6 +129,7 @@ const AddNewPayment: React.FC<ModalProps> = ({ open, onClose }) => {
                 <input
                   type="text"
                   className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+                  onChange={(e)=>setCardNumber(e.target.value)}
                 />
               </div>
             </div>
@@ -82,13 +137,16 @@ const AddNewPayment: React.FC<ModalProps> = ({ open, onClose }) => {
               <div className="flex flex-row item-center gap-3 w-full h-full">
                 <div className="w-[225px]">
                   <p className="text-[12px] text-inputText capitalize mb-2">
-                    Expiration Date
+                    Expiration Date (MM/YYYY)
                   </p>
                   <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
                     <input
-                      type="date"
+                      type="text"
                       placeholder="MM/YYYY"
                       className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+                      onChange={(e) => setDate(e.target.value)}
+                      maxLength={7} // Limit input to MM/YYYY format
+                      pattern="\d{2}/\d{4}" // Validate MM/YYYY format
                     />
                   </div>
                 </div>
@@ -101,6 +159,7 @@ const AddNewPayment: React.FC<ModalProps> = ({ open, onClose }) => {
                       type="text"
                       placeholder="CVV"
                       className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+                      onChange={(e)=>setCvv(e.target.value)}
                     />
                   </div>
                 </div>
@@ -108,10 +167,11 @@ const AddNewPayment: React.FC<ModalProps> = ({ open, onClose }) => {
             </div>
           </div>
           <div className="flex items-center mt-4">
-            <input
+          <input
               id="default-checkbox"
               type="checkbox"
-              value=""
+              checked={saveForFuture}
+              onChange={handleSaveForFuture}
               className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
             />
             <label
@@ -125,7 +185,8 @@ const AddNewPayment: React.FC<ModalProps> = ({ open, onClose }) => {
           <div className="w-full flex items-center gap-5 mt-[50px]">
             <button
               className="w-[214px] h-[38px] text-center bg-Green2 text-[14px] text-white rounded-md transition-transform duration-300 ease-in-out transform hover:scale-95"
-              onClick={() => window.location.reload()}
+              // onClick={() => window.location.reload()}
+                onClick={()=>handleClick()}
             >
               Save
             </button>

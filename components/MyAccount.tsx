@@ -32,11 +32,28 @@ const MyAccount = () => {
   const [stateProvince, setStateProvince] = useState<string | null>("");
   const [landMark, setLandMark] = useState<string | null>("");
   const [imageUrl, setImageUrl] = useState<string | null>("");
+  const [cardNumber, setCardNumber]  = useState("");
+  const [date, setDate]  = useState("");
+  const [cvv, setCvv]  = useState("");
+  const [cardname, setName]  = useState("");
+
+
+  const getSavedCardDetails = () => {
+    const savedCardDetails = localStorage.getItem("savedCardDetails");
+    if (savedCardDetails) {
+      const cardData = JSON.parse(savedCardDetails);
+      setCardNumber(cardData.cardNumber || "");
+      setName(cardData.name || "");
+      setDate(cardData.date || "");
+      setCvv(cardData.cvv || "");
+    }
+  };
 
 
   useEffect(() => {
     getUserInfor();
     getUserAddress();
+    getSavedCardDetails();
   },[]);
 
   const getUserInfor = async () => {
@@ -202,16 +219,18 @@ const MyAccount = () => {
               <h3 className="text-[14px] text-detail capitalize">
                 saved cards
               </h3>
-              <div className="w-full flex justify-between px-[25px] py-[10px] border border-lightGray rounded-md items-center">
-                <div className="w-full flex gap-4">
-                  <FaCcVisa className="text-[50px] text-blue-800" />
-                  <div className="flex flex-col justify-center">
-                    <p className="text-[16px]">11231*******2321</p>
-                    <p className="text-[13px] text-inputText ">Expires 04/27</p>
+              {cardNumber && ( // Check if card details exist before rendering
+                <div className="w-full flex justify-between px-[25px] py-[10px] border border-lightGray rounded-md items-center">
+                  <div className="w-full flex gap-4">
+                    <FaCcVisa className="text-[50px] text-blue-800" />
+                    <div className="flex flex-col justify-center">
+                      <p className="text-[16px]">{cardNumber}</p>
+                      <p className="text-[13px] text-inputText ">Expires {date}</p>
+                    </div>
                   </div>
+                  <RiDeleteBinLine className="text-[20px] cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.2]" />
                 </div>
-                <RiDeleteBinLine className="text-[20px] cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.2]" />
-              </div>
+              )}
               <p
                 className="t-[14px] text-button2 underline capitalize cursor-pointer"
                 onClick={() => setNewPaymentModel(true)}

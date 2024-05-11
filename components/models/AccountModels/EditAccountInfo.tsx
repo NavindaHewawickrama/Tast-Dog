@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
 
@@ -10,6 +10,8 @@ interface ModalProps {
 const EditAccountInfo: React.FC<ModalProps> = ({ open, onClose }) => {
   if (!open) return null;
 
+  const [name, setName] = useState("");
+  
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
@@ -28,7 +30,7 @@ const EditAccountInfo: React.FC<ModalProps> = ({ open, onClose }) => {
         <div className="w-[452px] mx-auto">
           <div className="flex justify-between">
             <h3 className="text-[15px] capitalize font-semibold">
-              Add New Payment method
+              Edit account information
             </h3>
             <h3
               className="text-[15px] capitalize cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.3] hover:text-red-600"
@@ -45,6 +47,7 @@ const EditAccountInfo: React.FC<ModalProps> = ({ open, onClose }) => {
                   type="text"
                   placeholder="John Doe"
                   className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+                  onChange={(e)=>setName(e.target.value)}
                 />
               </div>
             </div>

@@ -12,7 +12,7 @@ const CartTotal = () => {
   const[userName,setUserName]=useState<string>("");
   const[userId,setUserId]=useState<string>("");
 
-  const handleTotal=()=>{
+  const handleTotal = () => {
     let total = 0;
     cartItems.forEach((item: any) => {
       total += item.price * item.quantity;
@@ -20,7 +20,7 @@ const CartTotal = () => {
 
     total = parseFloat(total.toFixed(2));
     setTotalPrice(total);
-  }
+  };
 
   useEffect(() => {
     const userID = localStorage.getItem("userId") ?? "";
@@ -29,9 +29,11 @@ const CartTotal = () => {
     setCartItems(storedCartItems);
     setUserName(userNames);
     setUserId(userID);
-    handleTotal();
-     console.log(storedCartItems);
   }, []);
+
+  useEffect(()=>{
+    handleTotal();
+  },[cartItems]);
 
   
 

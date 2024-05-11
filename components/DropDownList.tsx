@@ -13,11 +13,48 @@ import { MdLogout } from "react-icons/md";
 const DropDownList = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState<string>("");
+  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [cardDetails, setCardDetails] = useState<any[]>([]);
+  const [imageUrl, setImageUrl] = useState<string | null>("");
 
   useEffect(() => {
     const userName = localStorage.getItem("userName");
     setName(userName || ""); 
   });
+
+  const handleLogout = () => {
+    localStorage.removeItem("cartItems"); // Remove cartItems from localStorage
+    localStorage.removeItem("savedCardDetails")
+    setCartItems([]);
+    setCardDetails([]); // Clear cartItems state
+  };
+  
+  const getUserInfor = async () => {
+    const emails = localStorage.getItem("userEmail");
+    const pkey = localStorage.getItem("pwReg");
+    try{
+      const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/login",{
+        method:"POST",
+        headers: {
+          "Content-Type":"application/json",
+        },
+        body: JSON.stringify({
+          emailOrPhoneNumber: emails,
+          password: pkey,
+        }),
+      });
+      const data = await response.json();
+      if(!response.ok){
+       // console.log(data);
+       window.alert("Some kind of problem occured. Please try again.");
+       console.log(data);
+      }else{
+        setImageUrl(data.customer.profilePhoto);
+      }
+    }catch(error){
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -25,7 +62,7 @@ const DropDownList = () => {
         <div className="flex justify-between items-center lg:w-[210px] md:w-[200px] h-[60px] rounded-lg bg-lighterGreen px-[10px] py-[8px]">
           <Link href="/home/settings" className="flex items-center gap-4">
             <Image
-              src="/profilePic.webp"
+              src={imageUrl || ""}
               alt="profil_pic"
               width={43}
               height={43}
@@ -62,7 +99,7 @@ const DropDownList = () => {
             </Link>
             <Link href="/" className="flex items-center gap-2 mt-5 text-red">
               <MdLogout className="w-[24px] h-[24px] text-red-600" />
-              <h3 className="text-[15px] text-red-600 font-medium capitalize">
+              <h3 className="text-[15px] text-red-600 font-medium capitalize"  onClick={handleLogout}>
                 Log out
               </h3>
             </Link>

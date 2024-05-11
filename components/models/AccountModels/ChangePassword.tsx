@@ -17,7 +17,8 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
 
   const handleChangePassword= async ()=>{
     const uId = localStorage.getItem("userId");
-    const pwd = localStorage.getItem("pwdReg");
+    const pwd = localStorage.getItem("pwReg");
+    console.log(uId);console.log(pwd);
     if(checkpwd()){
       try{
         const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/changePassword",{

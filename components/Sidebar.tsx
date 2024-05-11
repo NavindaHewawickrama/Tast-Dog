@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React ,{useState} from "react";
 import { usePathname } from "next/navigation";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
 import { IoFastFoodSharp } from "react-icons/io5";
@@ -13,6 +13,15 @@ import { IoLogOut } from "react-icons/io5";
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [cardDetails, setCardDetails] = useState<any[]>([]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("cartItems"); // Remove cartItems from localStorage
+    localStorage.removeItem("savedCardDetails")
+    setCartItems([]);
+    setCardDetails([]); // Clear cartItems state
+  };
 
   return (
     <div className="fixed md:w-[180px] xl:w-[230px] h-screen bg-primary ">
@@ -94,6 +103,7 @@ const Sidebar = () => {
           <Link
             href="/"
             className="w-full h-[60px] flex flex-row px-[40px] items-center cursor-pointer gap-5"
+            onClick={handleLogout}
           >
             <IoLogOut className="text-white w-[24px] h-[24px]" />
             <h3 className="capitalize text-white font-semibold text-[15px] font-sans">

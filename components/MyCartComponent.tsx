@@ -33,6 +33,7 @@ const MyCartComponent = () => {
       prevQuantities.map((qty, i) => (i === index ? qty + 1 : qty))
     );
     updateLocalStorage(index, quantities[index] + 1);
+    
   };
 
   const decrementQty = (index: any) => {
@@ -44,6 +45,7 @@ const MyCartComponent = () => {
     } else {
       updateLocalStorage(index, quantities[index] - 1);
     }
+    
   };
 
   const updateLocalStorage = (index: number, quantity: number) => {
