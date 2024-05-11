@@ -12,14 +12,14 @@ const MyCartComponent = () => {
   const [quantities, setQuantities] = useState<number[]>([]);
 
   useEffect(() => {
-    const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
-    setCartItems(cartItems);
-
-    const shopName = localStorage.getItem("shopName") || "";
-    setShopName(shopName);
-
+    const cartItemsData = JSON.parse(localStorage.getItem("cartItems") || "[]");
+    setCartItems(cartItemsData);
+  
+    const shopNameData = localStorage.getItem("shopName") || "";
+    setShopName(shopNameData);
+  
     // Initialize quantities array with default quantities for each item
-    const initialQuantities = cartItems.map((cartItem: any) => cartItem.quantity);
+    const initialQuantities = cartItemsData.map((cartItem: any) => cartItem.quantity);
     setQuantities(initialQuantities);
   }, []);
 

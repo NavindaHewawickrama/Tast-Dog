@@ -242,6 +242,8 @@ const MyAccount = () => {
       <ChangePassword
         open={openPassword}
         onClose={() => setOpenPassword(false)}
+
+        
       />
 
       <DeleteAccount open={deleteModel} onClose={() => setDeleteModel(false)} />

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState}from "react";
 import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
 import { useRouter } from "next/navigation";
@@ -10,8 +10,51 @@ interface ModalProps {
 
 const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
   const router = useRouter();
+  const [newpwd, setNewpwd] = useState("");
+  const [confirmNewpwd, setConfirmNewpwd] = useState("");
 
   if (!open) return null;
+
+  const handleChangePassword= async ()=>{
+    const uId = localStorage.getItem("userId");
+    const pwd = localStorage.getItem("pwdReg");
+    if(checkpwd()){
+      try{
+        const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/changePassword",{
+          method:"POST",
+          headers: {
+            "Content-Type":"application/json",
+          },
+          body: JSON.stringify({
+            userId: uId,
+            oldPassword: pwd,
+            newPassword: newpwd,
+          }),
+        });
+        const data = await response.json();
+      if(!response.ok){
+       // console.log(data);
+       window.alert("Some kind of problem occured. Please try again.");
+       console.log(data);
+      }else{
+        window.alert("Password changed successfully.");
+        console.log(data);
+        window.location.reload();
+      }
+      }catch(error){
+        console.log(error);
+      }
+    }
+  }
+
+  const checkpwd =()=>{
+    if(newpwd === confirmNewpwd){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
 
   return (
     <div
@@ -48,6 +91,7 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
               <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
                 <input
                   type="password"
+                  onChange={(e)=>setNewpwd(e.target.value)}
                   className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                 />
               </div>
@@ -59,6 +103,7 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
               <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
                 <input
                   type="password"
+                  onChange={(e)=>setConfirmNewpwd(e.target.value)}
                   className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                 />
               </div>
@@ -67,7 +112,8 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
           <div className="w-full flex items-center gap-5 mt-10">
             <button
               className="w-[214px] h-[38px] text-center bg-Green2 text-[14px] text-white rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-95"
-              onClick={() => window.location.reload()}
+              // onClick={() => window.location.reload()}
+              onClick={()=>handleChangePassword()}
             >
               Save
             </button>
