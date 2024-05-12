@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import Orders from "@/constants/Orders";
+import React, { useState, useEffect } from "react";
+// import Orders from "@/constants/Orders";
 import Image from "next/image";
 import { GoDotFill } from "react-icons/go";
 import { FaPhoneAlt } from "react-icons/fa";
@@ -14,6 +14,28 @@ const MyOrders = () => {
   const [statusVal, setStatusVal] = useState("");
 
   const [reviewModal, setReviewModal] = useState(false);
+  const [orderData, setOrderData] = useState<any[]>([]);
+
+  useEffect(() => {
+    const uId = localStorage.getItem("userId");
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`https://tasty-dog.onrender.com/api/v1/orders/getOrdersOfUser/${uId}`);
+        if(!response){
+          console.log(response);
+          window.alert("Error in loading data");
+        }else{
+          console.log(response);
+          const data = await response.json();
+          setOrderData(data);
+        }
+      } catch (error) {
+        // Handle error
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -24,17 +46,18 @@ const MyOrders = () => {
           </h2>
           <div className="w-full h-full flex flex-row xl:gap-[50px] md:gap-[25px] mt-10">
             <div className="w-[55%]  h-full flex flex-col rounded-xl  shadow-gray-300 shadow-xl overflow-hidden">
-              {Orders.map((item, index) => (
+              {orderData.map((item, index) => (
                 <div
                   key={index}
                   className="w-full px-5 py-4 flex flex-row shadow-inner shadow-gray-300 lg:gap-5 md:gap-2 items-center  cursor-pointer"
                   onClick={() => setStatusVal(item.status)}
                 >
                   <div>
-                    <h2 className="text-[16px] text-primary">{item.id}</h2>
+                    <h2 className="text-[16px] text-primary">{item.itemId.itemName}</h2>
                     <Image
-                      src={item.image}
-                      alt={item.Name}
+                      // src={item.itemId.itemImages[0] || item.itemId.itemImages}
+                      src="/path/to/your/image.jpg"
+                      alt={item.itemId.itemName}
                       width={123}
                       height={123}
                       className="rounded-xl mt-2"
@@ -43,27 +66,27 @@ const MyOrders = () => {
 
                   <div className="flex flex-col justify-center">
                     <h2 className="xl:text-[24px] md:text-[15px] font-normal mb-1">
-                      {item.Name}
+                      {item.itemId.itemName}
                     </h2>
                     <p className="text-[16px] text-green-700 font-semibold">
-                      Total: <span>{item.total}</span>
+                      Total: <span>{item.price}</span>
                     </p>
                     <p className="text-[16px] font-semibold text-inputText">
-                      {item.count}
+                      {item.quantity}
                     </p>
                   </div>
 
                   <div className="flex items-center gap-1 ml-10">
                     <GoDotFill
                       className={
-                        item.status == "processing"
+                        item.status == "Processing"
                           ? "text-[15px] text-button2"
                           : "text-[15px] text-Green2"
                       }
                     />
                     <h2
                       className={
-                        item.status == "processing"
+                        item.status == "Processing"
                           ? "xl:text-[15px] md:text-[12px] text-button2"
                           : "xl:text-[15px] md:text-[12px] text-Green2"
                       }

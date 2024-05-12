@@ -38,15 +38,8 @@ const CartTotal = () => {
   
 
   const handleClick=()=>{
-    const cart = localStorage.getItem("cartItems");
-    // try{
-    //   //const response = await fetch("https://tasty-dog.onrender.com/api/v1/payments/placeOrder",{method:"POST",body:cart}); 
-    // }
+    const cart = localStorage.setItem("totalPriceCart", totalPrice.toString());
   };
-
-  
-
-  
 
   return (
     <div className="w-full px-[40px] py-[40px] flex flex-col shadow-xl rounded-lg">

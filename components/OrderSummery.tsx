@@ -1,9 +1,26 @@
-import React from "react";
+import React,{useState, useEffect} from "react";
 import { DiVim } from "react-icons/di";
 import { HiGiftTop } from "react-icons/hi2";
 import { AiOutlinePercentage } from "react-icons/ai";
 
 const OrderSummery = () => {
+  const [totalPriceCart, setTotalPriceCart] = useState("");
+  const [deliveryFee, setDiliveryFee] = useState("1.99");
+
+  const handleCalculations = () => {
+    const price = parseFloat(totalPriceCart); 
+    const total = price - parseFloat(deliveryFee); 
+  
+    // Optionally, you might want to return the calculated total if needed
+    localStorage.setItem("finalTotalCart", total.toString());
+    return total;
+  }
+
+  useEffect(()=>{
+    const totalPrice = localStorage.getItem("totalPriceCart") ?? "";
+    setTotalPriceCart(totalPrice);
+  })
+
   return (
     <div className="w-full flex flex-col">
       <div className="flex items-center gap-2">
@@ -29,7 +46,7 @@ const OrderSummery = () => {
         <div className="flex flex-col justify-center gap-1 mt-4">
           <div className="flex justify-between">
             <p className="text-[15px] text-detail">Item’s Total</p>
-            <p className="text-[15px] text-detail">$8.99</p>
+            <p className="text-[15px] text-detail">{totalPriceCart}</p>
           </div>
           <div className="flex justify-between">
             <p className="text-[15px] text-detail">Delivery Fees</p>
@@ -37,7 +54,7 @@ const OrderSummery = () => {
           </div>
           <div className="flex justify-between">
             <p className="text-[15px] text-detail">Total Payment</p>
-            <p className="text-[15px] text-detail">$10.00</p>
+            <p className="text-[15px] text-detail">${handleCalculations()}</p>
           </div>
         </div>
       </div>
