@@ -92,6 +92,13 @@ const ProductView = () => {
     setToggle(true);
   };
 
+  const handleBuyProduct = (item: any) =>{
+    const productBuy = JSON.parse(localStorage.getItem("buyProductPlaceOrder") || "[]");
+    productBuy.push(item);
+    localStorage.setItem("buyProductPlaceOrder", productBuy);
+    router.push("/home/productview/placeOrder");
+  }
+
 
   return (
     <>
@@ -116,7 +123,7 @@ const ProductView = () => {
                     {foodData?.itemName}
                     </h2>
                     <h2 className="xl:text-[30px] md:text-[25px] font-semibold text-primary capitalize mb-2">
-                     {foodData?.price}
+                     ${foodData?.price}
                     </h2>
                     <div className="flex item-center gap-2">
                       <FaStar className="text-[30px] text-starColor" />
@@ -128,10 +135,10 @@ const ProductView = () => {
                     <div className="flex flex-col gap-2 mt-[75px]">
                       <button
                         className="w-full h-[45px] text-center text-white bg-buttonGreen text-20px capitalize rounded-xl transition-transform duration-300 ease-in-out transform hover:scale-95"
-                        onClick={() =>
-                          router.push("/home/productview/placeOrder")
-                        }
-                        // onClick={()=>handleTest()}
+                        // onClick={() =>
+                        //   router.push("/home/productview/placeOrder")
+                        // }
+                        onClick={()=>handleBuyProduct(foodData)}
                       >
                         buy now
                       </button>

@@ -11,18 +11,26 @@ import PageTransition from "@/components/PageTransition";
 
 const PlaceOrder = () => {
   const [toggle, setToggle] = useState(false);
-  const [address1, setAddress1] = useState<string | null>("Road none");
-  const [address2, setAddress2] = useState<string | null>("Road 2 nnoe");
+  const [address1, setAddress1] = useState<any | null>([]);
+  // const [address2, setAddress2] = useState<string | null>("Road 2 nnoe");
   const [city, setCity] = useState<string | null>("");
   const [stateProvince, setStateProvince] = useState<string | null>("");
   const [landMark, setLandMark] = useState<string | null>("");
   const [userName, setUserName] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
+  const [product, setProduct] = useState<any[]>([]);
 
   const getUserAddress = async () => {
     const id = localStorage.getItem("userId");
-    console.log(id);
+    const buyingProduct = localStorage.getItem("buyProductPlaceOrder");
+
+    // Check if buyingProduct exists and is an array before setting
+    if (buyingProduct && Array.isArray(JSON.parse(buyingProduct))) {
+      setProduct(JSON.parse(buyingProduct));
+    } else {
+      setProduct([]); // Set to empty array if not an array or doesn't exist
+    }
     setUserId(id);
     try{
       const response2 = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/${id}`);
@@ -31,17 +39,15 @@ const PlaceOrder = () => {
         window.alert("Some kind of problem occured. Please try again.");
         console.log(data);
       }else{
-        console.log(data);
-        setAddress1(data.aptSuite);
-        setAddress2(data.streetAddress);
-        setCity(data.city);
-        setStateProvince(data.state);
-        setLandMark(data.landmark);
+        setAddress1(data);  
+        console.log(buyingProduct);
       }
     }catch(error){
       console.error(error);
     }
   };
+
+
 
   useEffect(() => {
     getUserAddress();
@@ -56,14 +62,18 @@ const PlaceOrder = () => {
               <div className="w-full px-[50px] py-[25px] shadow-xl rounded-xl flex justify-between items-center">
                 <div className="flex items-center gap-[60px]">
                   <FaLocationDot className="text-[25px] text-button2" />
+                  {address1.length > 0 &&
+                    address1.slice(0, 3).map((address: any) => (
                   <div className="flex flex-col justify-center gap-1">
                     <h3 className="text-[14px] fpnt-semibold">
-                      {address1} , {address2}, {city}, {stateProvince}, {landMark},
+                      {/* {address1} , {address2}, {city}, {stateProvince}, {landMark}, */}
+                      {address.aptSuite}, {address.streetAddress}, {address.city}, {address.state}, {address.landmark}
                     </h3>
                     <p className="text-[12px] text-inputText">
                       {userName}: +94 222 222 222
                     </p>
                   </div>
+                  ))}
                 </div>
                 <div className="flex justify-center items-center">
                   <CiEdit
@@ -72,6 +82,7 @@ const PlaceOrder = () => {
                   />
                 </div>
               </div>
+              {product.length > 0 && (product.map((item: any) => (
               <div className="w-full h-[350px] flex flex-col gap-5 px-[50px] py-[25px] rounded-[20px] shadow-xl">
                 <div className="flex  gap-5">
                   <Image
@@ -85,14 +96,14 @@ const PlaceOrder = () => {
                 <div className="w-full flex justify-between">
                   <div className="flex gap-5 items-center">
                     <Image
-                      src="/soup.webp"
+                      src={item.itemPhoto}
                       alt="food_image"
                       width={120}
                       height={120}
                       className="rounded-xl"
                     />
                     <h3 className="text-[20px] font-semibold capitalize">
-                      Shrimp Soup
+                      {item.itemName}
                     </h3>
                   </div>
                   <div className="flex justify-center items-center gap-[100px]">
@@ -100,12 +111,15 @@ const PlaceOrder = () => {
                       *1
                     </p>
                     <p className="text-[16px] font-semibold text-primary">
-                      $8.99
+                      ${item.price}
                     </p>
                   </div>
                 </div>
+                
               </div>
-            </div>
+                )     ))}
+            </div>   
+            
             <div
               className="lg:w-[35%] md:w-[7
           0%] flex flex-col h-full justify-center items-center  shadow-xl rounded-xl px-[25px] py-[40px]"

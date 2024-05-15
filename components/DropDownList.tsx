@@ -24,7 +24,9 @@ const DropDownList = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("cartItems"); // Remove cartItems from localStorage
-    localStorage.removeItem("savedCardDetails")
+    localStorage.removeItem("savedCardDetails");
+    localStorage.removeItem("buyProductPlaceOrder");
+    setProductsBuying([]);
     setCartItems([]);
     setCardDetails([]); // Clear cartItems state
   };
