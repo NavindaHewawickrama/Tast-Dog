@@ -26,26 +26,73 @@ const MyAccount = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
-  const [address1, setAddress1] = useState<string | null>("Road none");
-  const [address2, setAddress2] = useState<string | null>("Road 2 nnoe");
-  const [city, setCity] = useState<string | null>("");
-  const [stateProvince, setStateProvince] = useState<string | null>("");
-  const [landMark, setLandMark] = useState<string | null>("");
+  const [address1, setAddress1] = useState<any | null>([]);
+  // const [address2, setAddress2] = useState<string | null>("Road 2 nnoe");
+  // const [city, setCity] = useState<string | null>("");
+  // const [stateProvince, setStateProvince] = useState<string | null>("");
+  // const [landMark, setLandMark] = useState<string | null>("");
   const [imageUrl, setImageUrl] = useState<string | null>("");
   const [cardNumber, setCardNumber]  = useState("");
   const [date, setDate]  = useState("");
   const [cvv, setCvv]  = useState("");
   const [cardname, setName]  = useState("");
+  const [cardId, setCardId] = useState("");
+
+  const handleDelete = async ()=>{
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/cards/deleteCard/${cardId}`);
+      const data = await response.json();
+      if(!response.ok){
+        window.alert("Some kind of problem occured. Please try again.");
+        console.log(data);
+      }else{
+        console.log(data);
+        window.alert("Card deleted successfully");
+        localStorage.removeItem("savedCardDetails");
+      }
+    }catch(e){
+      console.log(e);
+    }
+  }
+
+  const getUserAddress = async () => {
+    const id = localStorage.getItem("userId");
+    try{
+      const response2 = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/${id}`);
+      const data = await response2.json();
+      if(!response2.ok){
+        window.alert("Some kind of problem occured. Please try again.");
+        console.log(data);
+      }else{
+        console.log(data);
+        setAddress1(data);  
+      }
+    }catch(error){
+      console.error(error);
+    }
+  };
 
 
   const getSavedCardDetails = () => {
     const savedCardDetails = localStorage.getItem("savedCardDetails");
-    if (savedCardDetails) {
-      const cardData = JSON.parse(savedCardDetails);
-      setCardNumber(cardData.cardNumber || "");
-      setName(cardData.name || "");
-      setDate(cardData.date || "");
-      setCvv(cardData.cvv || "");
+    let currentYear = new Date().getFullYear();
+    const [monthString, yearString] = date.split('/');
+      const month = parseInt(monthString, 10);
+      const year = parseInt(yearString, 10);
+
+    if (month < 1 || month > 12) {
+      console.log("Invalid month value. Please enter a value between 1 and 12.");
+    } else if (year < currentYear) {
+      console.log("Invalid year value. Please enter the current year or the year after.");
+    } else {
+      if (savedCardDetails) {
+        const cardData = JSON.parse(savedCardDetails);
+        setCardId(cardData._id || "");
+        setCardNumber(cardData.cardNumber || "");
+        setName(cardData.name || "");
+        setDate(cardData.date || "");
+        setCvv(cardData.cvv || "");
+      }
     }
   };
 
@@ -81,27 +128,6 @@ const MyAccount = () => {
         setUserName(data.customer.fullName);
         setEmail(data.customer.emailOrPhoneNumber);
         setImageUrl(data.customer.profilePhoto);
-      }
-    }catch(error){
-      console.error(error);
-    }
-  };
-
-  const getUserAddress = async () => {
-    const id = localStorage.getItem("userId");
-    try{
-      const response2 = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/${id}`);
-      const data = await response2.json();
-      if(!response2.ok){
-        window.alert("Some kind of problem occured. Please try again.");
-        console.log(data);
-      }else{
-        console.log(data);
-        setAddress1(data.aptSuite);
-        setAddress2(data.streetAddress);
-        setCity(data.city);
-        setStateProvince(data.state);
-        setLandMark(data.landmark);
       }
     }catch(error){
       console.error(error);
@@ -166,40 +192,34 @@ const MyAccount = () => {
               address bank
             </h3>
             <div className="flex flex-row gap-4">
-              <div className="w-[377px] h-full px-[50px] py-[25px] bg-orangeLight ">
-                <div className="w-full flex justify-between">
-                  <p className="text-[14px] text-inputText capitalize">
-                    default delivery access{" "}
-                  </p>
-                  <p
-                    className="text-[14px] text-button2 underline cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.1] "
-                    onClick={() => setChangeAddress(true)}
-                  >
-                    Edit
-                  </p>
-                </div>
-                <div className="mt-[30px] flex flex-col gap-1">
-                  <h3 className="text-[20px] font-semibold capitalize text-detail">
-                    {userName}
-                  </h3>
-                  <p className="text-[17px] capitalize text-detail">
-                    {address1} <br/>{address2}
-                  </p>
-                  
-                  <p className="text-[17px] capitalize text-detail">
-                    0222 222 222
-                  </p>
-                </div>
-                {/* {address1 && (
-                  <div className="flex flex-col gap-1">
-                    <h3 className="text-[20px] font-semibold text-detail">{userName}</h3>
-                    <p className="text-[17px] text-detail">{address1}</p>
-                    <p className="text-[17px] text-detail">{address2}</p>
-                    <p className="text-[17px] text-detail">{city}, {stateProvince}</p>
-                    <p className="text-[17px] text-detail">{landMark}</p>
+              {address1.length > 0 &&
+                address1.slice(0, 3).map((address: any) => (
+                  <div className="w-[377px] h-full px-[50px] py-[25px] bg-orangeLight " key={address._id}>
+                    <div className="w-full flex justify-between">
+                      <p className="text-[14px] text-inputText capitalize">
+                        default delivery access
+                      </p>
+                      <p
+                        className="text-[14px] text-button2 underline cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.1] "
+                        onClick={() => setChangeAddress(true)}
+                      >
+                        Edit
+                      </p>
+                    </div>
+
+                    <div className="mt-[30px] flex flex-col gap-1">
+                      <h3 className="text-[20px] font-semibold capitalize text-detail">
+                        {address.userName}
+                      </h3>
+                      <p className="text-[17px] capitalize text-detail">
+                        {address.aptSuite}, {address.streetAddress}, {address.city}, {address.state}, {address.landmark}
+                      </p>
+                      <p className="text-[17px] capitalize text-detail">
+                        {address.mobileNumber}
+                      </p>
+                    </div>
                   </div>
-                )} */}
-              </div>
+                ))}
               <div
                 className="w-[377px]  px-[50px] py-[25px] bg-orangeLight rounded-lg flex flex-col justify-center items-center gap-2 cursor-pointer"
                 onClick={() => setNewAddress(true)}
@@ -228,7 +248,9 @@ const MyAccount = () => {
                       <p className="text-[13px] text-inputText ">Expires {date}</p>
                     </div>
                   </div>
-                  <RiDeleteBinLine className="text-[20px] cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.2]" />
+                  <RiDeleteBinLine 
+                    onClick={()=>handleDelete()}
+                  className="text-[20px] cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.2]" />
                 </div>
               )}
               <p

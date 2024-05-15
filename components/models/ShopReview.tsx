@@ -15,6 +15,36 @@ const ShopReview: React.FC<ModalProps> = ({ open, onClose }) => {
   const [successModel, setSuccessModel] = useState(false);
   const [rating, setRating] = useState<number | null>(null);
   const [rateColor, setRateColor] = useState<string | null>(null);
+  const [comment, setComment] = useState("");
+
+  const setReview= async ()=>{
+    var shopId = localStorage.getItem("shopIdOrder");
+    var userId = localStorage.getItem("userId");
+    try{
+      const response = await fetch("https://tasty-dog.onrender.com/api/v1/shop-reviews/shop-reviews",{
+          method:"POST",
+          headers: {
+            "Content-Type":"application/json",
+          },
+          body: JSON.stringify({
+            rating,
+            comment,
+            shopId,
+            userId,
+          }),
+        });
+        const data = await response.json();
+        if(!response.ok){
+          console.log(data.message || "An error occurred.");
+          window.alert("Data not inseted");
+        }else{
+          window.alert("Shop Review inserted");
+          setSuccessModel(true)
+        }
+    }catch(error){
+      console.log("An error occurred. Please try again later." , error);
+    }
+  }
 
   if (!open) return null;
 
@@ -95,7 +125,8 @@ const ShopReview: React.FC<ModalProps> = ({ open, onClose }) => {
               </div>
             </div>
             <button
-              onClick={() => setSuccessModel(true)}
+              // onClick={() => setSuccessModel(true)}
+              onClick={()=>setReview()}
               className="w-full h-[32px] bg-buttonGreen flex justify-center items-center text-white text-[12px] rounded-md capitalize transition-transform duration-300 ease-in-out transform hover:scale-95"
             >
               submit

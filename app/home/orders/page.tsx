@@ -15,18 +15,33 @@ const MyOrders = () => {
 
   const [reviewModal, setReviewModal] = useState(false);
   const [orderData, setOrderData] = useState<any[]>([]);
+  const [name,setName] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [time,setTime] = useState("");
+  const [itemName,setItemName]= useState("");
+  const [itemPrice, setItemPrice] = useState("");
+  const[itemId, setItemId] = useState("");
+  const [shopIdOrder, setShopIdOrder] = useState("");
+  
+
+  const handleReview = () => {
+    setReviewModal(true);
+    localStorage.setItem("itemId",itemId);
+    localStorage.setItem("shopIdOrder", shopIdOrder);
+  }
 
   useEffect(() => {
     const uId = localStorage.getItem("userId");
     const fetchData = async () => {
       try {
         const response = await fetch(`https://tasty-dog.onrender.com/api/v1/orders/getOrdersOfUser/${uId}`);
+        const data = await response.json();
         if(!response){
           console.log(response);
           window.alert("Error in loading data");
+          setOrderData(data);
         }else{
           console.log(response);
-          const data = await response.json();
           setOrderData(data);
         }
       } catch (error) {
@@ -37,6 +52,48 @@ const MyOrders = () => {
     fetchData();
   }, []);
 
+  const handleOrder = (item: any) => {
+    setStatusVal(item.status);
+    setName(item.userName);
+    setAddress(item.orderAddress);
+  
+    // Extract date and time from the datetime string
+    const dateTime = new Date(item.createdAt);
+    const date = dateTime.toLocaleDateString();
+  
+    // Set the extracted date and time
+    setTime(date);
+    setItemName(item.itemId.itemName);
+    setItemPrice(item.price);
+    setItemId(item._id);
+    setShopIdOrder(item.shopId);
+  }
+
+  const handleCancel = async (id: any ) =>{
+    const uId = localStorage.getItem("userId");
+    try{
+      const response = await fetch("https://tasty-dog.onrender.com//api/v1/orders/cancelOrder",{
+        method:"POST",
+        headers: {
+          "Content-Type":"application/json",
+        },
+        body: JSON.stringify({
+          orderId: id,
+          userId: uId,
+          userType: "owner",
+        }),
+      });
+      const data = await response.json();
+      if(!response.ok){
+        window.alert("Error in cancelling order");
+      }else{
+        window.alert("Order cancelled successfully");
+      }
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   return (
     <>
       <PageTransition>
@@ -46,11 +103,17 @@ const MyOrders = () => {
           </h2>
           <div className="w-full h-full flex flex-row xl:gap-[50px] md:gap-[25px] mt-10">
             <div className="w-[55%]  h-full flex flex-col rounded-xl  shadow-gray-300 shadow-xl overflow-hidden">
-              {orderData.map((item, index) => (
+            {Array.isArray(orderData) && orderData.length === 0 ? (
+              <div className="w-full flex justify-center items-center text-primary text-[20px] font-medium">
+                No orders yet
+              </div>
+              ):(
+                Array.isArray(orderData) && orderData.map((item, index) => (
                 <div
                   key={index}
                   className="w-full px-5 py-4 flex flex-row shadow-inner shadow-gray-300 lg:gap-5 md:gap-2 items-center  cursor-pointer"
-                  onClick={() => setStatusVal(item.status)}
+                  // onClick={() => setStatusVal(item.status)}
+                  onClick={()=>handleOrder(item)}
                 >
                   <div>
                     <h2 className="text-[16px] text-primary">{item.itemId.itemName}</h2>
@@ -95,7 +158,8 @@ const MyOrders = () => {
                     </h2>
                   </div>
                 </div>
-              ))}
+              ))
+            )}
             </div>
 
             {!statusVal ? (
@@ -107,7 +171,7 @@ const MyOrders = () => {
                   height={280}
                 />
               </div>
-            ) : statusVal === "processing" ? (
+            ) : statusVal === "Processing" ? (
               <div className="w-[45%] flex flex-col px-[30px] py-[25px] rounded-xl  shadow-gray-300 shadow-xl">
                 <h3 className="text-[20px] text-inputText capitalize">
                   order id: <span className="text-primary"> #00500</span>{" "}
@@ -127,16 +191,16 @@ const MyOrders = () => {
                       Delivered & billled To
                     </p>
                     <h4 className="text-[16px] text-primary font-medium capitalize">
-                      John Doe
+                      {name}
                     </h4>
                     <h4 className="text-[16px] text-detail font-medium capitalize">
                       +94 222 322 232
                     </h4>
                     <p className="text-[15px] text-inputText capitalize">
-                      No 233/1 anywhere street, melbourn
+                      {address}
                     </p>
                     <p className="text-[11px] text-inputText capitalize">
-                      2023/05/16
+                      {time}
                     </p>
                   </div>
                   <div className="w-full mt-10">
@@ -153,10 +217,10 @@ const MyOrders = () => {
                         />
                         <div className="flex flex-col">
                           <h4 className="text-primary text-[16px] font-bold capitalize">
-                            Pepperoni Pizza
+                            {itemName}
                           </h4>
                           <p className="text-[13px] text-detail capitalize">
-                            Total: $12.50
+                            {itemPrice}
                           </p>
                           <p className="text-[13px] text-inputText ">xl</p>
                         </div>
@@ -168,13 +232,15 @@ const MyOrders = () => {
                       <FaPhoneAlt className="text-[12px]" />
                       <p className="text-[12px] capitalize">Contact shop</p>
                     </button>
-                    <button className="w-full flex justify-center items-center h-[38px] bg-none border border-button2 rounded-lg text-[12px] text-button2 capitalize transition-transform duration-300 ease-in-out transform hover:scale-95">
+                    <button 
+                    onClick={()=>handleCancel(itemId)}
+                    className="w-full flex justify-center items-center h-[38px] bg-none border border-button2 rounded-lg text-[12px] text-button2 capitalize transition-transform duration-300 ease-in-out transform hover:scale-95">
                       cancel order
                     </button>
                   </div>
                 </div>
               </div>
-            ) : (
+            ) :statusVal === "Completed" ? (
               <div className="w-[45%] flex flex-col rounded-xl px-[30px] py-[25px] shadow-gray-300 shadow-xl">
                 <h3 className="text-[20px] text-inputText capitalize">
                   order id: <span className="text-primary"> #00500</span>{" "}
@@ -194,16 +260,16 @@ const MyOrders = () => {
                       Delivered & billled To
                     </p>
                     <h4 className="text-[16px] text-primary font-medium capitalize">
-                      John Doe
+                    {name}
                     </h4>
                     <h4 className="text-[16px] text-detail font-medium capitalize">
                       +94 222 322 232
                     </h4>
                     <p className="text-[15px] text-inputText capitalize">
-                      No 233/1 anywhere street, melbourn
+                      {address}
                     </p>
                     <p className="text-[11px] text-inputText capitalize">
-                      2023/05/16
+                    {time}
                     </p>
                   </div>
                   <div className="w-full mt-10">
@@ -219,10 +285,10 @@ const MyOrders = () => {
                         />
                         <div className="flex flex-col">
                           <h4 className="text-primary text-[16px] font-bold capitalize">
-                            Pepperoni Pizza
+                          {itemName}
                           </h4>
                           <p className="text-[13px] text-detail capitalize">
-                            Total: $12.50
+                          {itemPrice}
                           </p>
                           <p className="text-[13px] text-inputText ">xl</p>
                         </div>
@@ -231,7 +297,151 @@ const MyOrders = () => {
                   </div>
                   <div className="mt-[75px] w-full flex flex-col gap-3">
                     <button
-                      onClick={() => setReviewModal(true)}
+                      // onClick={() => setReviewModal(true)}
+                      onClick={()=>handleReview()}
+                      className="w-full h-[40px] bg-button2 flex justify-center items-center gap-5 text-white rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-95"
+                    >
+                      <FaStar className="text-[15px] " />
+                      <p className="text-[13px] capitalize">Write A Review</p>
+                    </button>
+                    <button className="w-full h-[40px] bg-buttonGreen flex justify-center items-center gap-5 text-white rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-95">
+                      <FaPhoneAlt className="text-[15px] " />
+                      <p className="text-[13px] capitalize">contact shop</p>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ):statusVal === "Cancelled" ?(
+              <div className="w-[45%] flex flex-col rounded-xl px-[30px] py-[25px] shadow-gray-300 shadow-xl">
+                <h3 className="text-[20px] text-inputText capitalize">
+                  order id: <span className="text-primary"> #00500</span>{" "}
+                </h3>
+                <div className="flex items-center gap-5 mt-1">
+                  <h3 className="text-[20px] text-inputText capitalize">
+                    order status:
+                  </h3>
+                  <div className="flex ">
+                    <GoDotFill className="text-[20px] text-buttonGreen" />
+                    <p className="text-[15px] text-buttonGreen">Cancelled</p>
+                  </div>
+                </div>
+                <div className="xl:w-[380px] lg:w-[300px] md:w-[200px] h-full mx-auto mt-10">
+                  <div className="w-full flex flex-col px-[15px] py-[15px] bg-lighterGreen gap-1">
+                    <p className="text-[12px] text-inputText capitalize">
+                      Delivered & billled To
+                    </p>
+                    <h4 className="text-[16px] text-primary font-medium capitalize">
+                    {name}
+                    </h4>
+                    <h4 className="text-[16px] text-detail font-medium capitalize">
+                      +94 222 322 232
+                    </h4>
+                    <p className="text-[15px] text-inputText capitalize">
+                    {address}
+                    </p>
+                    <p className="text-[11px] text-inputText capitalize">
+                    {time}
+                    </p>
+                  </div>
+                  <div className="w-full mt-10">
+                    <p className="text-[12px] text-inputText">Items</p>
+                    <div className="w-full h-full bg-inputBlue shadow-xl rounded-xl px-[20px] py-[20px] flex flex-col gap-4 mt-5">
+                      <div className="flex items-center bg-white gap-4 px-[10px] py-[10px] rounded-xl ">
+                        <Image
+                          src="/soup.webp"
+                          alt="product_image"
+                          width={65}
+                          height={65}
+                          className="rounded-full"
+                        />
+                        <div className="flex flex-col">
+                          <h4 className="text-primary text-[16px] font-bold capitalize">
+                            {itemName}
+                          </h4>
+                          <p className="text-[13px] text-detail capitalize">
+                            {itemPrice}
+                          </p>
+                          <p className="text-[13px] text-inputText ">xl</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-[75px] w-full flex flex-col gap-3">
+                    <button
+                      // onClick={() => setReviewModal(true)}
+                      onClick={()=>handleReview()}
+                      className="w-full h-[40px] bg-button2 flex justify-center items-center gap-5 text-white rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-95"
+                    >
+                      <FaStar className="text-[15px] " />
+                      <p className="text-[13px] capitalize">Write A Review</p>
+                    </button>
+                    <button className="w-full h-[40px] bg-buttonGreen flex justify-center items-center gap-5 text-white rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-95">
+                      <FaPhoneAlt className="text-[15px] " />
+                      <p className="text-[13px] capitalize">contact shop</p>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            
+            ):(
+              <div className="w-[45%] flex flex-col rounded-xl px-[30px] py-[25px] shadow-gray-300 shadow-xl">
+                <h3 className="text-[20px] text-inputText capitalize">
+                  order id: <span className="text-primary"> #00500</span>{" "}
+                </h3>
+                <div className="flex items-center gap-5 mt-1">
+                  <h3 className="text-[20px] text-inputText capitalize">
+                    order status:
+                  </h3>
+                  <div className="flex ">
+                    <GoDotFill className="text-[20px] text-buttonGreen" />
+                    <p className="text-[15px] text-buttonGreen">New Order</p>
+                  </div>
+                </div>
+                <div className="xl:w-[380px] lg:w-[300px] md:w-[200px] h-full mx-auto mt-10">
+                  <div className="w-full flex flex-col px-[15px] py-[15px] bg-lighterGreen gap-1">
+                    <p className="text-[12px] text-inputText capitalize">
+                      Delivered & billled To
+                    </p>
+                    <h4 className="text-[16px] text-primary font-medium capitalize">
+                    {name}
+                    </h4>
+                    <h4 className="text-[16px] text-detail font-medium capitalize">
+                      +94 222 322 232
+                    </h4>
+                    <p className="text-[15px] text-inputText capitalize">
+                    {address}
+                    </p>
+                    <p className="text-[11px] text-inputText capitalize">
+                    {time}
+                    </p>
+                  </div>
+                  <div className="w-full mt-10">
+                    <p className="text-[12px] text-inputText">Items</p>
+                    <div className="w-full h-full bg-inputBlue shadow-xl rounded-xl px-[20px] py-[20px] flex flex-col gap-4 mt-5">
+                      <div className="flex items-center bg-white gap-4 px-[10px] py-[10px] rounded-xl ">
+                        <Image
+                          src="/soup.webp"
+                          alt="product_image"
+                          width={65}
+                          height={65}
+                          className="rounded-full"
+                        />
+                        <div className="flex flex-col">
+                          <h4 className="text-primary text-[16px] font-bold capitalize">
+                            {itemName}
+                          </h4>
+                          <p className="text-[13px] text-detail capitalize">
+                            {itemPrice}
+                          </p>
+                          <p className="text-[13px] text-inputText ">xl</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-[75px] w-full flex flex-col gap-3">
+                    <button
+                      // onClick={() => setReviewModal(true)}
+                      onClick={()=>handleReview()}
                       className="w-full h-[40px] bg-button2 flex justify-center items-center gap-5 text-white rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-95"
                     >
                       <FaStar className="text-[15px] " />

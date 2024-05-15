@@ -15,6 +15,39 @@ const FoodReview: React.FC<ModalProps> = ({ open, onClose }) => {
   const [nextModel, setNextModel] = useState(false);
   const [rating, setRating] = useState<number | null>(null);
   const [rateColor, setRateColor] = useState<string | null>(null);
+  const [comment, setComment] = useState("");
+
+  const handleNext= async ()=>{
+    if(rating && comment){
+      try{
+        var itemId = localStorage.getItem("itemId");
+        var userId = localStorage.getItem("userId");
+        const response = await fetch("https://tasty-dog.onrender.com/api/v1/shop-item-reviews/shop-item-reviews",{
+          method:"POST",
+          headers: {
+            "Content-Type":"application/json",
+          },
+          body: JSON.stringify({
+            rating,
+            comment,
+            itemId,
+            userId,
+          }),
+        });
+        const data = await response.json();
+        if(!response.ok){
+          console.log(data.message || "An error occurred.");
+        }else{
+          window.alert("Item Review inserted");
+          setNextModel(true);
+        }
+        }catch(error){
+          console.log("An error occurred. Please try again later." , error);
+        }
+      }
+      
+    }
+  
 
   if (!open) return null;
 
@@ -89,6 +122,7 @@ const FoodReview: React.FC<ModalProps> = ({ open, onClose }) => {
             </h2>
             <div className="w-full h-[116px] bg-inputBlue border border-inputText rounded-lg ">
               <textarea
+              onChange={(e)=>setComment(e.target.value)}
                 name="reviewText"
                 id="review"
                 className="w-full h-full bg-inputBlue border border-gray-200 rounded-lg text-[11px] text-inputText px-[12px] py-[12px]"
@@ -97,7 +131,8 @@ const FoodReview: React.FC<ModalProps> = ({ open, onClose }) => {
             </div>
           </div>
           <button
-            onClick={() => setNextModel(true)}
+            // onClick={() => setNextModel(true)}
+            onClick={()=>handleNext()}
             className="w-full h-[32px] bg-buttonGreen flex justify-center items-center text-white text-[12px] rounded-md capitalize transition-transform duration-300 ease-in-out transform hover:scale-95"
           >
             next
