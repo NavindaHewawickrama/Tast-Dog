@@ -12,16 +12,6 @@ const CartTotal = () => {
   const[userName,setUserName]=useState<string>("");
   const[userId,setUserId]=useState<string>("");
 
-  const handleTotal = () => {
-    let total = 0;
-    cartItems.forEach((item: any) => {
-      total += item.price * item.quantity;
-    });
-
-    total = parseFloat(total.toFixed(2));
-    setTotalPrice(total);
-  };
-
   useEffect(() => {
     const userID = localStorage.getItem("userId") ?? "";
     const userNames = localStorage.getItem("userName") ?? "";
@@ -32,13 +22,17 @@ const CartTotal = () => {
   }, []);
 
   useEffect(()=>{
-    handleTotal();
+    let total = 0;
+    cartItems.forEach((item: any) => {
+      total += item.price * item.quantity;
+    });
+
+    total = parseFloat(total.toFixed(2));
+    setTotalPrice(total); 
   },[cartItems]);
 
-  
-
   const handleClick=()=>{
-    const cart = localStorage.setItem("totalPriceCart", totalPrice.toString());
+    localStorage.setItem("totalPriceCart", totalPrice.toString());
   };
 
   return (
@@ -53,7 +47,7 @@ const CartTotal = () => {
             price
           </h3>
         </div>
-      </div>
+      </div> 
       <div className="flex flex-col xl:gap-2 md:gap-1 mt-10 ">
         {cartItems.map((item) => (
           <div className="flex justify-between items-center" key={item.id}>

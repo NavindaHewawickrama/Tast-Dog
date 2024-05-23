@@ -4,23 +4,21 @@ import { HiGiftTop } from "react-icons/hi2";
 import { AiOutlinePercentage } from "react-icons/ai";
 
 const OrderSummery = () => {
-  const [totalPriceCart, setTotalPriceCart] = useState("");
+  const [totalPriceCart, setTotalPriceCart] = useState("0");
   const [deliveryFee, setDiliveryFee] = useState("1.99");
 
   const handleCalculations = () => {
     const price = parseFloat(totalPriceCart); 
     const total = price - parseFloat(deliveryFee); 
   
-    // Optionally, you might want to return the calculated total if needed
     localStorage.setItem("finalTotalCart", total.toString());
     return total;
   }
 
   useEffect(()=>{
-    const totalPrice = localStorage.getItem("totalPriceCart") ?? "";
-    setTotalPriceCart(totalPrice);
-  })
-
+    const totalPrice = localStorage.getItem("totalPriceCart") ?? "0";
+    setTotalPriceCart('10000');
+  },[])
   return (
     <div className="w-full flex flex-col">
       <div className="flex items-center gap-2">
@@ -54,7 +52,7 @@ const OrderSummery = () => {
           </div>
           <div className="flex justify-between">
             <p className="text-[15px] text-detail">Total Payment</p>
-            <p className="text-[15px] text-detail">${handleCalculations()}</p>
+            <p className="text-[15px] text-detail">{totalPriceCart}</p> 
           </div>
         </div>
       </div>
