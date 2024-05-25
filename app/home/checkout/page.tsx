@@ -132,7 +132,7 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
           "Content-type": "application/json",
         },
         body: JSON.stringify({
-          paymentIntentId: secret,
+        paymentIntentId: secret,
         userId,
         userName,
         orderItems,
