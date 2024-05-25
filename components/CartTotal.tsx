@@ -32,7 +32,12 @@ const CartTotal = () => {
   },[cartItems]);
 
   const handleClick=()=>{
+<<<<<<< HEAD
     localStorage.setItem("totalPriceCart", totalPrice.toString());
+=======
+    const cart = localStorage.setItem("totalPriceCart", totalPrice.toString());
+    // console.log(cartItems);
+>>>>>>> 111f2fa8a7b9e5b9d7dbad3741bf3513389d6af3
   };
 
   return (
@@ -70,10 +75,10 @@ const CartTotal = () => {
         <h3 className="text-[20px] capitalize text-button2">${totalPrice}</h3>
       </div>
       <Link
-        // onClick={() => handleClick()}
+        onClick={handleClick}
         href="/home/checkout"
         className="w-full flex justify-center items-center bg-buttonGreen text-white h-[45px] text-[20px] cursor-pointer capitalize mt-8 rounded-xl transition-transform duration-300 ease-in-out transform hover:scale-95"
-      ><button onClick={()=>handleClick()}>place order</button>
+      >place order
       </Link>
     </div>
   );

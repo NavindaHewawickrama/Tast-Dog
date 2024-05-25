@@ -66,6 +66,7 @@ const MyAccount = () => {
       }else{
         console.log(data);
         setAddress1(data);  
+        localStorage.setItem("userAddress",data[0]);
       }
     }catch(error){
       console.error(error);

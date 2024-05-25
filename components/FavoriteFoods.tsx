@@ -52,8 +52,19 @@ const FavoriteFoods = () => {
     setToggle(true);
   };
 
-  const handleShopViewClick = () => {
-    router.push("/home/shopview");
+  const handleShopViewClick = async (id:any) => {
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/item/${id}`);
+      const data = await response.json();
+      if(!response.ok){
+        console.log(data.message || "An error occurred.");
+      }else{
+        localStorage.setItem("shopId",data.shopId);
+        router.push("/home/shopview");
+      }
+    }catch{
+
+    }
   };
 
   const handleProductViewClick = (id: string) => {
@@ -108,7 +119,7 @@ const FavoriteFoods = () => {
                     className="absolute bottom-[-20px] right-[20px] w-[40px] h-[40px] z-10 transition-transform duration-300 ease-in-out transform hover:scale-[1.2]"
                     onClick={(e) => {
                       e.stopPropagation(); // Prevent event bubbling to parent div
-                      handleShopViewClick();
+                      handleShopViewClick(item._id);
                     }}
                   >
                     <Image

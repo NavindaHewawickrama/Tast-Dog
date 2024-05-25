@@ -82,7 +82,7 @@ const ShopView = () => {
   }
 
   const handleShopReviews = async (id: string) => {
-    console.log(id);
+    // console.log(id);
     try{
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/${id}`);
       // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/6614eae1637fe5068da340ba`);
@@ -119,7 +119,7 @@ const ShopView = () => {
                   >
                     <div className="relative w-full h-[189px] rounded-t-xl z-0">
                       <Image
-                        src={item.itemImages}
+                        src={item.itemImages[0]}
                         alt={item.itemName}
                         width={252}
                         height={189}
