@@ -30,7 +30,7 @@ const FavoriteFoods = () => {
       if(!response.ok){
         console.log(data.message || "An error occurred.");
       }else{
-        console.log(data);
+        // console.log(data);
         setVisibleItems(data);
       }
     }catch(error){
