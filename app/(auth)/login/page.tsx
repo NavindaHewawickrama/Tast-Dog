@@ -7,6 +7,7 @@ import { useState } from "react";
 import { IoEye } from "react-icons/io5";
 import ForgotPassword from "@/components/models/ForgotPassword";
 import { useRouter } from "next/navigation";
+import { signInWithGoogle, signInWithFacebook, logInWithGoogle } from '../../auth';
 
 
 const Login = () => {
@@ -54,6 +55,15 @@ const Login = () => {
     
     };
 
+    const handleGoogleLogIn = async () => {
+      try {
+        const user = await logInWithGoogle();
+        console.log('User signed in with Google:', user);
+        router.push(`/home`);  
+      } catch (error) {
+        setError('Google Sign-In failed');
+      }
+    };
   return (
     <>
       <div className="w-screen h-screen hidden lg:flex flex-row overflow-hidden">
@@ -80,7 +90,9 @@ const Login = () => {
                   </h4>
                 </div>
               </div>
-              <div className="w-[210px] h-[50px] flex justify-between items-center rounded-xl border-2 border-slate-300 cursor-pointer ">
+              <div 
+              className="w-[210px] h-[50px] flex justify-between items-center rounded-xl border-2 border-slate-300 cursor-pointer "
+              onClick={handleGoogleLogIn}>
                 <div className="w-[30%] h-[50px] flex flex-col items-center justify-center rounded-full">
                   <Image
                     src="/google.svg"
