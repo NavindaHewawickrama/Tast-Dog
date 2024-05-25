@@ -78,14 +78,17 @@ export const logInWithGoogle = async () => {
         }
       });
   
+      console.log(response.status); 
+      console.log(response.data);
+
       if (response.status === 200) {
         const data = response.data;
   
-        window.alert("Sign in Successful");
-        localStorage.setItem("userEmail", emailOrPhoneNumber);
-        localStorage.setItem("userName", user.displayName || ''); 
-        localStorage.setItem("profilePhotoUrl", user.photoURL || '');
-        localStorage.setItem("userId", user._id || '');
+        window.alert("Sign in Successful"); 
+        localStorage.setItem("userEmail", data.emailOrPhoneNumber);
+        localStorage.setItem("userName", data.customer.fullName || ''); 
+        localStorage.setItem("profilePhotoUrl", data.customer.profilePhotoUrl || '');
+        localStorage.setItem("userId", data.customer._id);
       } else {
         throw new Error('Sign in failed');
       }
