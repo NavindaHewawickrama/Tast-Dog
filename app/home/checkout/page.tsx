@@ -2,7 +2,7 @@
 
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { BsCreditCard } from "react-icons/bs";
 import { FaPaypal } from "react-icons/fa";
 import { loadStripe } from "@stripe/stripe-js";
@@ -235,6 +235,32 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
 const CheckOut = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [cardholderName, setCardholderName] = useState("");
+  const [shopID, setShopId]= useState<any>("");
+  const[secondCartItems, setSecondCartItems] = useState<any>("");
+  useEffect(() => {
+    handleShopDetails();
+  }, []);
+
+  const handleShopDetails = async () => {
+    const itemsCart = localStorage.getItem("cartItems");
+    const cartItems2 = itemsCart ? JSON.parse(itemsCart) : [];
+    setSecondCartItems(cartItems2);
+    for (const element of cartItems2) {
+      try {
+        const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/item/${element._id}`);
+        const data = await response.json();
+  
+        if (!response.ok) {
+          console.log(data.message || "An error occurred while fetching shop details.");
+        } else { 
+          setShopId(data.shopId);
+          localStorage.setItem("promoCodeShopId", data.shopId);
+        }
+      } catch (error) {
+        console.error("Error fetching shop details:", error);
+      }
+    }
+  };
 
   return (
     <>
@@ -266,7 +292,7 @@ const CheckOut = () => {
               </div>
             </div>
             <div className="lg:w-[35%] md:w-full h-full shadow-xl rounded-[10px] px-[25px] py-[25px]">
-              <OrderSummery />
+              <OrderSummery/>
             </div>
           </div>
         </section>

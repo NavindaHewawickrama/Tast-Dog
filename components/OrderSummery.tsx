@@ -6,14 +6,55 @@ import { AiOutlinePercentage } from "react-icons/ai";
 const OrderSummery = () => {
   const [totalPriceCart, setTotalPriceCart] = useState("");
   const [deliveryFee, setDiliveryFee] = useState("1.99");
+  const [inputPromoCode,setInputPromoCode]=useState("");
+  const [promoCodeData, setpromoCodeData] = useState<any[]>([]);
+  const [discount, setDiscount]=useState("");
 
   const handleCalculations = () => {
     const price = parseFloat(totalPriceCart); 
-    const total = price - parseFloat(deliveryFee); 
+    var total = price - parseFloat(deliveryFee); 
+    if(parseFloat(discount) != 0){
+      total = total - total*(parseFloat(discount)/100);
+    }
   
     // Optionally, you might want to return the calculated total if needed
     localStorage.setItem("finalTotalCart", total.toString());
     return total;
+  }
+
+  const handlePromoCode =async()=>{
+    const promoCodeShopID = localStorage.getItem("promoCodeShopId");
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/promocodes/promocodes/getPromoCodesByShopId/${promoCodeShopID}`);
+      const data = await response.json();
+      if(!response){
+        console.log("error");
+      }else{
+        setpromoCodeData(data);
+        validatePromoCode();
+      }
+    }catch(e){
+      console.log(e);
+    }
+  };
+
+  const validatePromoCode = ()=>{
+    const data = promoCodeData;
+    // const promoCode = data.find((item:any)=>item.code === inputPromoCode);
+    // // if(promoCode){
+    //   window.alert(promoCode);
+    // }
+    data.forEach(element => {
+      if(element.code === inputPromoCode){
+        const date = Date();
+        if(date < element.validTillDate){
+          setDiscount(element.discountAmount);
+        }
+      }else{
+        console.log("not found");
+      }
+    });
+    
   }
 
   useEffect(()=>{
@@ -64,11 +105,13 @@ const OrderSummery = () => {
           <input
             type="text"
             placeholder="promo code"
+            onChange={(e)=>setInputPromoCode(e.target.value)}
             className="w-full h-full bg-inputBlue border-none rounded-xl px-3 text-inputText2"
           />
         </div>
       </div>
-      <button className="w-full py-[10px] rounded-xl bg-buttonGreen text-[20px] text-white capitalize text-center mt-4 cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-95">
+      <button onClick={handlePromoCode} 
+      className="w-full py-[10px] rounded-xl bg-buttonGreen text-[20px] text-white capitalize text-center mt-4 cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-95">
         Reedem
       </button>
     </div>
