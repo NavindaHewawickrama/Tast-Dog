@@ -147,7 +147,7 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
           "Content-type": "application/json",
         },
         body: JSON.stringify(requestBody),
-      });
+
   
       if (!response.ok) {
         console.error("Error placing order:", response.statusText);
