@@ -11,6 +11,30 @@ const EditAccountInfo: React.FC<ModalProps> = ({ open, onClose }) => {
   if (!open) return null;
 
   const [name, setName] = useState("");
+
+  const handleEdit = async() =>{
+    const id = localStorage.getItem("userId");
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/customers/updateUserDetails/${id}`,{method:"PUT"
+      ,headers: {
+        "Content-Type":"application/json",
+      }, body:JSON.stringify({
+        fullName: name,
+      })
+      });
+      const data = await response.json();
+      if(!response.ok){
+        window.alert("Some kind of problem occured. Please try again.");
+        console.log(data);
+      }else{
+        window.alert("User details updated successfully.");
+      // Optionally, update the state of your application here instead of reloading
+      window.location.reload();
+      }
+    }catch(e){
+      console.log(e);
+    }
+  };
   
   return (
     <div
@@ -79,7 +103,7 @@ const EditAccountInfo: React.FC<ModalProps> = ({ open, onClose }) => {
           <div className="w-full flex items-center gap-5 mt-10">
             <button
               className="w-[214px] h-[38px] text-center bg-Green2 text-[14px] text-white rounded-md transition-transform duration-300 ease-in-out transform hover:scale-95"
-              onClick={() => window.location.reload()}
+              onClick={() => handleEdit()}
             >
               Save
             </button>

@@ -135,6 +135,8 @@ const MyAccount = () => {
     }
   };
 
+  
+
   return (
     <>
       <PageTransition>
@@ -148,7 +150,8 @@ const MyAccount = () => {
               height={146}
               className="rounded-full"
             />
-            <button className="absolute bottom-0 right-0 w-[33px] h-[33px] bg-button2 rounded-full flex justify-center items-center transition-transform duration-300 ease-in-out transform hover:scale-[1.1]">
+            <button
+            className="absolute bottom-0 right-0 w-[33px] h-[33px] bg-button2 rounded-full flex justify-center items-center transition-transform duration-300 ease-in-out transform hover:scale-[1.1]">
               <MdEdit size={23} color="white" />
             </button>
           </div>

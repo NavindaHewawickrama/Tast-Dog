@@ -20,13 +20,13 @@ const DropDownList = () => {
   useEffect(() => {
     const userName = localStorage.getItem("userName");
     setName(userName || ""); 
+    getUserInfor();
   });
 
   const handleLogout = () => {
     localStorage.removeItem("cartItems"); // Remove cartItems from localStorage
     localStorage.removeItem("savedCardDetails");
     localStorage.removeItem("buyProductPlaceOrder");
-    setProductsBuying([]);
     setCartItems([]);
     setCardDetails([]); // Clear cartItems state
   };
