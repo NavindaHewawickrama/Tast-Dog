@@ -57,7 +57,7 @@ const Login = () => {
           <Image src="/Logo.png" alt="logo" width={330} height={94} />
           <div className="w-[444px] flex flex-col items-center justify-center mt-[70px]">
             <h2 className="text-[32px] font-Lato font-bold leading-4 ">
-              Log In
+              Log Ins
             </h2>
             <div className="flex flex-row justify-between items-center w-full mt-[50px]">
               <div className="w-[210px] h-[50px] flex justify-between items-center rounded-xl border-2 border-slate-300 cursor-pointer">

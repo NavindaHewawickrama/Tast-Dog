@@ -10,6 +10,7 @@ import { FaCartShopping } from "react-icons/fa6";
 import { FaGift } from "react-icons/fa";
 import { IoIosSettings } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
+import { auth } from '../firebaseConfig'
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -23,6 +24,13 @@ const Sidebar = () => {
     setProductsBuying([]);
     setCartItems([]);
     setCardDetails([]); // Clear cartItems state
+    auth.signOut()
+    .then(() => {
+        console.log("User signed out successfully");
+    })
+    .catch((error) => { 
+        console.error("Error signing out:", error);
+    });
   };
 
   return (
