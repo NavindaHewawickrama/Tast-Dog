@@ -113,44 +113,57 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
     }
   };
 
-  const handleOrderDetails = async (shopId: any, id: any, qty: any, price: any, secret: any)=>{
-    window.alert(secret);
-    try{
-      const orderItems = {
+  const handleOrderDetails = async (shopId: any, id: any, qty: any, price: any, secret: any) => {
+    try {
+      const orderItems = []; // Initialize an empty array to hold order items
+  
+      // Construct the order item object
+      const orderItem = {
         itemId: id,
         quantity: qty,
         price: price,
         shopId: shopId,
-      }
-      window.alert("handleorder api start");
+      };
+  
+      // Push the order item object into the orderItems array
+      orderItems.push(orderItem);
+  
       const userId = localStorage.getItem("userId");
       const userName = localStorage.getItem("userName");
-      const orderAddress = localStorage.getItem("userAddress");
+      const orderAddress = "123 Main St, Anytown, USA";
+  
+      const requestBody = {
+        paymentIntentId: secret,
+        userId,
+        userName,
+        orderItems, // Assign orderItems as an array
+        orderAddress,
+      };
+      console.log(requestBody);
+  
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/payments/placeOrder`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({
-          paymentIntentId: secret,
-        userId,
-        userName,
-        orderItems,
-        orderAddress,
-        }),
+        body: JSON.stringify(requestBody),
       });
-      if(!response){
-        console.log(response);
-        window.alert("Error occured in ")
-      }else{
-        window.alert("Payment success");
-        window.alert("handleorder api finsish");
-        localStorage.removeItem("cartItems");
+  
+      if (!response.ok) {
+        console.error("Error placing order:", response.statusText);
+        return;
       }
-    } catch(e) {
-      console.log("An error occurred. Please try again later." , e);
+  
+      // Handle success
+      console.log("Order placed successfully");
+      window.alert("Payment success");
+      window.alert("handleorder api finish"); 
+      localStorage.removeItem("cartItems");  
+    } catch (error) {
+      console.error("An error occurred while placing order:", error);
     }
-  }
+  };
+  
 
   // const handleOrderDetails = async (clientSecret: any) => {
   //     // Getting cart items from localStorage
