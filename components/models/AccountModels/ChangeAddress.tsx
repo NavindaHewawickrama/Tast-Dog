@@ -18,6 +18,7 @@ interface ModalProps {
 const ChangeAddress: React.FC<ModalProps> = ({ open, onClose }) => {
   const [newAddress, setNewAddress] = useState(false);
   const [editAddress, setEditAddress] = useState(false);
+  
 
   const handleClick = () => {
     setNewAddress(true);

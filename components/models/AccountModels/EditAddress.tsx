@@ -8,13 +8,49 @@ interface ModalProps {
 }
 
 const EditAddress: React.FC<ModalProps> = ({ open, onClose }) => {
-  const [street, setStreet] = useState("Somewhere Street");
-  const [suitNo, setSuitNo] = useState("2/222");
+  const [streetAddress, setStreet] = useState("Somewhere Street");
+  const [aptSuite, setSuitNo] = useState("2/222");
   const [city, setCity] = useState("Melourn");
   const [state, setState] = useState("Melbourn");
-  const [landMark, setLandMark] = useState("Infront of State Hospital");
+  const [landmark, setLandMark] = useState("Infront of State Hospital");
 
   if (!open) return null;
+
+  const handleEditAddress = async () => {
+    const addressId = localStorage.getItem("addressId");
+    const userName= localStorage.getItem("userName");
+    const mobileNumber = localStorage.getItem("userEmail");
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/editAddress/${addressId}`,{
+        method:"PUT",
+        headers: {
+          "Content-Type":"application/json",
+        },
+        body: JSON.stringify({
+          addressId,
+          userName,
+          mobileNumber,
+          aptSuite,
+          streetAddress,
+          city,
+          state,
+          landmark,
+        }),
+      });
+      const data = response.json;
+      if(!response){
+        console.log(data);
+        window.alert("cannot update the address");
+      }else{
+        console.log(data);
+        window.location.reload();
+        window.alert("Address edit complete");
+      }
+    }catch(e){
+
+    }
+  };
+
   return (
     <>
       <div
@@ -50,7 +86,7 @@ const EditAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                 <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
                   <input
                     type="text"
-                    value={street}
+                    value={streetAddress}
                     className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                     onChange={(e) => setStreet(e.target.value)}
                   />
@@ -63,7 +99,7 @@ const EditAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                 <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
                   <input
                     type="text"
-                    value={suitNo}
+                    value={aptSuite}
                     className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                     onChange={(e) => setSuitNo(e.target.value)}
                   />
@@ -106,7 +142,7 @@ const EditAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                 <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
                   <input
                     type="text"
-                    value={landMark}
+                    value={landmark}
                     className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                     onChange={(e) => setLandMark(e.target.value)}
                   />
@@ -116,7 +152,7 @@ const EditAddress: React.FC<ModalProps> = ({ open, onClose }) => {
             <div className="w-full flex items-center gap-5 mt-10">
               <button
                 className="w-[214px] h-[38px] text-center bg-Green2 text-[14px] text-white rounded-md transition-transform duration-300 ease-in-out transform hover:scale-95"
-                onClick={() => window.location.reload()}
+                onClick={() => handleEditAddress()}
               >
                 Save
               </button>

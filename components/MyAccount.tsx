@@ -134,6 +134,10 @@ const MyAccount = () => {
       console.error(error);
     }
   };
+  const handleAddressEdit = (id:any) =>{
+    localStorage.setItem("addressId", id);
+    setChangeAddress(true);
+  }
 
   
 
@@ -205,7 +209,7 @@ const MyAccount = () => {
                       </p>
                       <p
                         className="text-[14px] text-button2 underline cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.1] "
-                        onClick={() => setChangeAddress(true)}
+                        onClick={() => handleAddressEdit(address._id)}
                       >
                         Edit
                       </p>

@@ -23,6 +23,7 @@ const Sidebar = () => {
     localStorage.removeItem("buyProductPlaceOrder");
     localStorage.removeItem("userId");
     localStorage.removeItem("userName");
+    localStorage.removeItem("addressId");
     setProductsBuying([]);
     setCartItems([]);
     setCardDetails([]); // Clear cartItems state

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
 
@@ -8,7 +8,47 @@ interface ModalProps {
 }
 
 const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
+  const [streetAddress, setStreet] = useState("Somewhere Street");
+  const [aptSuite, setSuitNo] = useState("2/222");
+  const [city, setCity] = useState("Melourn");
+  const [state, setState] = useState("Melbourn");
+  const [landmark, setLandMark] = useState("Infront of State Hospital");
+
   if (!open) return null;
+
+
+  const handleAddingNewAddress = async()=>{
+    const userId = localStorage.getItem("userId");
+    const userName= localStorage.getItem("userName");
+    const mobileNumber = localStorage.getItem("userEmail");
+
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/addAddress`,{method:"POST",
+      headers: {
+        "Content-Type":"application/json",
+      },
+      body:JSON.stringify({
+        landmark,
+        state,
+        city,
+        streetAddress,
+        aptSuite,
+        mobileNumber,
+        userName,
+        userId,
+      })
+      });
+      const data = await response.json();
+      if(!response.ok){
+        window.alert("Some kind of problem occured. Please try again.");
+        console.log(data);
+      }else{
+        window.location.reload()
+      }
+    }catch(e){
+
+    }
+  }
   return (
     <>
       <div
@@ -44,6 +84,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                 <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
                   <input
                     type="text"
+                    onChange={(e) => setStreet(e.target.value)}
                     className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                   />
                 </div>
@@ -55,6 +96,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                 <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
                   <input
                     type="text"
+                    onChange={(e)=>setSuitNo(e.target.value)}
                     className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                   />
                 </div>
@@ -68,6 +110,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                     <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
                       <input
                         type="text"
+                        onChange={(e)=>setCity(e.target.value)}
                         className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                       />
                     </div>
@@ -79,6 +122,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                     <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
                       <input
                         type="text"
+                        onChange={(e)=>setState(e.target.value)}
                         className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                       />
                     </div>
@@ -92,6 +136,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                 <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
                   <input
                     type="text"
+                    onChange={(e)=>setLandMark(e.target.value)}
                     className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                   />
                 </div>
@@ -100,7 +145,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
             <div className="w-full flex items-center gap-5 mt-10">
               <button
                 className="w-[214px] h-[38px] text-center bg-Green2 text-[14px] text-white rounded-md transition-transform duration-300 ease-in-out transform hover:scale-95"
-                onClick={() => window.location.reload()}
+                onClick={() => handleAddingNewAddress()}
               >
                 Save
               </button>
