@@ -13,18 +13,78 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
   const router = useRouter();
   const [nextModel, setNextModel] = useState(true);
   const [changeModel, setChangeModel] = useState(false);
-
+  const [contactInfo, setContactInfo] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [enteredCode, setEnteredCode] = useState("");
+ 
   const handleClick = () => {
     setChangeModel(true);
   };
 
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
+  const handleSendCode = async () => {
+
+    try{
+      const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/forgotPassword",{method:"POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        emailOrPhoneNumber:contactInfo,
+      })});
+      const data = response.json;
+      if(!response){
+        window.alert("Invalid contact info"); console.log(data);
+      }else{
+        window.alert(data.toString());
+      }
+    }catch(e){
+      console.log(e);
+    }
+    // Simulate sending a verification code to the email or phone number
+    // console.log(`Sending verification code to ${contactInfo}`);
+    setNextModel(false);
+  };
+
   const focusNextInput = (index: number) => {
     if (inputRefs.current[index + 1]) {
       inputRefs.current[index + 1]?.focus();
     }
   };
+
+  const handleOTPInput = (value: string, index: number) => {
+    const newEnteredCode = enteredCode.split('');
+    newEnteredCode[index] = value;
+    setEnteredCode(newEnteredCode.join(''));
+
+    if (value && index < inputRefs.current.length - 1) {
+      focusNextInput(index);
+    }
+  };
+
+  const handleVerifyOTP = async()=>{
+    try{
+      const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/forgotPassword",{method:"POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        emailOrPhoneNumber:contactInfo,
+        otp:enteredCode,
+      })});
+      const data = response.json;
+      if(!response){
+        window.alert("Invalid contact info"); console.log(data);
+      }else{
+        window.alert(data.toString());
+        localStorage.setItem("forgotPasswordEmailorPhoneNumber",contactInfo);
+      }
+    }catch(e){
+      console.log(e);
+    }
+    setChangeModel(true);
+  }
 
   if (!open) return null;
   if (changeModel)
@@ -66,14 +126,20 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
                 Mobile Number or Email
               </p>
               <div className="w-full h-[48px] bg-inputBlue mt-1 rounded-lg border-2 border-inputBorder">
-                <input
+              <input
                   type="text"
                   className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+                  value={contactInfo}
+                  onChange={(e) => setContactInfo(e.target.value)}
                 />
               </div>
-              <button
+              {/* <button
                 className="w-full h-[38px] bg-buttonGreen text-white rounded-lg mt-[70px] mb-5 transition-transform duration-300 ease-in-out transform hover:scale-95"
                 onClick={(e) => setNextModel(false)}
+              > */}
+              <button
+                className="w-full h-[38px] bg-buttonGreen text-white rounded-lg mt-[70px] mb-5 transition-transform duration-300 ease-in-out transform hover:scale-95"
+                onClick={handleSendCode}
               >
                 Confirm
               </button>
@@ -102,13 +168,13 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
                 Enter the four digit code we sent you at
               </h4>
               <p className="text-[14px] text-primary underline">
-                samplemail@gmail.com
+              {contactInfo}
               </p>
               <p className="text-[12px] text-inputText mt-2 capitalize">
                 resend attempts:3
               </p>
               <div className="flex flex-row gap-4">
-                {[...Array(4)].map((_, index) => (
+              {[...Array(4)].map((_, index) => (
                   <div
                     key={index}
                     className="w-[81px] h-[81px] bg-inputBlue mt-5 rounded-lg border-2 border-inputBorder"
@@ -119,6 +185,12 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
                       ref={(el) => (inputRefs.current[index] = el)}
                       className="w-full outline-none bg-transparent h-full font-normal text-[25px] text-center text-inputText px-4"
                       onInput={(e) => {
+                        const value = e.currentTarget.value.slice(-1);
+                        setEnteredCode((prev) => {
+                          const newCode = prev.split("");
+                          newCode[index] = value;
+                          return newCode.join("");
+                        });
                         if (
                           e.currentTarget.value.length >=
                           e.currentTarget.maxLength
@@ -135,7 +207,7 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
               </p>
               <button
                 className="w-full h-[38px] bg-buttonGreen text-white rounded-lg mt-[70px] mb-5 transition-transform duration-300 ease-in-out transform hover:scale-95"
-                onClick={handleClick}
+                onClick={handleVerifyOTP}
               >
                 Confirm
               </button>

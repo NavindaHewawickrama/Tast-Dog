@@ -10,6 +10,45 @@ interface ModalProps {
 const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
   const router = useRouter();
   const [successModel, setSuccessModel] = useState(false);
+  const [newPassword,setNewPassword]= useState("");
+  const [confirmPassword,setConfirmPassword]= useState("");
+
+  const checkpwd =()=>{
+    if(newPassword === confirmPassword){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  const handlePasswordChange = async()=>{
+    if(checkpwd()){
+            const emailOrPhone = localStorage.getItem("forgotPasswordEmailorPhoneNumber");
+          try{
+            const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/updatePassword",{method:"POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              emailOrPhoneNumber:emailOrPhone,
+              newPassword:newPassword,
+            })});
+            const data = response.json;
+            if(!response){
+              window.alert("Something went wrong"); console.log(data);
+            }else{
+              window.alert(data.toString());
+          
+            }
+          }catch(e){
+            console.log(e);
+          }
+          setSuccessModel(true);
+    }else{
+      window.alert("Passwords not matching");
+    }
+    
+  }
 
   if (!open) return null;
   return (
@@ -44,6 +83,7 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
             <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
               <input
                 type="password"
+                onChange={(e)=>setNewPassword(e.target.value)}
                 className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
               />
             </div>
@@ -55,13 +95,15 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
             <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
               <input
                 type="password"
+                onChange={(e)=>setConfirmPassword(e.target.value)}
                 className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
               />
             </div>
           </div>
           <button
             className="w-full h-[38px] bg-buttonGreen text-white rounded-lg mt-[70px] mb-5 transition-transform duration-300 ease-in-out transform hover:scale-95"
-            onClick={() => setSuccessModel(true)}
+            // onClick={() => setSuccessModel(true)}
+            onClick={()=>handlePasswordChange()}
           >
             Confirm
           </button>
