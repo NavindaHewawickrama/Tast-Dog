@@ -8,9 +8,10 @@ interface ModalProps {
 }
 
 const EditAccountInfo: React.FC<ModalProps> = ({ open, onClose }) => {
+  const [name, setName] = useState("");
   if (!open) return null;
 
-  const [name, setName] = useState("");
+ 
 
   const handleEdit = async() =>{
     const id = localStorage.getItem("userId");

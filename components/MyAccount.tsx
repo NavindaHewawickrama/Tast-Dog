@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { CiCirclePlus } from "react-icons/ci";
 import { FaCcVisa } from "react-icons/fa6";
 import { RiDeleteBinLine } from "react-icons/ri";
@@ -74,7 +74,7 @@ const MyAccount = () => {
   };
 
 
-  const getSavedCardDetails = () => {
+  const getSavedCardDetails = useCallback(() => {
     const savedCardDetails = localStorage.getItem("savedCardDetails");
     let currentYear = new Date().getFullYear();
     const [monthString, yearString] = date.split('/');
@@ -95,14 +95,14 @@ const MyAccount = () => {
         setCvv(cardData.cvv || "");
       }
     }
-  };
+  },[date]);
 
 
   useEffect(() => {
     getUserInfor();
     getUserAddress();
     getSavedCardDetails();
-  },[]);
+  },[getSavedCardDetails]);
 
   const getUserInfor = async () => {
     const emails = localStorage.getItem("userEmail");

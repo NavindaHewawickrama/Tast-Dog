@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useCallback } from "react";
 import MyCart from "@/constants/MyCart";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -12,7 +12,7 @@ const CartTotal = () => {
   const[userName,setUserName]=useState<string>("");
   const[userId,setUserId]=useState<string>("");
 
-  const handleTotal = () => {
+  const handleTotal = useCallback(() => {
     let total = 0;
     cartItems.forEach((item: any) => {
       total += item.price * item.quantity;
@@ -20,7 +20,7 @@ const CartTotal = () => {
 
     total = parseFloat(total.toFixed(2));
     setTotalPrice(total);
-  };
+  },[cartItems]);
 
   useEffect(() => {
     const userID = localStorage.getItem("userId") ?? "";
@@ -33,7 +33,7 @@ const CartTotal = () => {
 
   useEffect(()=>{
     handleTotal();
-  },[cartItems]);
+  },[cartItems, handleTotal]);
 
   
 

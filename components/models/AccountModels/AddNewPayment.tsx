@@ -11,13 +11,14 @@ interface ModalProps {
 }
 
 const AddNewPayment: React.FC<ModalProps> = ({ open, onClose }) => {
-  if (!open) return null;
   const [cardNumber, setCardNumber] = useState("");
   const [name,setName] = useState("");
   const [date,setDate] = useState("");
   const [cvv,setCvv] = useState("");
   const cardType = "Visa";
   const [saveForFuture,setSaveForFuture] = useState(false);
+  if (!open) return null;
+  
 
   const handleClick = ()=>{
     const uId = localStorage.getItem("userId");

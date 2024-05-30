@@ -64,7 +64,7 @@ const PlaceOrder = () => {
                   <FaLocationDot className="text-[25px] text-button2" />
                   {address1.length > 0 &&
                     address1.slice(0, 3).map((address: any) => (
-                  <div className="flex flex-col justify-center gap-1">
+                  <div className="flex flex-col justify-center gap-1" key={address1._id}>
                     <h3 className="text-[14px] fpnt-semibold">
                       {/* {address1} , {address2}, {city}, {stateProvince}, {landMark}, */}
                       {address.aptSuite}, {address.streetAddress}, {address.city}, {address.state}, {address.landmark}
@@ -83,7 +83,7 @@ const PlaceOrder = () => {
                 </div>
               </div>
               {product.length > 0 && (product.map((item: any) => (
-              <div className="w-full h-[350px] flex flex-col gap-5 px-[50px] py-[25px] rounded-[20px] shadow-xl">
+              <div className="w-full h-[350px] flex flex-col gap-5 px-[50px] py-[25px] rounded-[20px] shadow-xl" key={item._id}>
                 <div className="flex  gap-5">
                   <Image
                     src="/Dominos.webp"

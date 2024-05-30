@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect,useState } from "react";
+import React, { useCallback, useEffect,useState } from "react";
 import { IoLocation } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 
@@ -17,17 +17,7 @@ const DeliveryDetails = () => {
   const [address1, setAddress1] = useState<string | null>(null);
   const [address2, setAddress2] = useState<string | null>(null);
 
-  useEffect(() => {
-    const userName = localStorage.getItem("userName");
-    const email = localStorage.getItem("userEmail");
-    const pwkey = localStorage.getItem("pwReg");
-    setPkey(pwkey);
-    setEmail(email);
-    setUserName(userName);
-    getUserID();
-  }, );
-
-  const getUserID = async () => {
+  const getUserID = useCallback (async () => {
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/login",{
         method:"POST",
@@ -54,7 +44,19 @@ const DeliveryDetails = () => {
       console.error(error);
     }
     
-  };
+  },[email,pkey]);
+
+  useEffect(() => {
+    const userName = localStorage.getItem("userName");
+    const email = localStorage.getItem("userEmail");
+    const pwkey = localStorage.getItem("pwReg");
+    setPkey(pwkey);
+    setEmail(email);
+    setUserName(userName);
+    getUserID();
+  }, [getUserID]);
+
+  
 
   const handeClick = async () =>{
     try{

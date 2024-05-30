@@ -21,7 +21,7 @@ const DropDownList = () => {
     const userName = localStorage.getItem("userName");
     setName(userName || ""); 
     getUserInfor();
-  });
+  },[]);
 
   const handleLogout = () => {
     localStorage.removeItem("cartItems"); // Remove cartItems from localStorage

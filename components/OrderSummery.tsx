@@ -60,7 +60,7 @@ const OrderSummery = () => {
   useEffect(()=>{
     const totalPrice = localStorage.getItem("totalPriceCart") ?? "";
     setTotalPriceCart(totalPrice);
-  })
+  },[])
 
   return (
     <div className="w-full flex flex-col">
