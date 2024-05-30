@@ -105,16 +105,16 @@ const ProductView = () => {
       <PageTransition>
         
         <div className="w-full px-[70px] py-[50px]">
-        
+          
           <div className="max-w-[1075px] flex flex-col">
-          {foodData && foodData.map((item, index) => ( 
-            <div className="w-full h-full flex xl:gap-7 md:gap-4 " key={item._id}>
+           
+            <div className="w-full h-full flex xl:gap-7 md:gap-4 ">
             
                   <div className="xl:w-[50%] md:w-[60%] h-full ">
                     <div className="max-w-[550px] h-[450px]">
                       <Image
-                        src={Array.isArray(item.itemImages) ? item.itemImages[0] : item.itemImages}
-                        alt={item.itemName || 'Product Name'}
+                        src={Array.isArray(foodData?.itemImages) ? foodData?.itemImages[0] : foodData?.itemImages}
+                        alt={foodData?.itemName || 'Product Name'}
                         className="w-full h-full rounded-2xl"
                       />
                     </div>
@@ -122,10 +122,10 @@ const ProductView = () => {
                   <div className="xl:w-[50%] md:w-[40%] py-[25px]">
                     <div className="xl:w-[337px] md:w-[250px] flex flex-col md:mx-auto">
                       <h2 className="xl:text-[30px] md:text-[22px] font-semibold capitalize mb-2">
-                      {item.itemName}
+                        {foodData?.itemName}
                       </h2>
                       <h2 className="xl:text-[30px] md:text-[25px] font-semibold text-primary capitalize mb-2">
-                      ${item.price}
+                        ${foodData?.price}
                       </h2>
                       <div className="flex item-center gap-2">
                         <FaStar className="text-[30px] text-starColor" />
@@ -142,7 +142,7 @@ const ProductView = () => {
                           buy now
                         </button>
                         <button
-                          onClick={() => handleToggle(item._id)}
+                          onClick={() => handleToggle(foodData?._id)}
                           className="w-full h-[45px] text-center text-button2 bg-none text-20px capitalize rounded-xl border-2 border-button2 transition-transform duration-300 ease-in-out transform hover:scale-95"
                         >
                           add to cart
@@ -156,38 +156,28 @@ const ProductView = () => {
 
               
             </div>
-            ))}
           </div>
-          
           <div className="max-w-[1150px] flex  mt-[50px]">
-            
             <div className="w-[50%]">
-            
               <div className="w-full mb-5">
                 <h3 className="text-[24px] text-primary capitalize font-semibold">
                   description
                 </h3>
               </div>
-              {foodData && foodData.map((item, index) => (
-              <p className="text-[16px] text-inputText" key={item._id}>
-                {item.itemDesc}
+              <p className="text-[16px] text-inputText">
+                {foodData?.itemDesc}
               </p>
-              ))}
             </div>
             <div className="w-[50%]">
-              
               <div className="w-full flex flex-col items-center">
-                
                 <div className="w-[55px] h-[55px] rounded-full ">
-                {foodData && foodData.map((item, index) => (
-                  <Image key={item._id}
-                  src={Array.isArray(item.itemImages) ? item.itemImages[0] : item.itemImages}
+                  <Image
+                    src={Array.isArray(foodData?.itemImages) ? foodData?.itemImages[0] : foodData?.itemImages}
                     alt="prouct"
                     width={55}
                     height={55}
                     className="rounded-full w-full h-full"
                   />
-                ))}
                 </div>
                 <h3 className="text-[18px] font-medium ">{shopName}</h3>
                 <div className="flex items-center gap-2 mt-1">
