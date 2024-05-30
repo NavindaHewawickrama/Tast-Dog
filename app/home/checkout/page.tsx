@@ -58,8 +58,8 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
         */
        console.log(data.clientSecret);
         setClientSecret(data.clientSecret);
-        window.alert("client secret");
-        window.alert("Payment Successful");
+        // window.alert("client secret");
+        // window.alert("Payment Successful");
        await handleShopDetails(data.clientSecret);
 
         if (!stripe || !elements) {
@@ -77,9 +77,9 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
 
         if (confirmError) {
           console.error(confirmError);
-          window.alert("Payment failed. Please try again.");
+          // window.alert("Payment failed. Please try again.");
         } else {
-          window.alert("Payment Successful");
+          // window.alert("Payment Successful");
           setModalOpen(true);
           setCardholderName("");
         }
@@ -104,7 +104,7 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
         if (!response.ok) {
           console.log(data.message || "An error occurred while fetching shop details.");
         } else {
-          window.alert("Shop details retrieved successfully."); // Informative message
+          // window.alert("Shop details retrieved successfully."); // Informative message
           await handleOrderDetails(data.shopId, element._id, data.soldQty, element.price, secret);
         }
       } catch (error) {
@@ -157,7 +157,7 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
       // Handle success
       console.log("Order placed successfully");
       window.alert("Payment success");
-      window.alert("handleorder api finish"); 
+      // window.alert("handleorder api finish"); 
       localStorage.removeItem("cartItems");  
     } catch (error) {
       console.error("An error occurred while placing order:", error);
