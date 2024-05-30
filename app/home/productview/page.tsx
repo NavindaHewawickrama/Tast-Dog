@@ -17,7 +17,7 @@ import AddToCart from "@/components/models/AddToCart";
 const ProductView = () => {
   const router = useRouter();
   const [favouriteFoodId ,setFavouriteFoodId] = useState<string | null>(null);
-  const [foodData, setFoodData] =  useState<any[]>([]);
+  const [foodData, setFoodData] = useState<any>(null);
   const [toggle, setToggle] = useState(false);
   const[userName, setUserName] = useState<string | null>(null);
   const [shopName, setShopName] = useState<string | null>(null);
