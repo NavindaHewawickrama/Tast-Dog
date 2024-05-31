@@ -53,6 +53,7 @@ const MyCartComponent = () => {
     updatedCartItems[index].quantity = quantity;
     setCartItems(updatedCartItems);
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+    sessionStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
   };
 
   const removeItem = (index: number) => {
@@ -60,6 +61,7 @@ const MyCartComponent = () => {
     setCartItems(updatedCartItems);
     setQuantities(quantities.filter((_, i) => i !== index));
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+    sessionStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
   };
 
   return (

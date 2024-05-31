@@ -18,6 +18,8 @@ const DeliveryDetails = () => {
   const [address2, setAddress2] = useState<string | null>(null);
 
   const getUserID = useCallback (async () => {
+    console.log(pkey);
+    console.log(email);
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/login",{
         method:"POST",
@@ -35,8 +37,10 @@ const DeliveryDetails = () => {
        window.alert("Some kind of problem occured. Please try again.");
        console.log(data);
       }else{
-        //console.log(data.customer._id);
+        console.log(data.customer._id);
+        console.log(data.customer.fullName);
         setUserId(data.customer._id);
+        window.alert("Registered Successfully.");
         localStorage.setItem("userId",data.customer._id);
         localStorage.setItem("userName",data.customer.fullName);
       }

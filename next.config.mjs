@@ -38,6 +38,11 @@ export default {
             hostname: 'encrypted-tbn0.gstatic.com',
             pathname: '**',
           },
+          {
+            protocol: 'https',
+            hostname: 'media.istockphoto.com',
+            pathname: '**',
+          },
         ],
       },
 };

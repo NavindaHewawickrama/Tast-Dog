@@ -38,13 +38,14 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
         window.alert("Invalid contact info"); console.log(data);
       }else{
         window.alert(data.toString());
+        setNextModel(false);
       }
     }catch(e){
       console.log(e);
     }
     // Simulate sending a verification code to the email or phone number
     // console.log(`Sending verification code to ${contactInfo}`);
-    setNextModel(false);
+    
   };
 
   const focusNextInput = (index: number) => {
@@ -65,7 +66,7 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
 
   const handleVerifyOTP = async()=>{
     try{
-      const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/forgotPassword",{method:"POST",
+      const response = await fetch("https://tasty-dog.onrender.com//api/v1/customers/verifyOtp",{method:"POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -174,7 +175,7 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
                 resend attempts:3
               </p>
               <div className="flex flex-row gap-4">
-              {[...Array(4)].map((_, index) => (
+              {[...Array(6)].map((_, index) => (
                   <div
                     key={index}
                     className="w-[81px] h-[81px] bg-inputBlue mt-5 rounded-lg border-2 border-inputBorder"

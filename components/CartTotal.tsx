@@ -38,7 +38,8 @@ const CartTotal = () => {
   
 
   const handleClick=()=>{
-    const cart = localStorage.setItem("totalPriceCart", totalPrice.toString());
+    localStorage.setItem("totalPriceCart", totalPrice.toString());
+    sessionStorage.setItem("totalPriceCart", totalPrice.toString());
     // console.log(cartItems);
   };
 

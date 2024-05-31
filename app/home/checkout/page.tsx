@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import React, { useState, useEffect} from "react";
@@ -91,9 +89,9 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
 
 
   const handleShopDetails = async (secret: any) => {
-    window.alert("Handling shop details..."); // Informative message
+    // window.alert("Handling shop details..."); // Informative message
   
-    const itemsCart = localStorage.getItem("cartItems");
+    const itemsCart = sessionStorage.getItem("cartItems");
     const cartItems = itemsCart ? JSON.parse(itemsCart) : [];
   
     for (const element of cartItems) {
@@ -128,8 +126,8 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
       // Push the order item object into the orderItems array
       orderItems.push(orderItem);
   
-      const userId = localStorage.getItem("userId");
-      const userName = localStorage.getItem("userName");
+      const userId = sessionStorage.getItem("userId");
+      const userName = sessionStorage.getItem("userName");
       const orderAddress = "123 Main St, Anytown, USA";
   
       const requestBody = {
@@ -158,67 +156,14 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
       console.log("Order placed successfully");
       window.alert("Payment success");
       // window.alert("handleorder api finish"); 
-      localStorage.removeItem("cartItems");  
+      sessionStorage.removeItem("cartItems");  
     } catch (error) {
       console.error("An error occurred while placing order:", error);
     }
   };
   
 
-  // const handleOrderDetails = async (clientSecret: any) => {
-  //     // Getting cart items from localStorage
-  //     const cartItems = localStorage.getItem("cartItems");
-  //     setCartItems(cartItems ? JSON.parse(cartItems) : null);
-  //     console.log(cartItems);
-  //     if (cartItems && Array.isArray(cartItems)) {
-  //       cartItems.forEach(async (item) => {
-  //         const id = item._id;
-  //         try{
-  //           const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/item/${id}`);
-  //           const data = await response.json();
-  //           if(!response.ok){
-  //             console.log(data.message || "An error occurred.");
-  //           }else{
-  //             // const shopIdData = data.shopId;
-  //             console.log(response);
-  //             // // Initialize quantities array with default quantities for each item
-  //             // const initialQuantities = cartItems.map((cartItem: any) => cartItem.shopId);
-  //             const orderItems = JSON.parse(localStorage.getItem("cartItems") || "[]").map((item: { itemId: any; quantity: any; price: any; shopId: any; }) => ({
-  //               itemId: item.itemId,
-  //               quantity: item.quantity,
-  //               price: item.price,
-  //               shopId: item.shopId,
-  //             }));
-  //             try{
-  //               const response = await fetch(`https://tasty-dog.onrender.com/api/v1/payments/placeOrder`,{method: "POST"
-  //                 ,headers:{
-  //                   "Content-type": "application/json",},
-  //                   body: JSON.stringify({
-  //                     paymentIntentId:clientSecret,
-  //                     userId:localStorage.getItem("userId"),
-  //                     userName:localStorage.getItem("userName"),
-  //                     orderItems:orderItems,
-  //                     orderAddress: localStorage.getItem("userAddress"),
-  //                   })
-  //               });
-  //               if(!response){
-  //                 console.log(response);
-  //               }else{
-  //                 localStorage.removeItem("cartItems");
-  //               }
-                
-  //             }catch(e){
-  //               console.log("An error occurred. Please try again later." , e);
-  //             }
-  //           }
-  //         }catch(e){
-  //           console.log("An error occurred. Please try again later." , e);
-  //         }
-  //       });
-  //     } else {
-  //       console.log("No cart items found or invalid format");
-  //     }
-  // };
+  
 
   return ( 
     <div>
@@ -255,7 +200,7 @@ const CheckOut = () => {
   }, []);
 
   const handleShopDetails = async () => {
-    const itemsCart = localStorage.getItem("cartItems");
+    const itemsCart = sessionStorage.getItem("cartItems");
     const cartItems2 = itemsCart ? JSON.parse(itemsCart) : [];
     setSecondCartItems(cartItems2);
     for (const element of cartItems2) {
@@ -267,7 +212,7 @@ const CheckOut = () => {
           console.log(data.message || "An error occurred while fetching shop details.");
         } else { 
           setShopId(data.shopId);
-          localStorage.setItem("promoCodeShopId", data.shopId);
+          sessionStorage.setItem("promoCodeShopId", data.shopId);
         }
       } catch (error) {
         console.error("Error fetching shop details:", error);

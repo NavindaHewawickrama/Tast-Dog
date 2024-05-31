@@ -45,7 +45,7 @@ const Login = () => {
        
         localStorage.setItem("userId", data.customer._id);
         localStorage.setItem("userName", data.customer.fullName);
-        
+
         console.log(data.customer.fullName);
         router.push("/home"); 
       }
