@@ -256,7 +256,7 @@ const CheckOut = () => {
             </div>
       </section>
       </PageTransition>
-
+      <OrderSuccsess open={modalOpen} onClose={() => setModalOpen(false)} />
       </>
   )
 };

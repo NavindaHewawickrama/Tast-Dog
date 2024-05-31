@@ -19,14 +19,14 @@ const OrderSummery = () => {
   
     // Optionally, you might want to return the calculated total if needed
     if (typeof window !== 'undefined') {
-    localStorage.setItem("finalTotalCart", total.toString());
+      localStorage.setItem("finalTotalCart", total.toString());
     return total;
     }
   }
 
   const handlePromoCode =async()=>{
     if (typeof window !== 'undefined') {
-      const promoCodeShopID = localStorage.getItem("promoCodeShopId");
+      const promoCodeShopID = sessionStorage.getItem("promoCodeShopId");
       try{
         const response = await fetch(`https://tasty-dog.onrender.com/api/v1/promocodes/promocodes/getPromoCodesByShopId/${promoCodeShopID}`);
         const data = await response.json();
