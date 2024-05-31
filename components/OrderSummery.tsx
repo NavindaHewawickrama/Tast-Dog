@@ -18,23 +18,27 @@ const OrderSummery = () => {
     }
   
     // Optionally, you might want to return the calculated total if needed
+    if (typeof window !== 'undefined') {
     localStorage.setItem("finalTotalCart", total.toString());
     return total;
+    }
   }
 
   const handlePromoCode =async()=>{
-    const promoCodeShopID = localStorage.getItem("promoCodeShopId");
-    try{
-      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/promocodes/promocodes/getPromoCodesByShopId/${promoCodeShopID}`);
-      const data = await response.json();
-      if(!response){
-        console.log("error");
-      }else{
-        setpromoCodeData(data);
-        validatePromoCode();
+    if (typeof window !== 'undefined') {
+      const promoCodeShopID = localStorage.getItem("promoCodeShopId");
+      try{
+        const response = await fetch(`https://tasty-dog.onrender.com/api/v1/promocodes/promocodes/getPromoCodesByShopId/${promoCodeShopID}`);
+        const data = await response.json();
+        if(!response){
+          console.log("error");
+        }else{
+          setpromoCodeData(data);
+          validatePromoCode();
+        }
+      }catch(e){
+        console.log(e);
       }
-    }catch(e){
-      console.log(e);
     }
   };
 
@@ -58,8 +62,10 @@ const OrderSummery = () => {
   }
 
   useEffect(()=>{
+    if (typeof window !== 'undefined') {
     const totalPrice = localStorage.getItem("totalPriceCart") ?? "";
     setTotalPriceCart(totalPrice);
+    }
   },[])
 
   return (

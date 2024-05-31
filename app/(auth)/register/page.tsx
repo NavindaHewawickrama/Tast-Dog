@@ -39,6 +39,7 @@ const Register = () => {
             fullName,
             password,
             emailOrPhoneNumber: email,
+            isSocialMedia: false,
           }),
         });
         const data = await response.json(); 

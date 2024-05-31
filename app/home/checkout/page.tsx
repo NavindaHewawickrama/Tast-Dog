@@ -223,41 +223,41 @@ const CheckOut = () => {
   return (
     <>
       <PageTransition>
-        <section className="w-full px-[50px] xl:py-[50px] md:py-[35px]">
-          <div className="flex lg:flex-row md:flex-col xl:gap-[50px] md:gap-[25px]">
-            <div className="lg:w-[65%] md:w-full shadow-xl py-[50px] rounded-[10px]">
-              <div className="max-w-[452px] flex flex-col mx-auto">
-                <div className="w-full flex flex-col gap-3 ">
-                  <h2 className="text-[24px] font-semibold capitalize">Select Payment Method</h2>
-                  <div className="w-full flex items-center gap-2">
-                    <button className="w-[224px] h-[48px] flex text-center bg-primary text-white text-[12px] rounded-[4px] justify-center items-center gap-3">
-                      <BsCreditCard className=" text-[20px]  text-white" />
-                      Credit/Debit Card
-                    </button>
-                    <button className="w-[224px] h-[48px] flex text-center bg-none text-black border border-gray-400 justify-center items-center rounded-[4px] gap-3">
-                      <FaPaypal className="text-[20px] text-blue-900" />
-                      PayPal
-                    </button>
-                  </div>
-                </div>
-                <Elements stripe={stripePromise}>
-                  <CheckoutForm
-                    setModalOpen={setModalOpen}
-                    cardholderName={cardholderName}
-                    setCardholderName={setCardholderName}
-                  />
-                </Elements>
-              </div>
-            </div>
-            <div className="lg:w-[35%] md:w-full h-full shadow-xl rounded-[10px] px-[25px] py-[25px]">
-              <OrderSummery/>
-            </div>
-          </div>
-        </section>
-      </PageTransition>
-      <OrderSuccsess open={modalOpen} onClose={() => setModalOpen(false)} />
-    </>
-  );
-};
 
+      <section className="w-full px-[50px] xl:py-[50px] md:py-[35px]">
+      <div className="flex lg:flex-row md:flex-col xl:gap-[50px] md:gap-[25px]">
+            <div className="lg:w-[65%] md:w-full shadow-xl py-[50px] rounded-[10px]">
+                <div className="max-w-[452px] flex flex-col mx-auto">
+                    <div className="w-full flex flex-col gap-3 ">
+                         <h2 className="text-[24px] font-semibold capitalize">Select Payment Method</h2>
+                         <div className="w-full flex items-center gap-2">
+                            <button className="w-[224px] h-[48px] flex text-center bg-primary text-white text-[12px] rounded-[4px] justify-center items-center gap-3">
+                                <BsCreditCard className=" text-[20px]  text-white" />
+                                Credit/Debit Card
+                            </button>
+                            <button className="w-[224px] h-[48px] flex text-center bg-none text-black border border-gray-400 justify-center items-center rounded-[4px] gap-3">
+                                <FaPaypal className="text-[20px] text-blue-900" />
+                                    PayPal
+                                </button>
+                            </div>
+                        </div>
+                        <Elements stripe={stripePromise}>
+                            <CheckoutForm
+                                setModalOpen={setModalOpen}
+                                cardholderName={cardholderName}
+                                setCardholderName={setCardholderName}
+                            />
+                        </Elements>
+                    </div>
+                </div>
+                <div className="lg:w-[35%] md:w-full h-full shadow-xl rounded-[10px] px-[25px] py-[25px]">
+                    <OrderSummery/>
+                </div>
+            </div>
+      </section>
+      </PageTransition>
+
+      </>
+  )
+};
 export default CheckOut;
