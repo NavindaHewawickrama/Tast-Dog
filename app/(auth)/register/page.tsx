@@ -44,7 +44,9 @@ const Register = () => {
         });
         const data = await response.json(); 
         if (!response.ok) {
-          throw new Error('Registration failed');
+          // throw new Error('Registration failed');
+          window.alert("Account already exists");
+          console.log(response);
         } else {
           // Registration successful
           window.alert("Registration Successful");
@@ -120,27 +122,66 @@ const Register = () => {
     }
   };
 
-  const handleVerifyOTP = async()=>{
-    try{
-      const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/verifyOtp",{method:"POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        emailOrPhoneNumber:email,
-        otp:otp,
-      })});
-      const data = response.json;
-      if(!response){
-        window.alert("Invalid contact info"); console.log(data);
-      }else{
-        window.alert(data.toString());
-        router.push('/delivery');
+  // const handleVerifyOTP = async () => {
+  //   console.log(email, otp);
+  //   try {
+  //     const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/verifyOtp", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         emailOrPhoneNumber: email,
+  //         otp: otp,
+  //       }),
+  //     });
+  
+  //     if (!response.ok) {
+  //       const errorData = await response.json();
+  //       window.alert(errorData.message || "Invalid contact info");
+  //       console.log("Error response:", errorData);
+  //     } else {
+  //       const data = await response.json();
+  //       window.alert("OTP Correct");
+  //       localStorage.setItem("forgotPasswordEmailorPhoneNumber", email);
+  //       router.push('/delivery');
+  //     }
+  //   } catch (e) {
+  //     console.log("An error occurred:", e);
+  //     window.alert("An error occurred. Please try again later.");
+  //   }
+  // };
+
+  const handleVerifyOTP = async () => {
+    try {
+      const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/verifyOtp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          emailOrPhoneNumber: email,
+          otp: enteredCode,
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        window.alert(errorData.message || "Invalid contact info");
+        console.log("Error response:", errorData);
+      } else {
+        const data = await response.json();
+        window.alert("OTP Correct");
+        localStorage.setItem("forgotPasswordEmailorPhoneNumber", email);
+        // router.push('/delivery');
+        router.push('/home');
+        
       }
-    }catch(e){
-      console.log(e);
+    } catch (e) {
+      console.log("An error occurred:", e);
+      window.alert("An error occurred. Please try again later.");
     }
-  }
+  };
 
   const focusNextInput = (index: number) => {
     if (inputRefs.current[index + 1]) {

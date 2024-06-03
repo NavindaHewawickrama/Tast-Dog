@@ -45,7 +45,7 @@ const MyOrders = () => {
           setOrderData(data);
         }
       } catch (error) {
-        // Handle error
+        console.log(error);
       }
     };
 

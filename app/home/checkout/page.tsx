@@ -54,7 +54,7 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
 
           and then its done.
         */
-       console.log(data.clientSecret);
+      //  console.log(data.clientSecret);
         setClientSecret(data.clientSecret);
         // window.alert("client secret");
         // window.alert("Payment Successful");
@@ -156,6 +156,7 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
       console.log("Order placed successfully");
       window.alert("Payment success");
       // window.alert("handleorder api finish"); 
+      
       sessionStorage.removeItem("cartItems");  
     } catch (error) {
       console.error("An error occurred while placing order:", error);

@@ -18,8 +18,10 @@ const DeliveryDetails = () => {
   const [address2, setAddress2] = useState<string | null>(null);
 
   const getUserID = useCallback (async () => {
-    console.log(pkey);
-    console.log(email);
+    const emails = localStorage.getItem("userEmail");
+    const pwkey = localStorage.getItem("pwReg");
+    setPkey(pwkey);
+    setEmail(emails);
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/login",{
         method:"POST",
@@ -27,8 +29,8 @@ const DeliveryDetails = () => {
           "Content-Type":"application/json",
         },
         body: JSON.stringify({
-          emailOrPhoneNumber: email,
-          password: pkey,
+          emailOrPhoneNumber: emails,
+          password: pwkey,
         }),
       });
       const data = await response.json();
@@ -52,10 +54,6 @@ const DeliveryDetails = () => {
 
   useEffect(() => {
     const userName = localStorage.getItem("userName");
-    const email = localStorage.getItem("userEmail");
-    const pwkey = localStorage.getItem("pwReg");
-    setPkey(pwkey);
-    setEmail(email);
     setUserName(userName);
     getUserID();
   }, [getUserID]);
