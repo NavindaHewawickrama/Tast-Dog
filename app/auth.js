@@ -55,12 +55,45 @@ export const signInWithGoogle = async () => {
 export const signInWithFacebook = async () => {
   try {
     const result = await signInWithPopup(auth, facebookProvider);
+    const user = result.user;
+
+    // Extract user information
+    const fullName = user.displayName || '';
+    const emailOrPhoneNumber = user.email || '';
+    const profilePhotoUrl = user.photoURL || '';
+
+    const response = await axios.post('https://tasty-dog.onrender.com/api/v1/customers/register', {
+      fullName,
+      password: '', // Set a default password or handle it appropriately
+      emailOrPhoneNumber,
+      profilePhoto: profilePhotoUrl
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    console.log(response.status); // Logs the status code
+    console.log(response.data); // Logs the response data
+
+    if (response.status !== 201) {
+      alert(`Registration failed: ${response.data.message}`);
+      throw new Error('Registration failed');
+    } else {
+      // Registration successful
+      window.alert("Registration Successful");
+      localStorage.setItem("userName", fullName);
+      localStorage.setItem("userEmail", emailOrPhoneNumber);
+      localStorage.setItem("pwReg", '');
+      localStorage.setItem("userId", response.data.customer._id);
+    }
     return result.user;
   } catch (error) {
     console.error("Error signing in with Facebook: ", error);
     throw error;
   }
 };
+
 
 export const logInWithGoogle = async () => {
     try {

@@ -66,7 +66,7 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
 
   const handleVerifyOTP = async()=>{
     try{
-      const response = await fetch("https://tasty-dog.onrender.com//api/v1/customers/verifyOtp",{method:"POST",
+      const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/verifyOtp",{method:"POST",
       headers: {
         "Content-Type": "application/json",
       },
