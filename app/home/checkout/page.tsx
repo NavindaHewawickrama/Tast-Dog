@@ -17,6 +17,15 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
   const elements = useElements();
   const [clientSecret, setClientSecret] = useState<any>("");
   const [cartItems, setCartItems] = useState<any[]>([]);
+  const [userId, setUserId] = useState<string | null>("");
+  const [userName, setUserName] = useState<string | null>("");
+
+  useEffect(() => {
+    const userIDSvd = localStorage.getItem("userId");
+    const userNameSvd = localStorage.getItem("userName");
+    setUserName(userName);
+    setUserId(userIDSvd);
+  },[]);
 
   const handlePayment = async () => {
     // const totalAmount = '1000';
@@ -126,8 +135,8 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
       // Push the order item object into the orderItems array
       orderItems.push(orderItem);
   
-      const userId = sessionStorage.getItem("userId");
-      const userName = sessionStorage.getItem("userName");
+      // const userId = sessionStorage.getItem("userId");
+      // const userName = sessionStorage.getItem("userName");
       const orderAddress = "123 Main St, Anytown, USA";
   
       const requestBody = {
