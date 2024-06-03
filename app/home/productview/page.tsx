@@ -38,23 +38,25 @@ const ProductView = () => {
     } 
   }, []);
 
-  const handleFoodComments = async(foodId:any)=>{
-    try{
+  const handleFoodComments = async (foodId: any) => {
+    try {
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-comments/shop-comments/${foodId}`);
-      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-item-reviews/shop-item-reviews/6614ccb0abae72dc9d05bb77`);
-      const dataComments = await response.json();
-      //console.log(dataComments);
-      if(!response.ok){
-        console.log(dataComments.message || "An error occurred.");
-      }else{
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.log(errorData.message || "An error occurred.");
+      } else {
+        const dataComments = await response.json();
         setItemComments(dataComments);
       }
-    }catch(error){
-      console.log("An error occurred. Please try again later." , error);
+    } catch (error) {
+      console.log("An error occurred. Please try again later.", error);
     }
   };
 
+  //ratings of the shop
   const handleReview = async(id:any)=>{
+    // console.log(id);
     try{
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/${id}`);
       // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/6614eae1637fe5068da340ba`);

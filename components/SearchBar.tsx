@@ -65,28 +65,31 @@ const handleSearch = () => {
   if(query == ""){
     const qry = "No search items";
     localStorage.setItem("query", qry);
+    // localStorage.setItem("NoSearchResult", JSON.stringify(allData));
     localStorage.setItem("searchResults", JSON.stringify(filteredResults));
     router.push("/home/SearchResults");
   }
 
-  // if (filteredResults.length === 0) {
-  //   setSearchResults(filteredResults);
-  //   localStorage.setItem("searchResults", JSON.stringify(filteredResults));
-  //   localStorage.setItem("query", query);
-  //   router.push("/home/SearchResults");
-  // } else {
-  //   setSearchResults(filteredResults);
-  //   localStorage.setItem("searchResults", JSON.stringify(filteredResults));
-  //   localStorage.setItem("query", query);
-  //   router.push("/home/SearchResults");
-  // }
-
-  setSearchResults(filteredResults);
-  localStorage.removeItem("searchResults");
+  if (filteredResults.length === 0) {
+    setSearchResults(filteredResults);
     localStorage.setItem("searchResults", JSON.stringify(filteredResults));
     localStorage.setItem("query", query);
-    router.push("/home/SearchResults");
     window.location.reload()
+    router.push("/home/SearchResults");
+  } else {
+    setSearchResults(filteredResults);
+    localStorage.setItem("searchResults", JSON.stringify(filteredResults));
+    localStorage.setItem("query", query);
+    window.location.reload()
+    router.push("/home/SearchResults");
+  }
+
+  // setSearchResults(filteredResults);
+  // localStorage.removeItem("searchResults");
+  //   localStorage.setItem("searchResults", JSON.stringify(filteredResults));
+  //   localStorage.setItem("query", query);
+  //   router.push("/home/SearchResults");
+  //   window.location.reload()
 };
 
 return (

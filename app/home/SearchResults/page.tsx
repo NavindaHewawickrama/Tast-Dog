@@ -119,9 +119,14 @@ const SearchResults = () => {
 
   useEffect(() => {
     const searchResults = localStorage.getItem("searchResults");
-    if (searchResults) {
+    const query = localStorage.getItem("query");
+    if (searchResults && query != "") {
       setResults(JSON.parse(searchResults));
+    }else if(query == ""){
+      setResults([]);
+      window.alert("Enter an Item to Search !!")
     }
+
     const searchQuery = localStorage.getItem("query");
     setQuery(searchQuery);
   }, []);
@@ -146,10 +151,10 @@ const SearchResults = () => {
 
   return (
     <div className="w-full px-[70px] py-[30px]">
-      <p className="text-[14px] text-detail font-medium">
+      <h6 className="text-[14px] text-detail font-medium">
         {results.length} results found for
         <span className="text-button2 ml-2">&quot;{query}&quot;</span>
-      </p>
+      </h6>
       <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-[50px] gap-10">
         {results.map((item) => (
           <div

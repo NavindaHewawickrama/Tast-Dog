@@ -32,12 +32,13 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
       },
       body: JSON.stringify({
         emailOrPhoneNumber:contactInfo,
-      })});
+      }),
+    });
       const data = response.json;
       if(!response){
         window.alert("Invalid contact info"); console.log(data);
       }else{
-        window.alert(data.toString());
+        window.alert("Processing...");
         setNextModel(false);
       }
     }catch(e){
@@ -64,27 +65,33 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
     }
   };
 
-  const handleVerifyOTP = async()=>{
-    try{
-      const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/verifyOtp",{method:"POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        emailOrPhoneNumber:contactInfo,
-        otp:enteredCode,
-      })});
-      const data = response.json;
-      if(!response){
-        window.alert("Invalid contact info"); console.log(data);
-      }else{
-        window.alert(data.toString());
-        localStorage.setItem("forgotPasswordEmailorPhoneNumber",contactInfo);
+  const handleVerifyOTP = async () => {
+    console.log(enteredCode, contactInfo);
+    try {
+      const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/verifyOtp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          emailOrPhoneNumber: contactInfo,
+          otp: enteredCode,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        window.alert(data.message || "Invalid contact info");
+        console.log(response);
+      } else {
+        window.alert("OTP Correct");
+        localStorage.setItem("forgotPasswordEmailorPhoneNumber", contactInfo);
+        setChangeModel(true);
       }
-    }catch(e){
+    } catch (e) {
       console.log(e);
     }
-    setChangeModel(true);
   }
 
   if (!open) return null;
