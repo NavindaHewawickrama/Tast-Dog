@@ -50,7 +50,7 @@ const DeliveryDetails = () => {
       console.error(error);
     }
     
-  },[email,pkey]);
+  },[]);
 
   useEffect(() => {
     const userName = localStorage.getItem("userName");
