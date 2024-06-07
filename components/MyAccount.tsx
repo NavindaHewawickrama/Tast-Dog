@@ -37,6 +37,7 @@ const MyAccount = () => {
   const [cvv, setCvv]  = useState("");
   const [cardname, setName]  = useState("");
   const [cardId, setCardId] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
   const handleDelete = async ()=>{
     try{
@@ -64,7 +65,7 @@ const MyAccount = () => {
         window.alert("Some kind of problem occured. Please try again.");
         console.log(data);
       }else{
-        console.log(data);
+        // console.log(data);
         setAddress1(data);  
         localStorage.setItem("userAddress",data[0]);
       }
@@ -139,6 +140,37 @@ const MyAccount = () => {
     setChangeAddress(true);
   }
 
+  const handleImageChange = (event: any) => {
+    const newImage = event.target.files[0];
+    setImageUrl(URL.createObjectURL(newImage)); // Preview image locally (optional)
+    setImageFile(newImage);
+    changePhoto();
+  };
+
+  const changePhoto = async () => {
+    try {
+      const formData = new FormData();
+      if (imageUrl) {
+        formData.append("profilePhoto", imageUrl);
+      }
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/customers/uploadProfilePhoto/${userId}/image`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+
+      if(!response.ok){
+        window.alert("Some kind of problem occured. Please try again.");
+        console.log(data);
+      }else{
+        console.log(data);
+        window.alert("Profile photo updated successfully");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   
 
   return (
@@ -154,10 +186,18 @@ const MyAccount = () => {
               height={146}
               className="rounded-full"
             />
-            <button
+            <br/>
+            <input
+              type="file"
+              id="profile-image-input"
+              className="show" // Hide the file input visually
+              placeholder="Enter Image to change"
+              onChange={handleImageChange}
+            />
+            {/* <button onClick={() =>changePhoto()}
             className="absolute bottom-0 right-0 w-[33px] h-[33px] bg-button2 rounded-full flex justify-center items-center transition-transform duration-300 ease-in-out transform hover:scale-[1.1]">
               <MdEdit size={23} color="white" />
-            </button>
+            </button> */}
           </div>
 
           <div className="w-full flex flex-col gap-3">

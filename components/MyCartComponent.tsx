@@ -18,17 +18,20 @@ const MyCartComponent = () => {
     const shopNameData = localStorage.getItem("shopName") || "";
     setShopName(shopNameData);
   
-    // Initialize quantities array with default quantities for each item
-    const initialQuantities = cartItemsData.map((cartItem: any) => cartItem.quantity);
+    const initialQuantities = cartItemsData.map((cartItem: any) => {
+      // Handle potential missing quantity property
+      return cartItem.hasOwnProperty('quantity') ? (cartItem.quantity === 0 || cartItem.quantity === 1 ? cartItem.quantity : 1) : 1;
+    });
+  
     setQuantities(initialQuantities);
   }, []);
 
-  // Function to toggle the checked state of a checkbox
   const toggleChecked = (index: number) => {
     setCheckedIndex((prevIndex) => (prevIndex === index ? null : index));
   };
 
   const incrementQty = (index: any) => {
+    
     setQuantities((prevQuantities) =>
       prevQuantities.map((qty, i) => (i === index ? qty + 1 : qty))
     );

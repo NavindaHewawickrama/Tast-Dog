@@ -38,9 +38,12 @@ const ProductView = () => {
     } 
   }, []);
 
+
+  //food reviews
   const handleFoodComments = async (foodId: any) => {
     try {
-      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-comments/shop-comments/${foodId}`);
+      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-comments/shop-comments/${foodId}`);
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-item-reviews/shop-item-reviews/${foodId}`);
   
       if (!response.ok) {
         const errorData = await response.json();
@@ -262,7 +265,7 @@ const ProductView = () => {
               <Swiper
                 modules={[Navigation]}
                 spaceBetween={25}
-                slidesPerView={4}
+                slidesPerView={1}
                 navigation
               >
                 {itemComments.map((item) => (
@@ -273,7 +276,7 @@ const ProductView = () => {
                     <div className="flex  gap-5">
                       <div className="w-[30px] h-[30px] rounded-full">
                         <Image
-                          src={item.image}
+                          src={item.userProfileImage}
                           alt="reviewer profile pic"
                           width={30}
                           height={30}
@@ -282,7 +285,7 @@ const ProductView = () => {
                       </div>
                       <div className="w-full">
                         <h2 className="text-[17px] font-semibold capitalize">
-                          {userName}
+                          {item.userName}
                         </h2>
                         <p className="text-[11px] text-inputText mt-2 text-left">
                           {item.comment}
@@ -294,6 +297,7 @@ const ProductView = () => {
                           <FaStar className="text-starColor2 text-[15px]" />
                           <FaRegStar className="text-starColor2 text-[15px]" />
                         </div>
+                        Rating : {item.rating}
                       </div>
                     </div>
                   </SwiperSlide>
@@ -305,7 +309,7 @@ const ProductView = () => {
               <Swiper
                 modules={[Navigation]}
                 spaceBetween={20}
-                slidesPerView={3}
+                slidesPerView={1}
                 navigation
               >
                 {itemComments.map((item) => (
@@ -316,7 +320,7 @@ const ProductView = () => {
                     <div className="flex  gap-5">
                       <div className="w-[30px] h-[30px] rounded-full">
                         <Image
-                          src={item.image}
+                          src={item.userProfileImage}
                           alt="reviewer profile pic"
                           width={30}
                           height={30}

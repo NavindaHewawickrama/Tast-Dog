@@ -33,7 +33,7 @@ const CartTotal = () => {
 
   useEffect(()=>{
     handleTotal();
-  },[cartItems, handleTotal]);
+  },[cartItems]);
 
   
 
