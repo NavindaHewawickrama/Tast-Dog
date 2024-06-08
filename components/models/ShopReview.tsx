@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
 import { FaStar } from "react-icons/fa";
@@ -16,10 +16,48 @@ const ShopReview: React.FC<ModalProps> = ({ open, onClose }) => {
   const [rating, setRating] = useState<number | null>(null);
   const [rateColor, setRateColor] = useState<string | null>(null);
   const [comment, setComment] = useState("");
+  const [orderId, setOrderId] = useState<string | null>("");
+  const [userIdS,setUserId] = useState<string | null>("");
+
+  const [itemName,setItemName] = useState<string | null>("");
+  const[id,setId] = useState<string | null>("");
+
+  useEffect (()=>{
+    setItemName(localStorage.getItem("reviewFoodItemName"));
+    setId(localStorage.getItem("itemIdForReview"));
+    setOrderId(localStorage.getItem("shopIdOrder"));
+    setUserId(localStorage.getItem("userId"));
+  })
+
+  const handleRating = async(rating:any)=>{
+    setRating(rating)
+    try{
+      const response = await fetch("https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings",{
+        method:"POST",
+        headers: {
+          "Content-Type":"application/json",
+        },
+        body: JSON.stringify({
+          shopId:orderId,
+          rating,
+        }),
+      });
+
+      const data = await response.json();
+        if(!response.ok){
+          console.log(data.message || "An error occurred.");
+        }else{
+          window.alert("Item Rating inserted");
+          console.log(data);
+        }
+    }catch(e){
+      console.log(e);
+    }
+  }
 
   const setReview= async ()=>{
-    var shopId = localStorage.getItem("shopIdOrder");
-    var userId = localStorage.getItem("userId");
+    var shopId = orderId;
+    var userId = userIdS;
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/shop-reviews/shop-reviews",{
           method:"POST",
@@ -27,10 +65,10 @@ const ShopReview: React.FC<ModalProps> = ({ open, onClose }) => {
             "Content-Type":"application/json",
           },
           body: JSON.stringify({
-            rating,
-            comment,
             shopId,
             userId,
+            rating,
+            comment,
           }),
         });
         const data = await response.json();
@@ -87,7 +125,7 @@ const ShopReview: React.FC<ModalProps> = ({ open, onClose }) => {
                     <>
                       <div
                         key={index}
-                        onClick={() => setRating(currentRate)}
+                        onClick={() => handleRating(currentRate)}
                         className="cursor-pointer"
                       >
                         <input

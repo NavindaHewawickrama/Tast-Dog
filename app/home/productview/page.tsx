@@ -21,6 +21,7 @@ const ProductView = () => {
   const [toggle, setToggle] = useState(false);
   const[userName, setUserName] = useState<string | null>(null);
   const [shopName, setShopName] = useState<string | null>(null);
+  const [shopId, setShopId] = useState<string | null>(null);
   const [ShopRating, setShopRatings] = useState<any[]>([]);
   const[itemComments,setItemComments] = useState<any[]>([]);
 
@@ -33,7 +34,8 @@ const ProductView = () => {
       setFavouriteFoodId(foodId);
       fetchApiCalls(foodId);
       setShopName(name);
-      handleReview(foodId);
+      // handleReview(foodId);
+      handleShopId(foodId);
       handleFoodComments(foodId);
     } 
   }, []);
@@ -56,6 +58,26 @@ const ProductView = () => {
       console.log("An error occurred. Please try again later.", error);
     }
   };
+
+  //get shop id 
+const handleShopId = async (id:any) =>{
+  try{
+    const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/item/${id}`);
+    
+    const data = await response.json();
+    //console.log(dataReviews);
+    if(!response.ok){
+      console.log(data.message || "An error occurred.");
+    }else{
+      console.log(data);
+      setShopId(data.shopId);
+      handleReview(data.shopId);
+    }
+  }catch(error){
+    console.log("An error occurred. Please try again later." , error);
+  }
+}
+
 
   //ratings of the shop
   const handleReview = async(id:any)=>{

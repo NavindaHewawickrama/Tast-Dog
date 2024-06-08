@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
 import { FaStar } from "react-icons/fa";
@@ -16,11 +16,44 @@ const FoodReview: React.FC<ModalProps> = ({ open, onClose }) => {
   const [rating, setRating] = useState<number | null>(null);
   const [rateColor, setRateColor] = useState<string | null>(null);
   const [comment, setComment] = useState("");
+  const [itemName,setItemName] = useState<string | null>("");
+  const[id,setId] = useState<string | null>("");
+
+  useEffect (()=>{
+    setItemName(localStorage.getItem("reviewFoodItemName"));
+    setId(localStorage.getItem("itemIdForReview"));
+  })
+
+  const handleRating = async(rating:any)=>{
+    setRating(rating);
+    try{
+      const response = await fetch("https://tasty-dog.onrender.com/api/v1/shop-item-ratings/shop-item-ratings",{
+        method:"POST",
+        headers: {
+          "Content-Type":"application/json",
+        },
+        body: JSON.stringify({
+          itemId:id,
+          rating,
+        }),
+      });
+
+      const data = await response.json();
+        if(!response.ok){
+          console.log(data.message || "An error occurred.");
+        }else{
+          window.alert("Item Rating inserted");
+          console.log(data);
+        }
+    }catch(e){
+      console.log(e);
+    }
+  }
 
   const handleNext= async ()=>{
     if(rating && comment){
       try{
-        var itemId = localStorage.getItem("itemId");
+        var itemId = id;
         var userId = localStorage.getItem("userId");
         const response = await fetch("https://tasty-dog.onrender.com/api/v1/shop-item-reviews/shop-item-reviews",{
           method:"POST",
@@ -28,10 +61,10 @@ const FoodReview: React.FC<ModalProps> = ({ open, onClose }) => {
             "Content-Type":"application/json",
           },
           body: JSON.stringify({
-            rating,
-            comment,
             itemId,
             userId,
+            rating,
+            comment,
           }),
         });
         const data = await response.json();
@@ -39,6 +72,7 @@ const FoodReview: React.FC<ModalProps> = ({ open, onClose }) => {
           console.log(data.message || "An error occurred.");
         }else{
           window.alert("Item Review inserted");
+          console.log(data);
           setNextModel(true);
         }
         }catch(error){
@@ -71,7 +105,7 @@ const FoodReview: React.FC<ModalProps> = ({ open, onClose }) => {
       >
         <div className="w-full px-[45px] flex justify-between">
           <h3 className="text-[15px] capitalize font-semibold ">
-            Feedback For (meal name)
+            Feedback For {itemName}
           </h3>
           <h3
             className="text-[15px] capitalize cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.3] hover:text-red-600"
@@ -92,7 +126,7 @@ const FoodReview: React.FC<ModalProps> = ({ open, onClose }) => {
                   <>
                     <div
                       key={index}
-                      onClick={() => setRating(currentRate)}
+                      onClick={() => handleRating(currentRate)}
                       className="cursor-pointer"
                     >
                       <input

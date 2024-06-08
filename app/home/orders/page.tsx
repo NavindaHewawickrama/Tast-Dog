@@ -28,6 +28,9 @@ const MyOrders = () => {
     setReviewModal(true);
     localStorage.setItem("itemId",itemId);
     localStorage.setItem("shopIdOrder", shopIdOrder);
+    localStorage.setItem("reviewFoodItemName", itemName);
+    localStorage.setItem("itemIdForReview",itemId);
+    console.log(shopIdOrder);
   }
 
   useEffect(() => {
@@ -41,7 +44,7 @@ const MyOrders = () => {
           window.alert("Error in loading data");
           setOrderData(data);
         }else{
-          console.log(response);
+          console.log(data);
           setOrderData(data);
         }
       } catch (error) {
@@ -118,8 +121,8 @@ const MyOrders = () => {
                   <div>
                     <h2 className="text-[16px] text-primary">{item.itemId.itemName}</h2>
                     <Image
-                      // src={item.itemId.itemImages[0] || item.itemId.itemImages}
-                      src="/path/to/your/image.jpg"
+                      src={item.itemId.itemImages[0] || item.itemId.itemImages}
+                      // src="/path/to/your/image.jpg"
                       alt={item.itemId.itemName}
                       width={123}
                       height={123}
@@ -458,7 +461,7 @@ const MyOrders = () => {
           </div>
         </div>
       </PageTransition>
-      <FoodReview open={reviewModal} onClose={() => setReviewModal(false)} />
+      <FoodReview open={reviewModal} onClose={() => setReviewModal(false)}/>
     </>
   );
 };

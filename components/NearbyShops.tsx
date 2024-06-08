@@ -51,7 +51,7 @@ const NearbyShops = () => {
         <Swiper
           modules={[Navigation]}
           spaceBetween={25}
-          slidesPerView={2}
+          slidesPerView={1}
           navigation
         >
           {Shop && Shop.map((item) => (
@@ -91,7 +91,7 @@ const NearbyShops = () => {
         <Swiper
           modules={[Navigation]}
           spaceBetween={25}
-          slidesPerView={2}
+          slidesPerView={1}
           navigation
         >
           {Shop && Shop.map((item) => (
