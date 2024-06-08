@@ -103,15 +103,22 @@ const MyAccount = () => {
     getUserInfor();
     getUserAddress();
     getSavedCardDetails();
-  },[getSavedCardDetails]);
+    if (imageFile) {
+      changePhoto();
+    }
+  },[getSavedCardDetails, imageFile]);
 
   const getUserInfor = async () => {
     const emails = localStorage.getItem("userEmail");
     const pkey = localStorage.getItem("pwReg");
+    var userId = localStorage.getItem("userId");
+    console.log('email is ' + emails);
+    console.log('password is ' + pkey);
+    console.log('userId is ' + userId);
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/login",{
         method:"POST",
-        headers: {
+        headers: { 
           "Content-Type":"application/json",
         },
         body: JSON.stringify({
@@ -144,15 +151,16 @@ const MyAccount = () => {
     const newImage = event.target.files[0];
     setImageUrl(URL.createObjectURL(newImage)); // Preview image locally (optional)
     setImageFile(newImage);
-    changePhoto();
   };
 
   const changePhoto = async () => {
     try {
       const formData = new FormData();
-      if (imageUrl) {
-        formData.append("profilePhoto", imageUrl);
+      console.log("imageFile", imageFile);
+      if (imageFile) {
+        formData.append("image", imageFile);
       }
+      
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/customers/uploadProfilePhoto/${userId}/image`, {
         method: "POST",
         body: formData,
@@ -164,6 +172,7 @@ const MyAccount = () => {
         console.log(data);
       }else{
         console.log(data);
+        setImageUrl(data.imageUrl);
         window.alert("Profile photo updated successfully");
       }
     } catch (error) {

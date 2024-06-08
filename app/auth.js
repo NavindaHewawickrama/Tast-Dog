@@ -34,6 +34,8 @@ export const signInWithGoogle = async () => {
       console.log(response.status); // Logs the status code
     console.log(response.data); // Logs the response data
 
+    
+
       if (response.status !== 201) { 
         alert(`Registration failed: ${response.data.message}`);
         throw new Error('Registration failed');
@@ -42,7 +44,8 @@ export const signInWithGoogle = async () => {
         window.alert("Registration Successful");
         localStorage.setItem("userName", fullName);
         localStorage.setItem("userEmail", emailOrPhoneNumber);
-        localStorage.setItem("pwReg", '');
+        console.log('login email is', emailOrPhoneNumber);
+        localStorage.setItem("pwReg", 'hello'); 
         localStorage.setItem("userId", response.data.customer._id);
       }
     return result.user;
@@ -117,11 +120,14 @@ export const logInWithGoogle = async () => {
       if (response.status === 200) {
         const data = response.data;
   
+        console.log('Login successful:', data);
         window.alert("Sign in Successful"); 
-        localStorage.setItem("userEmail", data.emailOrPhoneNumber);
+        localStorage.setItem("userEmail", data.customer.emailOrPhoneNumber);
+        localStorage.setItem("pwReg", '');
         localStorage.setItem("userName", data.customer.fullName || ''); 
         localStorage.setItem("profilePhotoUrl", data.customer.profilePhotoUrl || '');
         localStorage.setItem("userId", data.customer._id);
+        router.push(`/home`);
       } else {
         throw new Error('Sign in failed');
       }
