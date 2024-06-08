@@ -202,7 +202,7 @@ const ShopView = () => {
                   <Swiper
                     modules={[Navigation]}
                     spaceBetween={20}
-                    slidesPerView={2}
+                    slidesPerView={1}
                     navigation
                   >
                     {ShopComments.map((item) => (
