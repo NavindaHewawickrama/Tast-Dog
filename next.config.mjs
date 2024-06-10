@@ -43,6 +43,11 @@ export default {
             hostname: 'media.istockphoto.com',
             pathname: '**',
           },
+          {
+            protocol: 'https',
+            hostname: 'lh3.googleusercontent.com',
+            pathname: '**',
+          },
         ],
       },
 };

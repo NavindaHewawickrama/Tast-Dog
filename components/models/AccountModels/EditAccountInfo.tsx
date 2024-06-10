@@ -1,17 +1,29 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
 
 interface ModalProps {
   open: boolean;
   onClose: () => void; // Add the onClose function prop
+  userName: string | null;
+  email: string | null;
+  phoneNumber: string | null;
 }
 
-const EditAccountInfo: React.FC<ModalProps> = ({ open, onClose }) => {
-  const [name, setName] = useState("");
-  if (!open) return null;
+const EditAccountInfo: React.FC<ModalProps> = ({open, onClose, userName, email, phoneNumber }) => {
+  const [name, setName] = useState<string | null>(userName);
+  const [emailAddress, setEmailAddress] = useState<string | null>(email);
+  const [phone, setPhone] = useState<string | null>(phoneNumber);
 
  
+  useEffect(() => {
+    if (userName) setName(userName);
+    if (email) setEmailAddress(email);
+    if (phoneNumber) setPhone(phoneNumber);
+  }, [userName, email, phoneNumber]);
+
+  if (!open) return null;
+
 
   const handleEdit = async() =>{
     const id = localStorage.getItem("userId");
@@ -21,6 +33,7 @@ const EditAccountInfo: React.FC<ModalProps> = ({ open, onClose }) => {
         "Content-Type":"application/json",
       }, body:JSON.stringify({
         fullName: name,
+        phoneNumber: phone,
       })
       });
       const data = await response.json();
@@ -70,7 +83,7 @@ const EditAccountInfo: React.FC<ModalProps> = ({ open, onClose }) => {
               <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
                 <input
                   type="text"
-                  placeholder="John Doe"
+                  value={name || ""}
                   className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                   onChange={(e)=>setName(e.target.value)}
                 />
@@ -83,7 +96,8 @@ const EditAccountInfo: React.FC<ModalProps> = ({ open, onClose }) => {
               <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
                 <input
                   type="email"
-                  placeholder="samplemail@gmail.com"
+                  value={emailAddress || ""}
+                  readOnly
                   className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                 />
               </div>
@@ -95,8 +109,9 @@ const EditAccountInfo: React.FC<ModalProps> = ({ open, onClose }) => {
               <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
                 <input
                   type="tel"
-                  placeholder="0222 222 222"
+                  value={phone || ""}
                   className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+                  onChange={(e)=>setPhone(e.target.value)}
                 />
               </div>
             </div>
