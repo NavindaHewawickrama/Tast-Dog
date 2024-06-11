@@ -25,6 +25,7 @@ const MyAccount = () => {
   const [userName, setUserName] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
   const [address1, setAddress1] = useState<any | null>([]);
   // const [address2, setAddress2] = useState<string | null>("Road 2 nnoe");
@@ -127,6 +128,7 @@ const MyAccount = () => {
         }),
       });
       const data = await response.json();
+      console.log(data)
       if(!response.ok){
        // console.log(data);
        window.alert("Some kind of problem occured. Please try again.");
@@ -136,6 +138,7 @@ const MyAccount = () => {
         setUserId(data.customer._id);
         setUserName(data.customer.fullName);
         setEmail(data.customer.emailOrPhoneNumber);
+        setPhoneNumber(data.customer.secondaryNumber);
         setImageUrl(data.customer.profilePhoto);
       }
     }catch(error){
@@ -218,7 +221,7 @@ const MyAccount = () => {
                 className="w-[91px] h-[31px] bg-none border-2 border-button2 text-[14px] text-center rounded-xl transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
                 onClick={() => setUpdateAccountModal(true)}
               >
-                Edit
+                Edits
               </button>
             </div>
             <div className="w-full h-[90px] shadow-xl  flex justify-center items-center gap-10">
@@ -233,7 +236,7 @@ const MyAccount = () => {
                   Phone Number:
                 </p>
                 <p className="text-[16px] text-detail capitalize">
-                  0222 222 222
+                  {phoneNumber}
                 </p>
               </div>
               <div className="flex items-center gap-4">
@@ -352,6 +355,7 @@ const MyAccount = () => {
       />
       <EditAccountInfo
         open={updateAccountModal}
+        userName={userName} email={email} phoneNumber={phoneNumber} 
         onClose={() => setUpdateAccountModal(false)}
       />
       <AddNewAddress open={newAddress} onClose={() => setNewAddress(false)} />

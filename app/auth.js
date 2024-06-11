@@ -24,7 +24,8 @@ export const signInWithGoogle = async () => {
         fullName,
         password: '', 
         emailOrPhoneNumber,
-        profilePhoto: profilePhotoUrl
+        profilePhoto: profilePhotoUrl,
+        isSocialMedia: false,
       }, {
         headers: {
           'Content-Type': 'application/json',
@@ -124,6 +125,7 @@ export const logInWithGoogle = async () => {
         window.alert("Sign in Successful"); 
         localStorage.setItem("userEmail", data.customer.emailOrPhoneNumber);
         localStorage.setItem("pwReg", '');
+        console.log('done');
         localStorage.setItem("userName", data.customer.fullName || ''); 
         localStorage.setItem("profilePhotoUrl", data.customer.profilePhotoUrl || '');
         localStorage.setItem("userId", data.customer._id);
