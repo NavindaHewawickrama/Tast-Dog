@@ -23,10 +23,13 @@ const SearchBar: React.FC = () => {
         { method: "POST" }
       );
       if (!response.ok) {
-        throw new Error("Failed to fetch data");
+        console.log(response);
+        
+      }else{
+        const data = await response.json();
+        setAllData(data);
       }
-      const data = await response.json();
-      setAllData(data);
+      
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -58,7 +61,7 @@ const SearchBar: React.FC = () => {
 // };
 
 const handleSearch = () => {
-
+try{
   const filteredResults = allData.filter((item) =>
     item.itemName.toLowerCase().includes(query.toLowerCase())
   );
@@ -90,6 +93,9 @@ const handleSearch = () => {
   //   localStorage.setItem("query", query);
   //   router.push("/home/SearchResults");
   //   window.location.reload()
+}catch(e){
+  console.log(e);
+}
 };
 
 return (
