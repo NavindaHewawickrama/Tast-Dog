@@ -152,10 +152,7 @@ const SearchResults = () => {
         console.log(data.message || "An error occurred.");
       }else{
         localStorage.setItem("shopId",data.shopId);
-        // console.log("Hi");
-        // console.log(data.shopId);
         handleShopData(data.shopId);
-        // router.push("/home/shopview");
       }
     }catch{
 
