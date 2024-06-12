@@ -78,7 +78,7 @@ const FavoriteFoods = () => {
         console.log(data.message || "An error occurred.");
       }else{
         localStorage.setItem("shopName",data.name);
-        localStorage.setItem("shopImage",data.coverPhoto);
+        localStorage.setItem("shopImage",data.profilePhoto);
         router.push("/home/shopview");
       }
     }catch{
