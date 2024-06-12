@@ -60,12 +60,31 @@ const FavoriteFoods = () => {
         console.log(data.message || "An error occurred.");
       }else{
         localStorage.setItem("shopId",data.shopId);
-        router.push("/home/shopview");
+        // console.log("Hi");
+        // console.log(data.shopId);
+        handleShopData(data.shopId);
+        // router.push("/home/shopview");
       }
     }catch{
 
     }
   };
+
+  const handleShopData = async(id:any)=>{
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shops/${id}`);
+      const data = await response.json();
+      if(!response.ok){
+        console.log(data.message || "An error occurred.");
+      }else{
+        localStorage.setItem("shopName",data.name);
+        localStorage.setItem("shopImage",data.coverPhoto);
+        router.push("/home/shopview");
+      }
+    }catch{
+
+    }
+  }
 
   const handleProductViewClick = (id: string) => {
     localStorage.setItem("productIDFavouriteFoods", id);

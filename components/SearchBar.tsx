@@ -27,6 +27,7 @@ const SearchBar: React.FC = () => {
         
       }else{
         const data = await response.json();
+        // console.log(data);
         setAllData(data);
       }
       
@@ -65,11 +66,14 @@ try{
   const filteredResults = allData.filter((item) =>
     item.itemName.toLowerCase().includes(query.toLowerCase())
   );
+
+  // console.log(filteredResults);
   if(query == ""){
-    const qry = "No search items";
-    localStorage.setItem("query", qry);
+    
+    localStorage.setItem("query", query);
     // localStorage.setItem("NoSearchResult", JSON.stringify(allData));
     localStorage.setItem("searchResults", JSON.stringify(filteredResults));
+    // console.log(filteredResults);
     router.push("/home/SearchResults");
   }
 
@@ -78,12 +82,14 @@ try{
     localStorage.setItem("searchResults", JSON.stringify(filteredResults));
     localStorage.setItem("query", query);
     window.location.reload()
+    // console.log(filteredResults);
     router.push("/home/SearchResults");
   } else {
     setSearchResults(filteredResults);
     localStorage.setItem("searchResults", JSON.stringify(filteredResults));
     localStorage.setItem("query", query);
     window.location.reload()
+    // console.log(filteredResults);
     router.push("/home/SearchResults");
   }
 

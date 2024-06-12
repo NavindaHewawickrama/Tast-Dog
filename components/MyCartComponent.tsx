@@ -19,8 +19,8 @@ const MyCartComponent = () => {
     setShopName(shopNameData);
   
     const initialQuantities = cartItemsData.map((cartItem: any) => {
-      // Handle potential missing quantity property
-      return cartItem.hasOwnProperty('quantity') ? (cartItem.quantity === 0 || cartItem.quantity === 1 ? cartItem.quantity : 1) : 1;
+      
+      return cartItem.hasOwnProperty('quantity') ? (cartItem.quantity === 0 || cartItem.quantity === 1 ? 1 : cartItem.quantity) : 1;
     });
   
     setQuantities(initialQuantities);

@@ -172,14 +172,14 @@ const ShopView = () => {
                 <div className="text-white flex gap-4 lg:px-[25px] md:px-[10px] z-10">
                   <div className="lg:w-[102px] lg:h-[102px] md:w-[50px] md:h-[50px] rounded-full bg-white flex justify-center items-center">
                     <Image
-                      src="/dominos.png"
+                      src={shopImage || "/dominos.png"}
                       alt="shopLogo"
-                      width={120}
-                      height={120}
+                      width={500}
+                      height={500}
                       className="lg:flex md:hidden"
                     />
                     <Image
-                      src="/dominos.png"
+                      src= {shopImage || "/dominos.png"}
                       alt="shopLogo"
                       width={50}
                       height={50}
@@ -295,7 +295,7 @@ const ShopView = () => {
               <div className="w-full flex flex-col items-center mt-[80px]">
                 <div className="w-[75px] h-[75px] rounded-full bg-white flex justify-center items-center border-2 border-primary">
                   <Image
-                    src="/Dominos.webp"
+                    src={shopImage || "/dominos.png"}
                     alt="dominos"
                     width={75}
                     height={75}

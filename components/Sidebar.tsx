@@ -17,8 +17,10 @@ const Sidebar = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [cardDetails, setCardDetails] = useState<any[]>([]);
   const [productsBuying, setProductsBuying] = useState<any[]>([]);
+
   const handleLogout = () => {
-    localStorage.removeItem("cartItems"); // Remove cartItems from localStorage
+    localStorage.removeItem("cartItems");
+    sessionStorage.removeItem("cartItems"); // Remove cartItems from localStorage
     localStorage.removeItem("savedCardDetails");
     localStorage.removeItem("buyProductPlaceOrder");
     localStorage.removeItem("userId");

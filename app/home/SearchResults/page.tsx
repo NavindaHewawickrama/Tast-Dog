@@ -138,11 +138,45 @@ const SearchResults = () => {
     setToggle(true);
   };
 
-  const handleShopViewClick = () => {
-    // localStorage.setItem("shopId",item._id);
-    // localStorage.setItem("shopName",item.)
-    router.push("/home/shopview");
+  // const handleShopViewClick = (id:any) => {
+  //   // localStorage.setItem("shopId",item._id);
+  //   // localStorage.setItem("shopName",item.)
+  //   router.push("/home/shopview");
+  // };
+
+  const handleShopViewClick = async (id:any) => {
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/item/${id}`);
+      const data = await response.json();
+      if(!response.ok){
+        console.log(data.message || "An error occurred.");
+      }else{
+        localStorage.setItem("shopId",data.shopId);
+        // console.log("Hi");
+        // console.log(data.shopId);
+        handleShopData(data.shopId);
+        // router.push("/home/shopview");
+      }
+    }catch{
+
+    }
   };
+
+  const handleShopData = async(id:any)=>{
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shops/${id}`);
+      const data = await response.json();
+      if(!response.ok){
+        console.log(data.message || "An error occurred.");
+      }else{
+        localStorage.setItem("shopName",data.name);
+        localStorage.setItem("shopImage",data.coverPhoto);
+        router.push("/home/shopview");
+      }
+    }catch{
+
+    }
+  }
 
   const handleProductView = (item: any) =>{
     localStorage.setItem("productIDFavouriteFoods",item._id);
@@ -175,11 +209,11 @@ const SearchResults = () => {
                 className="absolute bottom-[-20px] right-[20px] w-[40px] h-[40px] z-10 transition-transform duration-300 ease-in-out transform hover:scale-[1.2]"
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent event bubbling to parent div
-                  handleShopViewClick();
+                  handleShopViewClick(item._id);
                 }}
               >
                 <Image
-                  src={item.logo || ""}
+                  src={item.shopProfilePhoto || ""}
                   alt={item.itemName}
                   fill
                   className="rounded-full"

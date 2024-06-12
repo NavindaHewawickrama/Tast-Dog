@@ -8,21 +8,10 @@ const OrderSummery = () => {
   const [deliveryFee, setDiliveryFee] = useState("1.99");
   const [inputPromoCode,setInputPromoCode]=useState("");
   const [promoCodeData, setpromoCodeData] = useState<any[]>([]);
-  const [discount, setDiscount]=useState("");
+  const [discount, setDiscount]=useState<GLfloat | null>(null);
+  const [finalTotal, setFinalTotal] = useState("");
 
-  const handleCalculations = () => {
-    const price = parseFloat(totalPriceCart); 
-    var total = price - parseFloat(deliveryFee); 
-    if(parseFloat(discount) != 0){
-      total = total - total*(parseFloat(discount)/100);
-    }
   
-    // Optionally, you might want to return the calculated total if needed
-    if (typeof window !== 'undefined') {
-      localStorage.setItem("finalTotalCart", total.toString());
-    return total;
-    }
-  }
 
   const handlePromoCode =async()=>{
     if (typeof window !== 'undefined') {
@@ -66,7 +55,39 @@ const OrderSummery = () => {
     const totalPrice = localStorage.getItem("totalPriceCart") ?? "";
     setTotalPriceCart(totalPrice);
     }
+    // handleCalculations();
   },[])
+
+  const handleCalculations = () => {
+    const price = parseFloat(totalPriceCart); 
+    // console.log(price);
+    var total = price - parseFloat(deliveryFee); 
+    // console.log(total);
+    console.log(discount);
+    if(discount != null){
+      total = total - total*(discount/100);
+      total = Math.round(total * 100) / 100;
+
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem("finalTotalCart", total.toString());
+      }
+    return total;
+    }else{
+      if (typeof window !== 'undefined') {
+        localStorage.setItem("finalTotalCart", total.toString());
+      }
+      return total;
+    }
+    
+    // Optionally, you might want to return the calculated total if needed
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("finalTotalCart", total.toString());
+    }
+    console.log(total);
+    return total;
+    
+  }
 
   return (
     <div className="w-full flex flex-col">
