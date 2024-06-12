@@ -101,7 +101,13 @@ const ShopView = () => {
 
   const handleToggle = () => {
     setToggle(true);
+    
   };
+
+  const handleProduct =(id:any)=>{
+    localStorage.setItem("productIDFavouriteFoods",id);
+    router.push("/home/productview");
+  }
 
   return (
     <>
@@ -115,7 +121,8 @@ const ShopView = () => {
                   <div
                     key={item.id}
                     className="w-full h-full rounded-xl mb-10 shadow-lg z-0 cursor-pointer "
-                    onClick={() => router.push("/home/productview")}
+                    // onClick={() => router.push("/home/productview")}
+                    onClick={()=>handleProduct(item._id)}
                   >
                     <div className="relative w-full h-[189px] rounded-t-xl z-0">
                       <Image
