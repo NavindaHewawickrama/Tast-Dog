@@ -46,12 +46,13 @@ const ProductView = () => {
     try {
       // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-comments/shop-comments/${foodId}`);
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-item-reviews/shop-item-reviews/${foodId}`);
-  
+      console.log(response);
       if (!response.ok) {
         const errorData = await response.json();
         console.log(errorData.message || "An error occurred.");
       } else {
         const dataComments = await response.json();
+        console.log(dataComments);
         setItemComments(dataComments);
       }
     } catch (error) {
@@ -119,12 +120,30 @@ const handleShopId = async (id:any) =>{
     setToggle(true);
   };
 
-  const handleBuyProduct = (item: any) =>{
-    const productBuy = JSON.parse(localStorage.getItem("buyProductPlaceOrder") || "[]");
+  const handleBuyProduct = (item: any) => {
+    let productBuy;
+    try {
+      // Try to parse the JSON string from localStorage
+      productBuy = JSON.parse(localStorage.getItem("buyProductPlaceOrder") || "[]");
+      // Check if the parsed value is actually an array
+      if (!Array.isArray(productBuy)) {
+        productBuy = [];
+      }
+    } catch (error) {
+      // If parsing fails, initialize productBuy as an empty array
+      console.error("Error parsing buyProductPlaceOrder from localStorage", error);
+      productBuy = [];
+    }
+  
+    // Add the new item to the list
     productBuy.push(item);
-    localStorage.setItem("buyProductPlaceOrder", productBuy);
+  
+    // Convert the updated list back to a JSON string and store it in localStorage
+    localStorage.setItem("buyProductPlaceOrder", JSON.stringify(productBuy));
+  
+    // Navigate to the placeOrder page
     router.push("/home/productview/placeOrder");
-  }
+  };
 
 
   return (

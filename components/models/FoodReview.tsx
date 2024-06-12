@@ -51,10 +51,12 @@ const FoodReview: React.FC<ModalProps> = ({ open, onClose }) => {
   }
 
   const handleNext= async ()=>{
+    
     if(rating && comment){
       try{
         var itemId = id;
         var userId = localStorage.getItem("userId");
+        console.log(comment,itemId,userId,rating);
         const response = await fetch("https://tasty-dog.onrender.com/api/v1/shop-item-reviews/shop-item-reviews",{
           method:"POST",
           headers: {

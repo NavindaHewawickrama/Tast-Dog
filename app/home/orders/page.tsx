@@ -25,6 +25,7 @@ const MyOrders = () => {
   
 
   const handleReview = () => {
+    console.log(itemId, itemName);
     setReviewModal(true);
     localStorage.setItem("itemId",itemId);
     localStorage.setItem("shopIdOrder", shopIdOrder);
@@ -68,7 +69,7 @@ const MyOrders = () => {
     setTime(date);
     setItemName(item.itemId.itemName);
     setItemPrice(item.price);
-    setItemId(item._id);
+    setItemId(item.itemId._id);
     setShopIdOrder(item.shopId);
   }
 

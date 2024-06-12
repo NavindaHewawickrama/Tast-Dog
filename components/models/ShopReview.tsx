@@ -30,6 +30,7 @@ const ShopReview: React.FC<ModalProps> = ({ open, onClose }) => {
   })
 
   const handleRating = async(rating:any)=>{
+    
     setRating(rating)
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings",{
@@ -56,8 +57,9 @@ const ShopReview: React.FC<ModalProps> = ({ open, onClose }) => {
   }
 
   const setReview= async ()=>{
-    var shopId = orderId;
-    var userId = userIdS;
+    // var shopId = orderId;
+    // var userId = userIdS;
+    console.log(comment);
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/shop-reviews/shop-reviews",{
           method:"POST",
@@ -65,8 +67,8 @@ const ShopReview: React.FC<ModalProps> = ({ open, onClose }) => {
             "Content-Type":"application/json",
           },
           body: JSON.stringify({
-            shopId,
-            userId,
+            shopId:orderId,
+            userId:userIdS,
             rating,
             comment,
           }),
@@ -156,6 +158,7 @@ const ShopReview: React.FC<ModalProps> = ({ open, onClose }) => {
               <div className="w-full h-[116px] bg-inputBlue border border-inputText rounded-lg ">
                 <textarea
                   name="reviewText"
+                  onChange={(e)=>setComment(e.target.value)}
                   id="review"
                   className="w-full h-full bg-inputBlue border border-gray-200 rounded-lg text-[11px] text-inputText px-[12px] py-[12px]"
                   placeholder="What you think about our cooking"
