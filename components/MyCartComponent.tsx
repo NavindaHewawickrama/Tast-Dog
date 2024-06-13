@@ -1,72 +1,20 @@
 "use client";
-import React, { useState,useEffect } from "react";
-import MyCart from "@/constants/MyCart";
-import { FaRegStopCircle } from "react-icons/fa";
+import React from "react";
 import Image from "next/image";
 
-const MyCartComponent = () => {
-  const [checkedIndex, setCheckedIndex] = useState<number | null>(null);
-  const [cartItems, setCartItems] = useState<any[]>([]);
-  const [shopName, setShopName] = useState<string>("");
-  const [qty, setQty] = useState<number>(1);
-  const [quantities, setQuantities] = useState<number[]>([]);
+interface MyCartComponentProps {
+  cartItems: any[];
+  incrementQty: (index: number) => void;
+  decrementQty: (index: number) => void;
+  removeItem: (index: number) => void;
+}
 
-  useEffect(() => {
-    const cartItemsData = JSON.parse(localStorage.getItem("cartItems") || "[]");
-    setCartItems(cartItemsData);
-  
-    const shopNameData = localStorage.getItem("shopName") || "";
-    setShopName(shopNameData);
-  
-    const initialQuantities = cartItemsData.map((cartItem: any) => {
-      
-      return cartItem.hasOwnProperty('quantity') ? (cartItem.quantity === 0 || cartItem.quantity === 1 ? 1 : cartItem.quantity) : 1;
-    });
-  
-    setQuantities(initialQuantities);
-  }, []);
-
-  const toggleChecked = (index: number) => {
-    setCheckedIndex((prevIndex) => (prevIndex === index ? null : index));
-  };
-
-  const incrementQty = (index: any) => {
-    
-    setQuantities((prevQuantities) =>
-      prevQuantities.map((qty, i) => (i === index ? qty + 1 : qty))
-    );
-    updateLocalStorage(index, quantities[index] + 1);
-    
-  };
-
-  const decrementQty = (index: any) => {
-    setQuantities((prevQuantities) =>
-      prevQuantities.map((qty, i) => (i === index && qty > 0 ? qty - 1 : qty))
-    );
-    if (quantities[index] === 0) {
-      removeItem(index);
-    } else {
-      updateLocalStorage(index, quantities[index] - 1);
-    }
-    
-  };
-
-  const updateLocalStorage = (index: number, quantity: number) => {
-    const updatedCartItems = [...cartItems];
-    updatedCartItems[index].quantity = quantity;
-    setCartItems(updatedCartItems);
-    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-    sessionStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-  };
-
-  const removeItem = (index: number) => {
-    const updatedCartItems = cartItems.filter((_, i) => i !== index);
-    setCartItems(updatedCartItems);
-    setQuantities(quantities.filter((_, i) => i !== index));
-    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-    sessionStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
-  };
-
+const MyCartComponent: React.FC<MyCartComponentProps> = ({
+  cartItems,
+  incrementQty,
+  decrementQty,
+  removeItem,
+}) => {
   return (
     <div className="w-full flex flex-col">
       {cartItems.map((item, index) => (
@@ -75,30 +23,17 @@ const MyCartComponent = () => {
           key={index}
         >
           <div className="flex gap-7 items-center">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 flex justify-center items-center border-2 border-green-500 cursor-pointer rounded-full px-0.5">
-                <input
-                  type="checkbox"
-                  id={`roundedCheckbox${index}`}
-                  className="appearance-none rounded-full w-4 h-4 checked:bg-green-500 checked:border-transparent cursor-pointer"
-                  checked={checkedIndex === index}
-                  onChange={() => toggleChecked(index)}
-                />
-              </div>
-
-              <Image
-                src={item.itemImages}
-                alt="order_image"
-                width={125}
-                height={125}
-                className=" w-full h-full rounded-xl"
-              />
-            </div>
+            <Image
+              src={item.itemImages}
+              alt="order_image"
+              width={125}
+              height={125}
+              className="w-full h-full rounded-xl"
+            />
             <div className="flex flex-col justify-center">
               <h3 className="text-[24px] capitalize font-medium">
                 {item.itemName}
               </h3>
-              <p className="text-[15px] text-inputText">{shopName}</p>
               <h3 className="text-[28px] text-primary font-medium mt-4">
                 ${item.price}
               </h3>
@@ -113,12 +48,18 @@ const MyCartComponent = () => {
               >
                 -
               </button>
-              <p className="text-[18px] text-inputText">{quantities[index]}</p>
+              <p className="text-[18px] text-inputText">{item.quantity}</p>
               <button
                 className="text-[20px] text-inputText cursor-pointer"
                 onClick={() => incrementQty(index)}
               >
                 +
+              </button>
+              <button
+                className="text-[20px] text-red-500 cursor-pointer"
+                onClick={() => removeItem(index)}
+              >
+                Remove
               </button>
             </div>
           </div>

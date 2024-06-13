@@ -1,48 +1,13 @@
 "use client";
-import React, { useCallback } from "react";
-import MyCart from "@/constants/MyCart";
+import React from "react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import {useRouter} from 'next/navigation';
 
-const CartTotal = () => {
-  const router = useRouter();
-  const [cartItems, setCartItems] = useState<any[]>([]);
-  const [totalPrice, setTotalPrice] = useState(0);
-  const[userName,setUserName]=useState<string>("");
-  const[userId,setUserId]=useState<string>("");
+interface CartTotalProps {
+  cartItems: any[];
+  totalPrice: number;
+}
 
-  const handleTotal = useCallback(() => {
-    let total = 0;
-    cartItems.forEach((item: any) => {
-      total += item.price * item.quantity;
-    });
-
-    total = parseFloat(total.toFixed(2));
-    setTotalPrice(total);
-  },[cartItems]);
-
-  useEffect(() => {
-    const userID = localStorage.getItem("userId") ?? "";
-    const userNames = localStorage.getItem("userName") ?? "";
-    const storedCartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
-    setCartItems(storedCartItems);
-    setUserName(userNames);
-    setUserId(userID);
-  }, []);
-
-  useEffect(()=>{
-    handleTotal();
-  },[cartItems]);
-
-  
-
-  const handleClick=()=>{
-    localStorage.setItem("totalPriceCart", totalPrice.toString());
-    sessionStorage.setItem("totalPriceCart", totalPrice.toString());
-    // console.log(cartItems);
-  };
-
+const CartTotal: React.FC<CartTotalProps> = ({ cartItems, totalPrice }) => {
   return (
     <div className="w-full px-[40px] py-[40px] flex flex-col shadow-xl rounded-lg">
       <div className="flex justify-between  items-center ">
@@ -78,10 +43,10 @@ const CartTotal = () => {
         <h3 className="text-[20px] capitalize text-button2">${totalPrice}</h3>
       </div>
       <Link
-        onClick={handleClick}
         href="/home/checkout"
         className="w-full flex justify-center items-center bg-buttonGreen text-white h-[45px] text-[20px] cursor-pointer capitalize mt-8 rounded-xl transition-transform duration-300 ease-in-out transform hover:scale-95"
-      >place order
+      >
+        place order
       </Link>
     </div>
   );
