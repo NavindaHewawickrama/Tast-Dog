@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useRouter } from "next/navigation";
 import AddToCart from "@/components/models/AddToCart";
+import profilePic from "./../../../public/Logo2.png";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -21,8 +22,8 @@ const ShopView = () => {
   const router = useRouter();
   const[shopId, setShopId] = useState<any | null>(null);
   const [toggle, setToggle] = useState(false);
-  const [shopName, setShopName] = useState<string | null>(null);
-  const[shopImage, setShopImage] = useState<string | null>(null);
+  const [shopName, setShopName] = useState<any | null>(null);
+  const[shopImage, setShopImage] = useState<any | null>(null);
   const[shopData, setShopData] = useState<any[]>([]);
   const[userName, setUserName] = useState<string | null>(null);
   const [ShopRating, setShopRatings] = useState<any[]>([]);
@@ -43,51 +44,42 @@ const ShopView = () => {
     }
   }, []);
 
+//handling shop data
+const fetchApiCall = async (id: any) => {
+  setShopId(localStorage.getItem("shopId"));
+  try{
+    const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shop-items-shop/${id}`);
+    const data = await response.json();
+    if(!response.ok){
+      console.log(data.message || "An error occurred.");
+    }else{
+      setShopData(data);
+    }
+  }catch(error){
+    console.log("An error occurred. Please try again later." , error);
+  }
+}
 
   const handleShopComments = async (id: string) => {
     try{
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-reviews/shop-reviews/${id}`);
-      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-reviews/shop-reviews/6614c26524b13332f73edc7e`);
       const dataComments = await response.json();
-      //console.log(dataComments);
       if(!response.ok){
         console.log(dataComments.message || "An error occurred.");
       }else{
-        // console.log(dataComments);
         setShopComments(dataComments);
+        console.log(dataComments);
       }
     }catch(error){
       console.log("An error occurred. Please try again later." , error);
     }
   }
 
-  const fetchApiCall = async (id: any) => {
-    setShopId(localStorage.getItem("shopId"));
-    // console.log(id);
-    try{
-      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shop-items-shop/${id}`); // this should be the correct url to fetch the data but data not inserted yet 
-      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shop-items-shop/6614c26524b13332f73edc7e`);
-      const data = await response.json();
-      //console.log(data);
-      if(!response.ok){
-        console.log(data.message || "An error occurred.");
-      }else{
-        // console.log(data);
-        setShopData(data);
-      }
-    }catch(error){
-      console.log("An error occurred. Please try again later." , error);
-    }
-    //console.log(shopId);
-  }
 
   const handleShopReviews = async (id: string) => {
-    // console.log(id);
     try{
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/${id}`);
-      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/6614eae1637fe5068da340ba`);
       const dataReviews = await response.json();
-      //console.log(dataReviews);
       if(!response.ok){
         console.log(dataReviews.message || "An error occurred.");
       }else{
@@ -101,10 +93,12 @@ const ShopView = () => {
 
   const handleToggle = () => {
     setToggle(true);
-    
   };
 
+  //going to product page
   const handleProduct =(id:any)=>{
+    localStorage.setItem("shopName",shopName);
+    localStorage.setItem("shopImage", shopImage);
     localStorage.setItem("productIDFavouriteFoods",id);
     router.push("/home/productview");
   }
@@ -220,7 +214,7 @@ const ShopView = () => {
                         <div className="flex  gap-5">
                           <div className="w-[30px] h-[30px] rounded-full">
                             <Image
-                              src={item.userId.profilePhoto}
+                              src={item.userId? item.userId.profilePhoto : profilePic }
                               alt="reviewer profile pic"
                               width={30}
                               height={30}
@@ -229,7 +223,7 @@ const ShopView = () => {
                           </div>
                           <div className="w-full">
                             <h2 className="text-[17px] font-semibold capitalize">
-                              {item.userId.fullName}
+                              {item.userId? item.userId.fullName : "Customer"}
                             </h2>
                             <p className="text-[11px] text-inputText mt-2 text-justify">
                               {item.comment}
@@ -263,7 +257,7 @@ const ShopView = () => {
                         <div className="flex  gap-5">
                           <div className="w-[30px] h-[30px] rounded-full">
                             <Image
-                              src={item.userId.profilePhoto}
+                              src={item.userId?item.userId.profilePhoto:profilePic}
                               alt="reviewer profile pic"
                               width={30}
                               height={30}
@@ -272,7 +266,7 @@ const ShopView = () => {
                           </div>
                           <div className="w-full">
                             <h2 className="text-[17px] font-semibold capitalize">
-                            {item.userId.fullName}
+                            {item.userId? item.userId.fullName: "Cutomer Name"}
                             </h2>
                             <p className="text-[11px] text-inputText mt-2 text-justify">
                             {item.comment}

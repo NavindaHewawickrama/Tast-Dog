@@ -19,10 +19,13 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [userId, setUserId] = useState<string | null>("");
   const [userName, setUserName] = useState<string | null>("");
+  const [addressBuyer, setAddressBuyer] = useState<string | null>("");
 
   useEffect(() => {
     const userIDSvd = localStorage.getItem("userId");
     const userNameSvd = localStorage.getItem("userName");
+    const address = localStorage.getItem("buyerAddress");
+    setAddressBuyer(address);
     setUserName(userName);
     setUserId(userIDSvd);
   },[]);
@@ -34,6 +37,7 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
     //2nd call is if 1stapi call sucess then to make order and send the order details to the database.
 
     //MakePayment (1st Request)
+    console.log(addressBuyer);
     try {
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/orders/makePayment", {
         method: "POST",
@@ -98,8 +102,6 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
 
 
   const handleShopDetails = async (secret: any) => {
-    // window.alert("Handling shop details..."); // Informative message
-  
     const itemsCart = sessionStorage.getItem("cartItems");
     const cartItems = itemsCart ? JSON.parse(itemsCart) : [];
   
@@ -134,16 +136,14 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
   
       // Push the order item object into the orderItems array
       orderItems.push(orderItem);
-  
-      // const userId = sessionStorage.getItem("userId");
-      // const userName = sessionStorage.getItem("userName");
-      const orderAddress = "123 Main St, Anytown, USA";
+      
+      const orderAddress = {addressBuyer};
   
       const requestBody = {
         paymentIntentId: secret,
         userId,
         userName,
-        orderItems, // Assign orderItems as an array
+        orderItems, 
         orderAddress,
       };
       console.log(requestBody);
@@ -160,12 +160,8 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
         console.error("Error placing order:", response.statusText);
         return;
       }
-  
-      // Handle success
       console.log("Order placed successfully");
       window.alert("Payment success");
-      // window.alert("handleorder api finish"); 
-      
       sessionStorage.removeItem("cartItems");  
     } catch (error) {
       console.error("An error occurred while placing order:", error);

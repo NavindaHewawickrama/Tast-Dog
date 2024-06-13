@@ -8,7 +8,7 @@ import Reviews from "@/constants/Reviews";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { useRouter } from "next/navigation";
-
+import profilePic from "./../../../public/Logo2.png";
 import "swiper/css";
 import "swiper/css/navigation";
 import PageTransition from "@/components/PageTransition";
@@ -20,7 +20,8 @@ const ProductView = () => {
   const [foodData, setFoodData] = useState<any>(null);
   const [toggle, setToggle] = useState(false);
   const[userName, setUserName] = useState<string | null>(null);
-  const [shopName, setShopName] = useState<string | null>(null);
+  const [shopName, setShopName] = useState<any| null>(null);
+  const [shopImage, setShopImage] = useState<any | null>(null);
   const [shopId, setShopId] = useState<string | null>(null);
   const [ShopRating, setShopRatings] = useState<any[]>([]);
   const[itemComments,setItemComments] = useState<any[]>([]);
@@ -50,7 +51,7 @@ const ProductView = () => {
       setFavouriteFoodId(foodId);
       fetchApiCalls(foodId);
       setShopName(name);
-      // handleReview(foodId);
+      setShopImage(image);
       handleShopId(foodId);
       fetchRatings(foodId);
       handleFoodComments(foodId);
@@ -61,7 +62,6 @@ const ProductView = () => {
   //food reviews
   const handleFoodComments = async (foodId: any) => {
     try {
-      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-comments/shop-comments/${foodId}`);
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-item-reviews/shop-item-reviews/${foodId}`);
       console.log(response);
       if (!response.ok) {
@@ -83,7 +83,6 @@ const handleShopId = async (id:any) =>{
     const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/item/${id}`);
     
     const data = await response.json();
-    //console.log(dataReviews);
     if(!response.ok){
       console.log(data.message || "An error occurred.");
     }else{
@@ -99,12 +98,9 @@ const handleShopId = async (id:any) =>{
 
   //ratings of the shop
   const handleReview = async(id:any)=>{
-    // console.log(id);
     try{
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/${id}`);
-      // const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/6614eae1637fe5068da340ba`);
       const dataReviews = await response.json();
-      //console.log(dataReviews);
       if(!response.ok){
         console.log(dataReviews.message || "An error occurred.");
       }else{
@@ -116,6 +112,7 @@ const handleShopId = async (id:any) =>{
     }
   }
 
+  //getting food item data
   const fetchApiCalls = async (foodId: any) => {
     try {
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/item/${foodId}`);
@@ -123,14 +120,14 @@ const handleShopId = async (id:any) =>{
         throw new Error('Network response was not ok.');
       }
       const data = await response.json();
-      //console.log(data); // Check the data in the console
-      setFoodData(data); // Update the state with the fetched data
+      setFoodData(data); 
     } catch (error) {
       console.error('Error fetching data:', error);
-      setFoodData([]); // Update state with an empty array in case of an error
+      setFoodData([]); 
     }
   };
 
+  //updating cart items in localstorage
   const handleToggle =(id: string)=>{
     const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
     cartItems.push(id);
@@ -141,25 +138,23 @@ const handleShopId = async (id:any) =>{
   const handleBuyProduct = (item: any) => {
     let productBuy;
     try {
-      // Try to parse the JSON string from localStorage
       productBuy = JSON.parse(localStorage.getItem("buyProductPlaceOrder") || "[]");
-      // Check if the parsed value is actually an array
       if (!Array.isArray(productBuy)) {
         productBuy = [];
       }
     } catch (error) {
-      // If parsing fails, initialize productBuy as an empty array
       console.error("Error parsing buyProductPlaceOrder from localStorage", error);
       productBuy = [];
     }
-  
-    // Add the new item to the list
-    productBuy.push(item);
-  
-    // Convert the updated list back to a JSON string and store it in localStorage
+
+    const itemExists = productBuy.some((product: any) => product._id === item._id);
+    if (!itemExists) {
+      productBuy.push(item);
+    }
+    
+    localStorage.setItem("buyProductShopName",shopName);
+    localStorage.setItem("buyProductShopImage",shopImage);
     localStorage.setItem("buyProductPlaceOrder", JSON.stringify(productBuy));
-  
-    // Navigate to the placeOrder page
     router.push("/home/productview/placeOrder");
   };
 
@@ -171,7 +166,7 @@ const handleShopId = async (id:any) =>{
     if (ratings && ratings.length > 0 && 'averageRating' in ratings[0]) {
       averageRating = ratings[0].averageRating;
     } else {
-      averageRating = 0; // or any default value you want
+      averageRating = 0; 
     }
     console.log('averageRating', averageRating);
     const stars = [];
@@ -255,7 +250,7 @@ const handleShopId = async (id:any) =>{
               <div className="w-full flex flex-col items-center">
                 <div className="w-[55px] h-[55px] rounded-full ">
                   <Image
-                    src={Array.isArray(foodData?.itemImages) ? foodData?.itemImages[0] : foodData?.itemImages}
+                    src={shopImage? shopImage:profilePic}
                     alt="prouct"
                     width={55}
                     height={55}
@@ -275,7 +270,7 @@ const handleShopId = async (id:any) =>{
                   </span>
                 ))}
               </div>
-</div>
+            </div>
                 {ShopRating.map((item)=>(
                 <div key={item._id} className="flex flex-col justify-center gap-1 mt-2">
                   <div className="flex items-center justify-center gap-5">

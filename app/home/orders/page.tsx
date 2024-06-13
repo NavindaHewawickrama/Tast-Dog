@@ -1,27 +1,26 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-// import Orders from "@/constants/Orders";
 import Image from "next/image";
 import { GoDotFill } from "react-icons/go";
 import { FaPhoneAlt } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
-
 import FoodReview from "@/components/models/FoodReview";
 import PageTransition from "@/components/PageTransition";
 
 const MyOrders = () => {
   const [statusVal, setStatusVal] = useState("");
-
   const [reviewModal, setReviewModal] = useState(false);
   const [orderData, setOrderData] = useState<any[]>([]);
   const [name,setName] = useState(null);
   const [address, setAddress] = useState(null);
   const [time,setTime] = useState("");
   const [itemName,setItemName]= useState("");
+  const [itemImage,setItemImage]= useState("");
   const [itemPrice, setItemPrice] = useState("");
   const[itemId, setItemId] = useState("");
   const [shopIdOrder, setShopIdOrder] = useState("");
+  const [userId, setUserId] = useState<any | null>("");
   
 
   const handleReview = () => {
@@ -36,6 +35,8 @@ const MyOrders = () => {
 
   useEffect(() => {
     const uId = localStorage.getItem("userId");
+    setUserId(uId);
+    //getting order data from API
     const fetchData = async () => {
       try {
         const response = await fetch(`https://tasty-dog.onrender.com/api/v1/orders/getOrdersOfUser/${uId}`);
@@ -54,12 +55,14 @@ const MyOrders = () => {
     };
 
     fetchData();
+    
   }, []);
 
   const handleOrder = (item: any) => {
     setStatusVal(item.status);
     setName(item.userName);
     setAddress(item.orderAddress);
+    setItemImage(item.itemId.itemImages[0]);
   
     // Extract date and time from the datetime string
     const dateTime = new Date(item.createdAt);
@@ -98,6 +101,7 @@ const MyOrders = () => {
     }
   }
 
+ 
   return (
     <>
       <PageTransition>
@@ -213,7 +217,7 @@ const MyOrders = () => {
                     <div className="w-full h-[210px] flex flex-col gap-5 rounded-xl shadow-xl px-[15px] py-[15px] mt-4 ">
                       <div className="flex items-center gap-4">
                         <Image
-                          src="/soup.webp"
+                          src={itemImage}
                           alt="product_image"
                           width={65}
                           height={65}
@@ -281,7 +285,7 @@ const MyOrders = () => {
                     <div className="w-full h-full bg-inputBlue shadow-xl rounded-xl px-[20px] py-[20px] flex flex-col gap-4 mt-5">
                       <div className="flex items-center bg-white gap-4 px-[10px] py-[10px] rounded-xl ">
                         <Image
-                          src="/soup.webp"
+                          src={itemImage}
                           alt="product_image"
                           width={65}
                           height={65}
@@ -352,7 +356,7 @@ const MyOrders = () => {
                     <div className="w-full h-full bg-inputBlue shadow-xl rounded-xl px-[20px] py-[20px] flex flex-col gap-4 mt-5">
                       <div className="flex items-center bg-white gap-4 px-[10px] py-[10px] rounded-xl ">
                         <Image
-                          src="/soup.webp"
+                          src={itemImage}
                           alt="product_image"
                           width={65}
                           height={65}
@@ -424,7 +428,7 @@ const MyOrders = () => {
                     <div className="w-full h-full bg-inputBlue shadow-xl rounded-xl px-[20px] py-[20px] flex flex-col gap-4 mt-5">
                       <div className="flex items-center bg-white gap-4 px-[10px] py-[10px] rounded-xl ">
                         <Image
-                          src="/soup.webp"
+                          src={itemImage}
                           alt="product_image"
                           width={65}
                           height={65}

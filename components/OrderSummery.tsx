@@ -23,6 +23,7 @@ const OrderSummery = () => {
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
 
+  //getting userId 
   useEffect(() => {
     const userIDSvd = localStorage.getItem("userId");
     setUserId(userIDSvd);
@@ -48,12 +49,9 @@ const OrderSummery = () => {
     }
   };
 
+
   const validatePromoCode = ()=>{
     const data = promoCodeData;
-    // const promoCode = data.find((item:any)=>item.code === inputPromoCode);
-    // // if(promoCode){
-    //   window.alert(promoCode);
-    // }
     data.forEach(element => {
       if(element.code === inputPromoCode){
         const date = Date();
@@ -67,6 +65,7 @@ const OrderSummery = () => {
     
   }
 
+  //check for milestones
   const fetchMilestones = async () => {
     try {
       if (userId) {
@@ -94,15 +93,13 @@ const OrderSummery = () => {
     setTotalPriceCart(totalPrice);
     fetchMilestones();
     }
-    // handleCalculations();
   },[userId])
 
+
+  //final price of the products
   const handleCalculations = () => {
     const price = parseFloat(totalPriceCart); 
-    // console.log(price);
     var total = price - parseFloat(deliveryFee); 
-    // console.log(total);
-    console.log(discount);
     if(discount != null){
       total = total - total*(discount/100);
       total = Math.round(total * 100) / 100;
