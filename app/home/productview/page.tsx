@@ -24,18 +24,35 @@ const ProductView = () => {
   const [shopId, setShopId] = useState<string | null>(null);
   const [ShopRating, setShopRatings] = useState<any[]>([]);
   const[itemComments,setItemComments] = useState<any[]>([]);
+  const [ratings, setRatings] = useState<any>(null);
 
   useEffect(() => {
     const foodId = localStorage.getItem("productIDFavouriteFoods");
     const userName = setUserName(localStorage.getItem("userName"));
     const name = localStorage.getItem("shopName");
     const image = localStorage.getItem("shopImage");
+
+    const fetchRatings = async (foodId: any) => {
+      try {
+        const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-item-ratings/shop-item-ratings/${foodId}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        console.log('response.status', response.status);
+        const data = await response.json();
+        setRatings(data); 
+      } catch (error) {
+        console.error('Error fetching ratings:', error);
+      }
+    };
+
     if(foodId){
       setFavouriteFoodId(foodId);
       fetchApiCalls(foodId);
       setShopName(name);
       // handleReview(foodId);
       handleShopId(foodId);
+      fetchRatings(foodId);
       handleFoodComments(foodId);
     } 
   }, []);
@@ -92,6 +109,7 @@ const handleShopId = async (id:any) =>{
         console.log(dataReviews.message || "An error occurred.");
       }else{
         setShopRatings(dataReviews);
+        console.log('dataReviews', dataReviews);
       }
     }catch(error){
       console.log("An error occurred. Please try again later." , error);
@@ -146,6 +164,27 @@ const handleShopId = async (id:any) =>{
   };
 
 
+  const renderStars = () => {
+    console.log('ratings', ratings);
+    if (!ratings) return null; 
+    let averageRating;
+    if (ratings && ratings.length > 0 && 'averageRating' in ratings[0]) {
+      averageRating = ratings[0].averageRating;
+    } else {
+      averageRating = 0; // or any default value you want
+    }
+    console.log('averageRating', averageRating);
+    const stars = [];
+    for (let i = 0; i < 5; i++) {
+      if (i < averageRating) {
+        stars.push(<FaStar key={i} className="text-starColor" />);
+      } else {
+        stars.push(<FaRegStar key={i} className="text-starColor" />);
+      }
+    }
+    return stars;
+  };
+
   return (
     <>
       <PageTransition>
@@ -176,11 +215,7 @@ const handleShopId = async (id:any) =>{
                         ${foodData?.price}
                       </h2>
                       <div className="flex item-center gap-2">
-                        <FaStar className="text-[30px] text-starColor" />
-                        <FaStar className="text-[30px] text-starColor" />
-                        <FaStar className="text-[30px] text-starColor" />
-                        <FaStar className="text-[30px] text-starColor" />
-                        <FaRegStar className="text-[30px] text-starColor" />
+                       {renderStars()}
                       </div>
                       <div className="flex flex-col gap-2 mt-[75px]">
                         <button
@@ -229,12 +264,18 @@ const handleShopId = async (id:any) =>{
                 </div>
                 <h3 className="text-[18px] font-medium ">{shopName}</h3>
                 <div className="flex items-center gap-2 mt-1">
-                  <FaStar className="text-starColor text-[25px]" />
-                  <FaStar className="text-starColor text-[25px]" />
-                  <FaStar className="text-starColor text-[25px]" />
-                  <FaStar className="text-starColor text-[25px]" />
-                  <FaRegStar className="text-starColor text-[25px]" />
-                </div>
+                <div className="flex items-center gap-2 mt-1">
+                {[...Array(5)].map((_, index) => (
+                  <span key={index}>
+                    {index < Math.floor(ShopRating[0]?.averageRating || 0) ? (
+                      <FaStar className="text-starColor text-[25px]" />
+                    ) : (
+                      <FaRegStar className="text-starColor text-[25px]" />
+                    )}
+                  </span>
+                ))}
+              </div>
+</div>
                 {ShopRating.map((item)=>(
                 <div key={item._id} className="flex flex-col justify-center gap-1 mt-2">
                   <div className="flex items-center justify-center gap-5">
@@ -243,7 +284,7 @@ const handleShopId = async (id:any) =>{
                     </p>
 
                     <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen h-[15px] rounded-full w-[85%]"></div>
+                      <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.fiveStarCount / item.totalRatings) * 100}%` }}></div>
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.fiveStarCount})</p>
@@ -254,7 +295,7 @@ const handleShopId = async (id:any) =>{
                     </p>
 
                     <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen h-[15px] rounded-full w-[60%]"></div>
+                      <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.fourStarCount/ item.totalRatings) * 100}%` }}></div>
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.fourStarCount})</p>
@@ -265,7 +306,7 @@ const handleShopId = async (id:any) =>{
                     </p>
 
                     <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen h-[15px] rounded-full w-[35%]"></div>
+                      <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.threeStarCount / item.totalRatings) * 100}%` }}></div>
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.threeStarCount})</p>
@@ -276,7 +317,7 @@ const handleShopId = async (id:any) =>{
                     </p>
 
                     <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen h-[15px] rounded-full w-[25%]"></div>
+                      <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.twoStarCount / item.totalRatings) * 100}%` }}></div>
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.twoStarCount})</p>
@@ -287,7 +328,7 @@ const handleShopId = async (id:any) =>{
                     </p>
 
                     <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen h-[15px] rounded-full w-[10%]"></div>
+                      <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.oneStarCount / item.totalRatings) * 100}%` }}></div>
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.oneStarCount})</p>
