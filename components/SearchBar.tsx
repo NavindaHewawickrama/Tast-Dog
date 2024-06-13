@@ -22,11 +22,15 @@ const SearchBar: React.FC = () => {
         "https://tasty-dog.onrender.com/api/v1/shops/shops/getAllShopItems",
         { method: "POST" }
       );
+
+      console.log(response);
       if (!response.ok) {
         console.log(response);
         
       }else{
         const data = await response.json();
+        console.log("data is ",data);
+        console.log(response);
         // console.log(data);
         setAllData(data);
       }
@@ -37,7 +41,9 @@ const SearchBar: React.FC = () => {
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value);
     setQuery(event.target.value);
+    // fetchDataFromAPI();
   };
 
 
@@ -63,35 +69,29 @@ const SearchBar: React.FC = () => {
 
 const handleSearch = () => {
 try{
-  const filteredResults = allData.filter((item) =>
-    item.itemName.toLowerCase().includes(query.toLowerCase())
-  );
-
   // console.log(filteredResults);
   if(query == ""){
-    
+    console.log('query is empty');
+    console.log('hello');
+    setSearchResults(allData);
+    console.log('worldss', allData);
+    localStorage.setItem("searchResults", JSON.stringify(allData));
     localStorage.setItem("query", query);
-    // localStorage.setItem("NoSearchResult", JSON.stringify(allData));
-    localStorage.setItem("searchResults", JSON.stringify(filteredResults));
     // console.log(filteredResults);
+    router.push("/home/SearchResults");
+  }else{
+    console.log('query is not empty');
+    const filteredResults = allData.filter((item) =>
+      item.itemName.toLowerCase().includes(query.toLowerCase())
+    );
+
+    setSearchResults(filteredResults);
+    localStorage.setItem("searchResults", JSON.stringify(filteredResults));
+    localStorage.setItem("query", query);
     router.push("/home/SearchResults");
   }
 
-  if (filteredResults.length === 0) {
-    setSearchResults(filteredResults);
-    localStorage.setItem("searchResults", JSON.stringify(filteredResults));
-    localStorage.setItem("query", query);
-    window.location.reload()
-    // console.log(filteredResults);
-    router.push("/home/SearchResults");
-  } else {
-    setSearchResults(filteredResults);
-    localStorage.setItem("searchResults", JSON.stringify(filteredResults));
-    localStorage.setItem("query", query);
-    window.location.reload()
-    // console.log(filteredResults);
-    router.push("/home/SearchResults");
-  }
+  
 
   // setSearchResults(filteredResults);
   // localStorage.removeItem("searchResults");
@@ -118,7 +118,7 @@ return (
       type="text"
       value={query}
       onChange={handleInputChange}
-      placeholder="Search Foods or Restaurants"
+      placeholder="Search Foods"
       className="w-[92%] outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
     />
   </div>

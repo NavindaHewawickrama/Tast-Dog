@@ -120,11 +120,11 @@ const SearchResults = () => {
   useEffect(() => {
     const searchResults = localStorage.getItem("searchResults");
     const query = localStorage.getItem("query");
-    if (searchResults && query != "") {
+    if (searchResults) {
       setResults(JSON.parse(searchResults));
     }else if(query == ""){
       setResults([]);
-      window.alert("Enter an Item to Search !!")
+      // window.alert("Enter an Item to Search !!")
     }
 
     const searchQuery = localStorage.getItem("query");
