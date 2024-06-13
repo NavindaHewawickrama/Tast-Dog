@@ -14,51 +14,64 @@ interface Notification {
   time: string;
 }
 
+interface Milestone {
+  milestoneId: string;
+  name: string;
+  description: string;
+  remainingOrders: number;
+  expectedTotalOrders: number;
+}
+
 const Notifications: React.FC = () => {
   const [activeButton, setActiveButton] = useState<string>("all");
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [milestones, setMilestones] = useState<Milestone[]>([]);
+  const [userId, setUserId] = useState<string | null>(null);
 
-  
+  useEffect(() => {
+    const userIDSvd = localStorage.getItem("userId");
+    setUserId(userIDSvd);
+  }, []);
+
   const fetchNotifications = async () => {
-    const uId = localStorage.getItem("userId"); 
-    // const uId = '6641acffb4bebad804c47b19';
-
     try {
-      const response = await axios.get( 
-          `https://tasty-dog.onrender.com/api/v1/notifications/userNoifications/${uId}`, 
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            }  
-          });
+      const response = await axios.get(
+        `https://tasty-dog.onrender.com/api/v1/notifications/userNoifications/${userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }
+      );
       setNotifications(response.data.notifications);
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
   };
 
+  const fetchMilestones = async () => {
+    try {
+      const response = await axios.post<Milestone[]>(
+        "https://tasty-dog.onrender.com/api/v1/milestones/checkAvailableMilstonesForUser",
+        {
+          userId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          }
+        }
+      );
+      setMilestones(response.data);
+    } catch (error) {
+      console.error("Error fetching milestones:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchNotifications = async () => { 
-      const uId = localStorage.getItem("userId"); 
-      // const uId = '6641acffb4bebad804c47b19';
- 
-      try {
-        const response = await axios.get( 
-            `https://tasty-dog.onrender.com/api/v1/notifications/userNoifications/${uId}`, 
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              }  
-            });
-        setNotifications(response.data.notifications);
-      } catch (error) { 
-        console.error("Error fetching notifications:", error);
-      }
-    };
-
     fetchNotifications();
-  }, []);
+    fetchMilestones();
+  }, [userId]);
 
   const handleButtonClick = (buttonType: string) => {
     setActiveButton(buttonType);
@@ -72,34 +85,15 @@ const Notifications: React.FC = () => {
         {
           headers: {
             "Content-Type": "application/json",
-          },
+          }
         }
       );
-
-      const fetchNotifications = async () => { 
-        const uId = localStorage.getItem("userId"); 
-        // const uId = '6641acffb4bebad804c47b19';
-   
-        try {
-          const response = await axios.get( 
-              `https://tasty-dog.onrender.com/api/v1/notifications/userNoifications/${uId}`, 
-              {
-                headers: {
-                  'Content-Type': 'application/json',
-                }  
-              });
-          setNotifications(response.data.notifications);
-        } catch (error) {
-          console.error("Error fetching notifications:", error);
-        }
-      };
-
-      fetchNotifications(); 
-      
+      fetchNotifications();
     } catch (error) {
       console.error("Error updating notification status:", error);
     }
   };
+
   const filteredNotifications = notifications.filter((item) => {
     if (activeButton === "all") return true;
     if (activeButton === "read" && item.status === "read") return true;
@@ -107,33 +101,32 @@ const Notifications: React.FC = () => {
     return false;
   });
 
+  const leastRemainingOrders = milestones.reduce(
+    (min, milestone) => (milestone.remainingOrders < min ? milestone.remainingOrders : min),
+    Infinity
+  );
+
   return (
     <PageTransition>
       <section className="w-full px-[50px] py-[25px]">
-        <h2 className="text-[24px] font-bold text-detail">notifications</h2>
+        <h2 className="text-[24px] font-bold text-detail">Notifications</h2>
         <div className="w-full flex mt-8 xl:gap-[100px] md:gap-[25px] lg:gap-[50px]">
           <div className="w-[65%] h-full">
             <div className="w-full h-[150px] flex justify-center items-center border border-gray-300 rounded-[20px]">
               <button
-                className={`w-[75px] h-[28px] border border-gray-300 rounded-tl-xl rounded-bl-xl cursor-pointer ${
-                  activeButton === "all" ? "bg-button2 text-white" : ""
-                } text-detail text-[13px] font-medium`}
+                className={`w-[75px] h-[28px] border border-gray-300 rounded-tl-xl rounded-bl-xl cursor-pointer ${activeButton === "all" ? "bg-button2 text-white" : ""} text-detail text-[13px] font-medium`}
                 onClick={() => handleButtonClick("all")}
               >
                 All
               </button>
               <button
-                className={`w-[75px] h-[28px] border border-gray-300 ${
-                  activeButton === "read" ? "bg-button2 text-white" : ""
-                } text-[13px] text-detail font-medium`}
+                className={`w-[75px] h-[28px] border border-gray-300 ${activeButton === "read" ? "bg-button2 text-white" : ""} text-[13px] text-detail font-medium`}
                 onClick={() => handleButtonClick("read")}
               >
                 Read
               </button>
               <button
-                className={`w-[75px] h-[28px] border border-gray-300 rounded-tr-xl rounded-br-xl cursor-pointer ${
-                  activeButton === "unread" ? "bg-button2 text-white" : ""
-                } text-[13px] text-detail font-medium`}
+                className={`w-[75px] h-[28px] border border-gray-300 rounded-tr-xl rounded-br-xl cursor-pointer ${activeButton === "unread" ? "bg-button2 text-white" : ""} text-[13px] text-detail font-medium`}
                 onClick={() => handleButtonClick("unread")}
               >
                 Unread
@@ -167,17 +160,36 @@ const Notifications: React.FC = () => {
                   Loyalty rewards
                 </h2>
               </div>
-              <div className="w-full mt-2 ">
-                <p className="text-[12px] text-inputText capitalize ">
-                  You Are 3 Meals Away From our 10$ Discount
+              {milestones.length === 0 && (
+              <p className="mt-5">No data available</p>
+            )}
+             {milestones.length !=0 && <>
+                <div className="w-full mt-[50px]">
+                <p className="text-16px text-inputText capitalize">
+                  {`You Are ${leastRemainingOrders} Meals Away From our 10$ Discount`}
                 </p>
-                <div className="w-full bg-lightGreen rounded-full h-5 dark:bg-lightGreen mt-[10px] flex justify-between">
-                  <div className="bg-buttonGreen h-5 rounded-full w-[45%] flex justify-between px-[25px]">
-                    <p className="text-[12px] text-white">0</p>
-                  </div>
-                  <p className="text-[12px] mr-[25px]">5</p>
+                <div className="w-full bg-lightGreen rounded-full h-5 dark:bg-lightGreen mt-[10px]">
+                  <div className="bg-buttonGreen h-5 rounded-full" style={{ width: `${(leastRemainingOrders / 5) * 100}%` }}></div>
                 </div>
               </div>
+              <div className="w-full mt-[50px] flex flex-col gap-4">
+                {milestones.map((milestone) => (
+                  <div key={milestone.milestoneId} className="flex w-full px-[30px] py-[30px] bg-lighterGreen shadow-lg">
+                    <div className="w-[90%]">
+                      <h3 className="text-[16px] font-semibold capitalize mb-1">
+                        {milestone.name}
+                      </h3>
+                      <p className="text-[13px] text-inputText">
+                        {milestone.description}
+                      </p>
+                    </div>
+                    <div className="w-[10%] flex items-center justify-center">
+                      <p className="text-[14px] font-medium">{`${milestone.remainingOrders}/${milestone.expectedTotalOrders}`}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              </>}
             </div>
             <div className="w-full px-[25px] py-[25px] rounded-xl shadow-xl">
               <h3 className="text-[16px] font-semibold text-detail capitalize">

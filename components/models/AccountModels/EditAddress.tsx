@@ -5,14 +5,21 @@ import dropIn from "@/utils/motion";
 interface ModalProps {
   open: boolean;
   onClose: () => void; // Add the onClose function prop
+  addressData: {
+    streetAddress: string;
+    aptSuite: string;
+    city: string;
+    state: string;
+    landmark: string;
+  };
 }
 
-const EditAddress: React.FC<ModalProps> = ({ open, onClose }) => {
-  const [streetAddress, setStreet] = useState("Somewhere Street");
-  const [aptSuite, setSuitNo] = useState("2/222");
-  const [city, setCity] = useState("Melourn");
-  const [state, setState] = useState("Melbourn");
-  const [landmark, setLandMark] = useState("Infront of State Hospital");
+const EditAddress: React.FC<ModalProps> = ({ open, onClose, addressData }) => {
+  const [streetAddress, setStreet] = useState(addressData.streetAddress); 
+  const [aptSuite, setSuitNo] = useState(addressData.aptSuite);
+  const [city, setCity] = useState(addressData.city);
+  const [state, setState] = useState(addressData.state);
+  const [landmark, setLandMark] = useState(addressData.landmark);
 
   if (!open) return null;
 

@@ -66,7 +66,11 @@ const Page: React.FC = () => {
                   Loyalty rewards
                 </h2>
               </div>
-              <div className="w-full mt-[50px]">
+              {milestones.length === 0 && (
+              <p className="mt-5">No data available</p>
+            )}
+              {milestones.length !=0 && <>
+                <div className="w-full mt-[50px]">
                 <p className="text-16px text-inputText capitalize">
                   {`You Are ${leastRemainingOrders} Meals Away From our 10$ Discount`}
                 </p>
@@ -91,6 +95,7 @@ const Page: React.FC = () => {
                   </div>
                 ))}
               </div>
+              </>}
             </div>
             
           </div>

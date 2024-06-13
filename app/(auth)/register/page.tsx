@@ -6,7 +6,7 @@ import React, { useRef } from "react";
 import { IoEye } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { signInWithGoogle, signInWithFacebook } from '../../auth';
+import { signInWithGoogle, signInWithFacebook, signUpWithGoogle } from '../../auth';
 
 interface ModalProps {
   open: boolean;
@@ -101,16 +101,21 @@ const Register = () => {
       return true;
     }
   };
+  
 
   const handleGoogleSignIn = async () => {
     try {
-      const user = await signInWithGoogle();
+      const success = await signUpWithGoogle();
+      if (success) { 
+        router.push(`/home`);  
+      }
       console.log('User signed in with Google:', user);
-      router.push(`/home`);  
     } catch (error) {
       setError('Google Sign-In failed');
     }
   };
+
+
 
   const handleFacebookSignIn = async () => {
     try {

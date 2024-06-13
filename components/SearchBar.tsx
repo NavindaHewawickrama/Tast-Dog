@@ -118,6 +118,11 @@ return (
       type="text"
       value={query}
       onChange={handleInputChange}
+       onKeyPress={(event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  }}
       placeholder="Search Foods"
       className="w-[92%] outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
     />

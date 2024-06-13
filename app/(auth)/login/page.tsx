@@ -57,9 +57,11 @@ const Login = () => {
 
     const handleGoogleLogIn = async () => {
       try {
-        const user = await logInWithGoogle();
-        console.log('User signed in with Google:', user);
-        router.push(`/home`);  
+        const success = await logInWithGoogle();
+        console.log('User signed in with Google:', success);
+        if (success) {
+          router.push(`/home`);  
+        }
       } catch (error) {
         setError('Google Sign-In failed');
       }
@@ -157,7 +159,7 @@ const Login = () => {
             </div>
           </div>
           <p className="text-center text-[12px] mt-20 mb-[-50px] text-copyrightText">
-            Developed by Foxtxcore
+            Developed by FoxtXcore
           </p>
         </div>
         <div className="w-[50%] flex flex-col items-center justify-center bg-auth-pattern"></div>

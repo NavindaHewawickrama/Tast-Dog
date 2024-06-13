@@ -221,7 +221,7 @@ const MyAccount = () => {
                 className="w-[91px] h-[31px] bg-none border-2 border-button2 text-[14px] text-center rounded-xl transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
                 onClick={() => setUpdateAccountModal(true)}
               >
-                Edits
+                Edit
               </button>
             </div>
             <div className="w-full h-[90px] shadow-xl  flex justify-center items-center gap-10">
@@ -257,7 +257,7 @@ const MyAccount = () => {
                   <div className="w-[377px] h-full px-[50px] py-[25px] bg-orangeLight " key={address._id}>
                     <div className="w-full flex justify-between">
                       <p className="text-[14px] text-inputText capitalize">
-                        default delivery access
+                        
                       </p>
                       <p
                         className="text-[14px] text-button2 underline cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.1] "
@@ -360,9 +360,11 @@ const MyAccount = () => {
       />
       <AddNewAddress open={newAddress} onClose={() => setNewAddress(false)} />
       <ChangeAddress
-        open={changeAddress}
-        onClose={() => setChangeAddress(false)}
-      />
+      open={changeAddress}
+      onClose={() => setChangeAddress(false)}
+      addresses={address1}
+    />
+
     </>
   );
 };

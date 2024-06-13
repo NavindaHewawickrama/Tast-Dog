@@ -139,7 +139,7 @@ const Login = () => {
             </div>
           </div>
           <p className="text-center text-[12px] mt-20 mb-[-50px] text-copyrightText">
-            Developed by Foxtxcore
+            Developed by FoxtXcore
           </p>
         </div>
         <div className="lg:w-[50%] md:w-[40%] flex flex-col md:h-screen items-center justify-center bg-auth-pattern bg-cover bg-no-repeat bg-center"></div>

@@ -25,7 +25,7 @@ export const signInWithGoogle = async () => {
         password: '', 
         emailOrPhoneNumber,
         profilePhoto: profilePhotoUrl,
-        isSocialMedia: false,
+        isSocialMedia: true,
       }, {
         headers: {
           'Content-Type': 'application/json',
@@ -55,6 +55,136 @@ export const signInWithGoogle = async () => {
     throw error;
   } 
 };
+
+export const signUpWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider); 
+    const user = result.user;
+
+    const fullName = user.displayName || '';
+    const emailOrPhoneNumber = user.email || '';
+    const profilePhotoUrl = user.photoURL || '';
+
+    console.log('emailOrPhoneNumber', emailOrPhoneNumber )
+
+    const responseFirst = await fetch("https://tasty-dog.onrender.com/api/v1/customers/verifyOtp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        emailOrPhoneNumber: emailOrPhoneNumber,
+        otp: '',
+      }),
+    });
+
+    if(responseFirst.status === 404){
+      const response = await axios.post('https://tasty-dog.onrender.com/api/v1/customers/register', {
+        fullName,
+        password: '', 
+        emailOrPhoneNumber,
+        profilePhoto: profilePhotoUrl,
+        isSocialMedia: true,
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }); 
+  
+      console.log(response.status); // Logs the status code
+    console.log(response.data); // Logs the response data
+
+    
+
+      if (response.status !== 201) { 
+        alert(`Registration failed: ${response.data.message}`);
+        throw new Error('Registration failed');
+      } else {
+       
+        try{
+          const response = await axios.post('https://tasty-dog.onrender.com/api/v1/customers/login', {
+            emailOrPhoneNumber,
+            password: '' 
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          });
+  
+          
+      
+          console.log(response.status); 
+          console.log(response.data);
+      
+          if (response.status === 200) { 
+            const data = response.data;
+      
+            console.log('Login successful:', data);
+            window.alert("Sign in Successful"); 
+            localStorage.setItem("userEmail", data.customer.emailOrPhoneNumber);
+            localStorage.setItem("pwReg", '');
+            console.log('done');
+            localStorage.setItem("userName", data.customer.fullName || ''); 
+            localStorage.setItem("profilePhotoUrl", data.customer.profilePhotoUrl || '');
+            localStorage.setItem("userId", data.customer._id);
+            return true;
+          } else {
+            throw new Error('Sign in failed');
+          }
+        } catch (error) {
+          console.error('Error signing in with Google:', error);
+          window.alert('Sign in failed: ' + error.message);
+          return false;
+        }
+        
+      }
+    }else if(responseFirst.status === 400){
+
+      console.log(emailOrPhoneNumber);
+      try{
+        const response = await axios.post('https://tasty-dog.onrender.com/api/v1/customers/login', {
+          emailOrPhoneNumber,
+          password: '' 
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+
+        
+    
+        console.log(response.status); 
+        console.log(response.data);
+    
+        if (response.status === 200) { 
+          const data = response.data;
+    
+          console.log('Login successful:', data);
+          window.alert("Sign in Successful"); 
+          localStorage.setItem("userEmail", data.customer.emailOrPhoneNumber);
+          localStorage.setItem("pwReg", '');
+          console.log('done');
+          localStorage.setItem("userName", data.customer.fullName || ''); 
+          localStorage.setItem("profilePhotoUrl", data.customer.profilePhotoUrl || '');
+          localStorage.setItem("userId", data.customer._id);
+          return true;
+        } else {
+          throw new Error('Sign in failed');
+        }
+      } catch (error) {
+        console.error('Error signing in with Google:', error);
+        window.alert('Sign in failed: ' + error.message);
+        return false;
+      }
+    }  
+    return result.user;
+  } catch (error) {
+    console.error("Error signing in with Google: ", error);
+    throw error;
+  } 
+};
+
+
  
 export const signInWithFacebook = async () => {
   try {
@@ -100,41 +230,42 @@ export const signInWithFacebook = async () => {
 
 
 export const logInWithGoogle = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = result.user;
-  
-      const emailOrPhoneNumber = user.email || '';
-  
-      const response = await axios.post('https://tasty-dog.onrender.com/api/v1/customers/login', {
-        emailOrPhoneNumber,
-        password: '' 
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-  
-      console.log(response.status); 
-      console.log(response.data);
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
 
-      if (response.status === 200) {
-        const data = response.data;
-  
-        console.log('Login successful:', data);
-        window.alert("Sign in Successful"); 
-        localStorage.setItem("userEmail", data.customer.emailOrPhoneNumber);
-        localStorage.setItem("pwReg", '');
-        console.log('done');
-        localStorage.setItem("userName", data.customer.fullName || ''); 
-        localStorage.setItem("profilePhotoUrl", data.customer.profilePhotoUrl || '');
-        localStorage.setItem("userId", data.customer._id);
-        router.push(`/home`);
-      } else {
-        throw new Error('Sign in failed');
+    const emailOrPhoneNumber = user.email || '';
+
+    const response = await axios.post('https://tasty-dog.onrender.com/api/v1/customers/login', {
+      emailOrPhoneNumber,
+      password: '' 
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
       }
-    } catch (error) {
-      console.error('Error signing in with Google:', error);
-      window.alert('Sign in failed: ' + error.message);
+    });
+
+    console.log(response.status); 
+    console.log(response.data);
+
+    if (response.status === 200) {
+      const data = response.data;
+
+      console.log('Login successful:', data);
+      window.alert("Sign in Successful"); 
+      localStorage.setItem("userEmail", data.customer.emailOrPhoneNumber);
+      localStorage.setItem("pwReg", '');
+      console.log('done');
+      localStorage.setItem("userName", data.customer.fullName || ''); 
+      localStorage.setItem("profilePhotoUrl", data.customer.profilePhotoUrl || '');
+      localStorage.setItem("userId", data.customer._id);
+      return true;
+    } else {
+      throw new Error('Sign in failed');
     }
-  };
+  } catch (error) {
+    console.error('Error signing in with Google:', error);
+    window.alert('Sign in failed: ' + error.message);
+    return false;
+  }
+};

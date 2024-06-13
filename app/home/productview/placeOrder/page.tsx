@@ -130,6 +130,7 @@ const PlaceOrder = () => {
                   Loyalty Progress
                 </h3>
               </div>
+              
               <div className="w-full flex flex-col gap-1 mt-2">
                 <p className="text-[14px] text-inputText capitalize">
                   You Are 3 Meals Away From our 10$ Discount

@@ -2,6 +2,16 @@ import React,{useState, useEffect} from "react";
 import { DiVim } from "react-icons/di";
 import { HiGiftTop } from "react-icons/hi2";
 import { AiOutlinePercentage } from "react-icons/ai";
+import axios from "axios";
+
+interface Milestone {
+  milestoneId: string;
+  name: string;
+  description: string;
+  remainingOrders: number;
+  expectedTotalOrders: number;
+}
+
 
 const OrderSummery = () => {
   const [totalPriceCart, setTotalPriceCart] = useState("");
@@ -10,6 +20,13 @@ const OrderSummery = () => {
   const [promoCodeData, setpromoCodeData] = useState<any[]>([]);
   const [discount, setDiscount]=useState<GLfloat | null>(null);
   const [finalTotal, setFinalTotal] = useState("");
+  const [milestones, setMilestones] = useState<Milestone[]>([]);
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const userIDSvd = localStorage.getItem("userId");
+    setUserId(userIDSvd);
+  }, []);
 
   
 
@@ -50,13 +67,35 @@ const OrderSummery = () => {
     
   }
 
+  const fetchMilestones = async () => {
+    try {
+      if (userId) {
+        const response = await axios.post<Milestone[]>(
+          "https://tasty-dog.onrender.com/api/v1/milestones/checkAvailableMilstonesForUser",
+          {
+            userId,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setMilestones(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching milestones:", error);
+    }
+  };
+
   useEffect(()=>{
     if (typeof window !== 'undefined') {
     const totalPrice = localStorage.getItem("totalPriceCart") ?? "";
     setTotalPriceCart(totalPrice);
+    fetchMilestones();
     }
     // handleCalculations();
-  },[])
+  },[userId])
 
   const handleCalculations = () => {
     const price = parseFloat(totalPriceCart); 
@@ -98,17 +137,33 @@ const OrderSummery = () => {
           Loyalty Progress
         </h3>
       </div>
-      <div className="w-full flex flex-col gap-1 mt-2">
-        <p className="text-[14px] text-inputText capitalize">
-          You Are 3 Meals Away From our 10$ Discount
-        </p>
-        <div className="w-full bg-lightGreen rounded-full h-5 dark:bg-lightGreen mt-[10px] flex justify-between">
-          <div className="bg-buttonGreen h-5 rounded-full w-[45%] flex justify-between   px-[25px]">
-            <p className="text-[12px] text-white">0</p>
-          </div>
-          <p className="text-[12px] mr-[25px]">5</p>
-        </div>
-      </div>
+      {milestones.length === 0 && (
+              <p className="mt-5">No data available</p>
+            )}
+     {milestones.length !=0 &&  <div className="mt-10 w-full flex flex-col gap-2 px-4">
+          <h3 className="capitalize text-white font-semibold text-[15px] font-sans">
+            Milestones
+          </h3>
+          {milestones.length === 0 && (
+            <p className="text-white text-[13px]">No milestones available</p>
+          )}
+          {milestones.map((milestone) => (
+            <div
+              key={milestone.milestoneId}
+              className="flex flex-col bg-lighterGreen p-2 rounded-lg shadow-lg mt-2"
+            >
+              <h4 className="text-[14px] font-medium text-white">
+                {milestone.name}
+              </h4>
+              <p className="text-[12px] text-white">
+                {milestone.description}
+              </p>
+              <p className="text-[12px] text-white">
+                {`Remaining Orders: ${milestone.remainingOrders}/${milestone.expectedTotalOrders}`}
+              </p>
+            </div>
+          ))}
+          </div>}
       <div className="w-full h-full mx-auto mt-[70px]">
         <h3 className="text-[20px] font-semibold capitalize">Order Summery</h3>
         <div className="flex flex-col justify-center gap-1 mt-4">
