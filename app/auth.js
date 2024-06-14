@@ -26,6 +26,7 @@ export const signInWithGoogle = async () => {
         emailOrPhoneNumber,
         profilePhoto: profilePhotoUrl,
         isSocialMedia: true,
+        isVerified: true
       }, {
         headers: {
           'Content-Type': 'application/json',
@@ -85,6 +86,7 @@ export const signUpWithGoogle = async () => {
         emailOrPhoneNumber,
         profilePhoto: profilePhotoUrl,
         isSocialMedia: true,
+        isVerified: true
       }, {
         headers: {
           'Content-Type': 'application/json',
