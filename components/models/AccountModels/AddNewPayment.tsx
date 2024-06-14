@@ -103,10 +103,10 @@ const AddNewPayment: React.FC<ModalProps> = ({ open, onClose }) => {
                 <BsCreditCard className=" text-[20px]  text-white" />
                 Credit/Debit Card
               </button>
-              <button className="w-[224px] h-[48px] flex text-center bg-none text-black border border-gray-400 justify-center items-center rounded-[4px] gap-3">
+              {/* <button className="w-[224px] h-[48px] flex text-center bg-none text-black border border-gray-400 justify-center items-center rounded-[4px] gap-3">
                 <FaPaypal className="text-[20px] text-blue-900" />
                 PayPal
-              </button>
+              </button> */}
             </div>
           </div>
           <div className="w-full flex flex-col justify-center mt-10 ">

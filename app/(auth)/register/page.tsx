@@ -109,7 +109,7 @@ const Register = () => {
       if (success) { 
         router.push(`/home`);  
       }
-      console.log('User signed in with Google:', user);
+      console.log('User signed in with Google:',);
     } catch (error) {
       setError('Google Sign-In failed');
     }

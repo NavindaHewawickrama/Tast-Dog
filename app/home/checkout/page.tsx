@@ -127,6 +127,8 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
   
     for (const element of cartItems) {
       try {
+
+        console.log('element', element.quantity);
         const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/item/${element._id}`);
         const data = await response.json();
   
@@ -134,7 +136,7 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
           console.log(data.message || "An error occurred while fetching shop details.");
         } else {
           // window.alert("Shop details retrieved successfully."); // Informative message
-          await handleOrderDetails(data.shopId, element._id, data.soldQty, element.price, secret);
+          await handleOrderDetails(data.shopId, element._id, element.quantity, element.price, secret);
         }
       } catch (error) {
         console.error("Error fetching shop details:", error);
@@ -165,7 +167,7 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
         userName, 
         orderItems, 
         orderAddress, 
-      };
+      }; 
       console.log('request body is ', requestBody);
   
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/payments/placeOrder`, {
@@ -182,6 +184,7 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
       }
       console.log("Order placed successfully");
       sessionStorage.removeItem("cartItems");   
+      localStorage.removeItem("cartItems");
       window.alert("Payment success");
     } catch (error) {
       console.error("An error occurred while placing order:", error);

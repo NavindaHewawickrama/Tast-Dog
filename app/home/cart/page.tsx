@@ -31,6 +31,7 @@
       });
       total = parseFloat(total.toFixed(2));
       setTotalPrice(total);
+      localStorage.setItem("totalPriceCart", total.toFixed(2));
     }, [cartItems]);
  
 

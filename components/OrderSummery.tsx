@@ -32,13 +32,15 @@ const OrderSummery = () => {
   
 
   const handlePromoCode =async()=>{
+    console.log("Redeem button clicked"); // Debugging line
     if (typeof window !== 'undefined') {
       const promoCodeShopID = sessionStorage.getItem("promoCodeShopId");
       try{
         const response = await fetch(`https://tasty-dog.onrender.com/api/v1/promocodes/promocodes/getPromoCodesByShopId/${promoCodeShopID}`);
         const data = await response.json();
-        if(!response){
-          console.log("error");
+        console.log('data', data);
+        if(!response || data.length === 0){
+          alert('Invalid promo or expired');
         }else{
           setpromoCodeData(data);
           validatePromoCode();
@@ -99,7 +101,8 @@ const OrderSummery = () => {
   //final price of the products
   const handleCalculations = () => {
     const price = parseFloat(totalPriceCart); 
-    var total = price - parseFloat(deliveryFee); 
+    var totalNew = price + parseFloat(deliveryFee); 
+    var total = Math.round(totalNew * 100) / 100;
     if(discount != null){
       total = total - total*(discount/100);
       total = Math.round(total * 100) / 100;
