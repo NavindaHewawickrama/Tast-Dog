@@ -21,7 +21,7 @@ const NearbyShops = () => {
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/shops/shops/getTopRatedShops",{method:"POST"});
       const data = await response.json();
-      //console.log(data);
+      console.log('shops are', data);
       if(!response.ok){
         console.log(data.message || "An error occurred.");
       }else{
@@ -45,7 +45,7 @@ const NearbyShops = () => {
   return (
     <div className="mt-[50px] w-full overflow-hidden ">
       <h2 className="capitalize text-[24px] font-bold mb-[20px]">
-        shops nearby
+       Top Rated Shops
       </h2>
       <div className="md:hidden xl:flex">
         <Swiper
@@ -105,19 +105,20 @@ const NearbyShops = () => {
                     src={item.imageUrl}
                     alt={item.name}
                     width={85}
-                    height={85}
+                    height={85} 
                     className="w-full h-full "
                   />
                 </div>
                 <h3 className="font-semibold text-[16.65px] text-primary">
                   {item.name}
-                </h3>
-                <div className="flex flex-row items-center gap-0.5  ">
-                  <IoStar className="w-[13px] h-[13px] text-ratings" />
-                  <IoStar className="w-[13px] h-[13px] text-ratings" />
-                  <IoStar className="w-[13px] h-[13px] text-ratings" />
-                  <IoStar className="w-[13px] h-[13px] text-ratings" />
-                  <IoMdStarOutline className="w-[13px] h-[13px] text-ratings" />
+                </h3> 
+                <div className="flex flex-row items-center gap-0.5">
+                  {[...Array(Math.floor(item.averageRating))].map((_, index) => (
+                    <IoStar key={index} className="w-[13px] h-[13px] text-ratings" />
+                  ))}
+                  {[...Array(5 - Math.floor(item.averageRating))].map((_, index) => (
+                    <IoMdStarOutline key={index} className="w-[13px] h-[13px] text-ratings" />
+                  ))}
                 </div>
               </div>
             </SwiperSlide>
