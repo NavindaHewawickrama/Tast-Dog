@@ -1,6 +1,6 @@
 "use client";
+//#region imports
 import React, { useState,useEffect } from "react";
-// import TopFoods from "@/constants/TopFoods";
 import Image from "next/image";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa6";
@@ -9,8 +9,11 @@ import { useRouter } from "next/navigation";
 import AddToCart from "./models/AddToCart";
 import PageTransition from "./PageTransition";
 import { GrFormNextLink } from "react-icons/gr";
+import { LiaFileImportSolid } from "react-icons/lia";
+//#endregion
 
 const FavoriteFoods = () => {
+  //#region states
   const router = useRouter();
 
   const [toggle, setToggle] = useState(false);
@@ -24,6 +27,7 @@ const FavoriteFoods = () => {
   useEffect(() => {
     handleTopRatedFoods();
   }, []);
+  //#endregion
 
   const handleTopRatedFoods = async () => {
     try{
