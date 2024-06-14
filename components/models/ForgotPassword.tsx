@@ -82,7 +82,7 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
       const data = await response.json();
   
       if (!response.ok) {
-        window.alert(data.message || "Invalid contact info");
+        window.alert("Invalid contact info");
         console.log(response);
       } else {
         window.alert("OTP Correct");

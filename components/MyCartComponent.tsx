@@ -24,7 +24,7 @@ const MyCartComponent: React.FC<MyCartComponentProps> = ({
         >
           <div className="flex gap-7 items-center">
             <Image
-              src={item.itemImages}
+              src={item.itemImages?item.itemImages:item.itemPhoto}
               alt="order_image"
               width={125}
               height={125}

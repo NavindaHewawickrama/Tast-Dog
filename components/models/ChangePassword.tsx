@@ -37,8 +37,7 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
             if(!response){
               window.alert("Something went wrong"); console.log(data);
             }else{
-              window.alert(data.toString());
-          
+              window.alert("Password Changed !!! ");
             }
           }catch(e){
             console.log(e);
