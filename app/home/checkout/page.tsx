@@ -20,13 +20,33 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
   const [userId, setUserId] = useState<string | null>("");
   const [userName, setUserName] = useState<string | null>("");
   const [addressBuyer, setAddressBuyer] = useState<string | null>("");
+  const [address1, setAddress1] = useState<any | null>([]);
+
+  const getUserAddress = async () => {
+
+    console.log('hello'); 
+    const id = localStorage.getItem("userId");
+    try{
+      const response2 = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/${id}`);
+      const data = await response2.json();
+      console.log(data);
+      if(!response2.ok){
+        window.alert("Some kind of problem occured. Please try again.");
+        console.log(data);
+      }else{
+        const addressString = `${data[0].userName}, ${data[0].aptSuite}, ${data[0].city},${data[0].landmark},${data[0].state},${data[0].streetAddress}`;
+        setAddress1(addressString);  
+      }
+    }catch(error){
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     const userIDSvd = localStorage.getItem("userId");
     const userNameSvd = localStorage.getItem("userName");
-    const address = localStorage.getItem("buyerAddress");
-    setAddressBuyer(address);
-    setUserName(userName);
+    getUserAddress();
+    setUserName(userNameSvd);
     setUserId(userIDSvd);
   },[]);
 
@@ -34,10 +54,10 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
     // const totalAmount = '1000';
     //To the payment success need to call two api calls.
     //1st call is to make payment and get the client secret key and reduce total amount feom user bank account
-    //2nd call is if 1stapi call sucess then to make order and send the order details to the database.
+    //2nd call is if 1stapi call sucess then to make order and send the order details to the data[0]base.
 
     //MakePayment (1st Request)
-    console.log(addressBuyer);
+    console.log('address', address1);
     try {
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/orders/makePayment", {
         method: "POST",
@@ -137,20 +157,20 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
       // Push the order item object into the orderItems array
       orderItems.push(orderItem);
       
-      const orderAddress = {addressBuyer};
+      const orderAddress = address1; 
   
       const requestBody = {
         paymentIntentId: secret,
         userId,
-        userName,
+        userName, 
         orderItems, 
-        orderAddress,
+        orderAddress, 
       };
-      console.log(requestBody);
+      console.log('request body is ', requestBody);
   
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/payments/placeOrder`, {
         method: "POST",
-        headers: {
+        headers: { 
           "Content-type": "application/json",
         },
         body: JSON.stringify(requestBody),
@@ -161,8 +181,8 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
         return;
       }
       console.log("Order placed successfully");
+      sessionStorage.removeItem("cartItems");   
       window.alert("Payment success");
-      sessionStorage.removeItem("cartItems");  
     } catch (error) {
       console.error("An error occurred while placing order:", error);
     }

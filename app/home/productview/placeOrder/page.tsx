@@ -70,8 +70,10 @@ const handlePrice = (price:any)=>{
 const handleCheckout=()=>{
   if(address1.length == 1){
     localStorage.setItem("buyerAddress", address1);
+    console.log('address1', address1)
   }else{
     localStorage.setItem("buyerAddress", address1[0]);
+    console.log('address[0]1',address1[0] ); 
   }
 
 
@@ -190,21 +192,21 @@ const handleCheckout=()=>{
                   Order Summery
                 </h3>
                 {product.length > 0 && (product.map((item: any) => (
-                <div className="flex flex-col justify-center gap-1 mt-4">
-                  <div className="flex justify-between">
-                    <p className="text-[15px] text-detail">Item’s Total</p>
-                    <p className="text-[15px] text-detail">${item.price}</p>
+                  <div key={item.id} className="flex flex-col justify-center gap-1 mt-4"> {/* Added key prop here */}
+                    <div className="flex justify-between">
+                      <p className="text-[15px] text-detail">Item’s Total</p>
+                      <p className="text-[15px] text-detail">${item.price}</p>
+                    </div>
+                    <div className="flex justify-between">
+                      <p className="text-[15px] text-detail">Delivery Fees</p>
+                      <p className="text-[15px] text-detail">$1.99</p>
+                    </div>
+                    <div className="flex justify-between">
+                      <p className="text-[15px] text-detail">Total Payment</p>
+                      <p className="text-[15px] text-detail">${handlePrice(item.price)}</p>
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <p className="text-[15px] text-detail">Delivery Fees</p>
-                    <p className="text-[15px] text-detail">$1.99</p>
-                  </div>
-                  <div className="flex justify-between">
-                    <p className="text-[15px] text-detail">Total Payment</p>
-                    <p className="text-[15px] text-detail">${handlePrice(item.price)}</p>
-                  </div>
-                </div>
-                )     ))}
+                )))}
               </div>
               <Link
                 href={"/home/checkout"}
