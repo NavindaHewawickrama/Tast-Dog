@@ -52,7 +52,6 @@ const PlaceOrder = () => {
         console.log(data);
       }else{
         setAddress1(data);  
-        console.log(buyingProduct);
       }
     }catch(error){
       console.error(error);

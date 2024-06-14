@@ -15,7 +15,9 @@ const FavoriteFoods = () => {
 
   const [toggle, setToggle] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-
+  const [shopName, setShopName] = useState<any| null>(null);
+  const [shopImage, setShopImage] = useState<any | null>(null);
+  const [shopId, setShopId] = useState<any | null>(null);
   const [visibleItems, setVisibleItems] = useState<any[]>([]);
 
 
@@ -62,6 +64,7 @@ const FavoriteFoods = () => {
         localStorage.setItem("shopId",data.shopId);
         // console.log("Hi");
         // console.log(data.shopId);
+        setShopId(data.shopId);
         handleShopData(data.shopId);
         // router.push("/home/shopview");
       }
@@ -78,15 +81,35 @@ const FavoriteFoods = () => {
         console.log(data.message || "An error occurred.");
       }else{
         localStorage.setItem("shopName",data.name);
+        setShopName(data.name);
         localStorage.setItem("shopImage",data.profilePhoto);
+        setShopImage(data.profilePhoto);
         router.push("/home/shopview");
       }
-    }catch{
-
+    }catch(e){
+      console.log(e);
     }
   }
 
-  const handleProductViewClick = (id: string) => {
+  const handleProductViewClick = async(id: string) => {
+    //getting the shopname and Image
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/item/${id}`);
+      const data = await response.json();
+      if(!response.ok){
+        console.log(data.message || "An error occurred.");
+      }else{
+        setShopId(data.shopId);
+        const response2 = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shops/${data.shopId}`);
+        const data2 = await response2.json();
+        if(!response2.ok){
+          console.log(data2.message || "An error occurred.");
+        }else{
+          setShopName(data2.name);
+          setShopImage(data2.profilePhoto);
+          localStorage.setItem("shopName",data2.name);
+          localStorage.setItem("shopImage",data2.profilePhoto);
+        }
+      }
     localStorage.setItem("productIDFavouriteFoods", id);
     router.push("/home/productview");
   };

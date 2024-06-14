@@ -159,10 +159,13 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
       if (!response.ok) {
         console.error("Error placing order:", response.statusText);
         return;
-      }
-      console.log("Order placed successfully");
+      }else{
+        console.log("Order placed successfully");
       window.alert("Payment success");
-      sessionStorage.removeItem("cartItems");  
+      sessionStorage.removeItem("cartItems"); 
+      
+      }
+       
     } catch (error) {
       console.error("An error occurred while placing order:", error);
     }
