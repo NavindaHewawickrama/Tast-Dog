@@ -91,7 +91,17 @@ const fetchApiCall = async (id: any) => {
   };
 
 
-  const handleToggle = () => {
+  const handleToggle = (id: any) => {
+    console.log(id);
+    const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+    const existingItemIndex = cartItems.findIndex((item: any) => item._id === id._id);
+    if(existingItemIndex === -1){
+      cartItems.push(id);
+    }else{
+      cartItems[existingItemIndex].quantity += 1;
+    }
+    console.log(cartItems);
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
     setToggle(true);
   };
 
@@ -148,7 +158,7 @@ const fetchApiCall = async (id: any) => {
                         <button
                           onClick={(e) => {
                             e.stopPropagation(); // Prevent event bubbling to parent div
-                            handleToggle();
+                            handleToggle(item);
                           }}
                           className="w-[86px] h-[27px] flex justify-center items-center bg-button2 rounded-xl text-[10px] text-white gap-2 transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
                         >

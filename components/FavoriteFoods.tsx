@@ -44,17 +44,16 @@ const FavoriteFoods = () => {
     }
   }
 
-  const handleToggle = (id: string) => {
-    // Retrieve the existing cart items array from localStorage
+  const handleToggle = (id: any) => {
+    console.log(id);
     const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
-
-    // Add the new item ID to the cart items array
-    cartItems.push(id);
-
-    // Store the updated cart items array back in localStorage
+    const existingItemIndex = cartItems.findIndex((item: any) => item._id === id._id);
+    if(existingItemIndex === -1){
+      cartItems.push(id);
+    }else{
+      cartItems[existingItemIndex].quantity += 1;
+    }
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
-
-    // Set the toggle state to open the AddToCart component
     setToggle(true);
   };
 
