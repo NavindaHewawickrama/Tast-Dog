@@ -18,6 +18,7 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
   const [clientSecret, setClientSecret] = useState<any>("");
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [userId, setUserId] = useState<string | null>("");
+  const [deviceToken, setDeviceToken] = useState<string | null>("");
   const [userName, setUserName] = useState<string | null>("");
   const [addressBuyer, setAddressBuyer] = useState<string | null>("");
   const [address1, setAddress1] = useState<any | null>([]);
@@ -45,9 +46,11 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
   useEffect(() => {
     const userIDSvd = localStorage.getItem("userId");
     const userNameSvd = localStorage.getItem("userName");
+    const deviceTokenSvd = localStorage.getItem("deviceToken");
     getUserAddress();
     setUserName(userNameSvd);
     setUserId(userIDSvd);
+    setDeviceToken(deviceTokenSvd);
   },[]);
 
   const handlePayment = async () => {
@@ -167,6 +170,7 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
         userName, 
         orderItems, 
         orderAddress, 
+        deviceToken,
       }; 
       console.log('request body is ', requestBody);
   
