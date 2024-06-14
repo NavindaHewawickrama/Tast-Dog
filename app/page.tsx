@@ -9,13 +9,6 @@ import { toast, ToastContainer } from "react-toastify";
 
 export default function Home() {
 
-  // useEffect(() => {
-  //   onMessage(messaging, (payload) => {
-  //     const { title, body, image } = payload.notification;
-  //     toast(<Message notification={{ title, body, image }} />);
-  //   });
-  // }, []);
-
   return (
     <>
       <Login />

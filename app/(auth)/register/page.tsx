@@ -290,7 +290,7 @@ const Register = () => {
             </div>
           </div>
           <p className="text-center text-[12px] mt-12 text-lightGray">
-            Developed by Foxtxcore
+            Developed by FoxtXcore
           </p>
           <div className="absolute top-[-70px] left-[-215px] rotate-[-25deg] opacity-30">
             <Image

@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useRef } from "react";
 import { useState } from "react";
 import { IoEye } from "react-icons/io5";
 import ForgotPassword from "@/components/models/ForgotPassword";
-import { useRouter } from "next/navigation";
 import { signInWithGoogle, signInWithFacebook, logInWithGoogle } from '../../auth';
+import { useRouter } from "next/navigation";
+
 
 
 const Login = () => {
@@ -15,8 +16,14 @@ const Login = () => {
   const [openModel, setOpenModel] = useState(false);
   const [password, setPassword] = useState("");
   const [emailOrPhoneNumber, setEmailOrPhoneNumber] = useState("");
+  const [nextModel, setNextModel] = useState(true);
   const [error, setError] = useState("");
+  const [otp, setOtp] = useState<any>(null);
+  const [enteredCode, setEnteredCode] = useState("");
   console.log(openModel);
+
+  const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
 
   const handleLogin = async () => {
     try{
@@ -31,6 +38,7 @@ const Login = () => {
         }),
       });
       const data = await response.json();
+      console.log('response', data);
       localStorage.setItem("userEmail", emailOrPhoneNumber);
       localStorage.setItem("pwReg", password);
       if(!response.ok){
@@ -38,7 +46,30 @@ const Login = () => {
         window.alert("Login UnSuccessful");
         console.log(data);
       }else{
-        localStorage.setItem("token", data.token);
+        if(data.customer.isVerified === false){
+          setNextModel(false);
+          try {
+            const response = await fetch(`https://tasty-dog.onrender.com/api/v1/customers/forgotPassword`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                emailOrPhoneNumber: emailOrPhoneNumber,
+              }),
+            });
+            const data = await response.json();
+            if (!response.ok) {
+              throw new Error(data.message || "Failed to request password reset.");
+            }
+            // Handle success scenario, e.g., showing a message to the user
+            console.log("Password reset request successful", data);
+          } catch (error) {
+            console.error("Failed to request password reset", error);
+            setError("Failed to request password reset. Please try again later.");
+          }
+        }else{
+          localStorage.setItem("token", data.token);
         // localStorage.setItem("userId", data.customer._id);
         // console.log(data.customer._id);
         window.alert("Login Successful");
@@ -48,11 +79,18 @@ const Login = () => {
 
         console.log(data.customer.fullName);
         router.push("/home"); 
+        }
       }
     }catch(error){
       setError("An error occurred. Please try again later.");
     }
     
+    };
+
+    const focusNextInput = (index: number) => {
+      if (inputRefs.current[index + 1]) {
+        inputRefs.current[index + 1]?.focus();
+      }
     };
 
     const handleGoogleLogIn = async () => {
@@ -66,10 +104,47 @@ const Login = () => {
         setError('Google Sign-In failed');
       }
     };
+
+    const handleClose = () => {
+      setNextModel(true);
+    };
+
+    const handleVerifyOTP = async () => {
+      try {
+        const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/verifyOtp", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            emailOrPhoneNumber: emailOrPhoneNumber,
+            otp: enteredCode,
+          }),
+        });
+    
+        if (!response.ok) {
+          const errorData = await response.json();
+          window.alert(errorData.message || "Invalid contact info");
+          console.log("Error response:", errorData);
+        } else {
+          const data = await response.json();
+          window.alert("OTP Correct");
+          localStorage.setItem("forgotPasswordEmailorPhoneNumber", emailOrPhoneNumber);
+          // router.push('/delivery');
+          router.push('/home');
+          
+        }
+      } catch (e) {
+        console.log("An error occurred:", e);
+        window.alert("An error occurred. Please try again later.");
+      }
+    };
   return (
     <>
       <div className="w-screen h-screen hidden lg:flex flex-row overflow-hidden">
-        <div className=" relative w-[50%] flex flex-col items-center justify-center shadow-2xl shadow-black overflow-hidden">
+        {nextModel ? (
+          <>
+          <div className=" relative w-[50%] flex flex-col items-center justify-center shadow-2xl shadow-black overflow-hidden">
           <Image src="/Logo.png" alt="logo" width={330} height={94} />
           <div className="w-[444px] flex flex-col items-center justify-center mt-[70px]">
             <h2 className="text-[32px] font-Lato font-bold leading-4 ">
@@ -162,6 +237,80 @@ const Login = () => {
             Developed by FoxtXcore
           </p>
         </div>
+          </>
+        ): (
+          <div className="relative lg:w-[50%] md:w-[60%] flex flex-col items-center justify-center shadow-2xl shadow-black overflow-hidden">
+            <Image src="/Logo.png" alt="logo" width={330} height={94} />
+          <div
+              className="min-w-[400px] md:w-[auto] bg-white px-[45px] py-[25px] rounded-2xl"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <div className="flex flex-row justify-between">
+                <h4 className="text-[15px] font-bold capitalize">
+                  Verify Email
+                </h4>
+                <p
+                  className="text-[15px] cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.3] hover:text-red-600"
+                  onClick={handleClose}
+                >
+                  X
+                </p>
+              </div>
+              <div className=" w-full flex flex-col mt-[50px]">
+                <h4 className="text-[15px] font-medium text-[#000000] capitalize">
+                  Enter the four digit code we sent you at
+                </h4>
+                <p className="text-[14px] text-primary underline">
+                {emailOrPhoneNumber}
+                </p>
+                <p className="text-[12px] text-inputText mt-2 capitalize">
+                  resend attempts:3
+                </p>
+                <div className="flex flex-row gap-4">
+                {[...Array(6)].map((_, index) => (
+                    <div
+                      key={index}
+                      className="w-[81px] h-[81px] bg-inputBlue mt-5 rounded-lg border-2 border-inputBorder"
+                    >
+                      <input
+                        type="text"
+                        maxLength={1}
+                        ref={(el) => (inputRefs.current[index] = el)}
+                        className="w-full outline-none bg-transparent h-full font-normal text-[25px] text-center text-inputText px-4"
+                        onInput={(e) => {
+                          const value = e.currentTarget.value.slice(-1);
+                          setEnteredCode((prev) => {
+                            const newCode = prev.split("");
+                            newCode[index] = value;
+                            return newCode.join("");
+                          });
+                          if (
+                            e.currentTarget.value.length >=
+                            e.currentTarget.maxLength
+                          ) {
+                            focusNextInput(index);
+                          }
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+                <p className="text-[12px] text-green-600 capitalize mt-2">
+                  I didnt recived a call{" "}
+                </p>
+                <button
+                  className="w-full h-[38px] bg-buttonGreen text-white rounded-lg mt-[70px] mb-5 transition-transform duration-300 ease-in-out transform hover:scale-95"
+                  onClick={handleVerifyOTP}
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+            </div>
+            
+          )}
         <div className="w-[50%] flex flex-col items-center justify-center bg-auth-pattern"></div>
       </div>
 
