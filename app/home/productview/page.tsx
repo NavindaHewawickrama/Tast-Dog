@@ -128,9 +128,16 @@ const handleShopId = async (id:any) =>{
   };
 
   //updating cart items in localstorage
-  const handleToggle =(id: string)=>{
+  const handleToggle =(id: any)=>{
+    console.log(id);
     const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
-    cartItems.push(id);
+    const existingItemIndex = cartItems.findIndex((item: any) => item._id === id._id);
+    if(existingItemIndex === -1){
+      cartItems.push({ ...id, itemImages: id.itemImages[0] });
+    }else{
+      cartItems[existingItemIndex].quantity += 1;
+    }
+    console.log(cartItems);
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
     setToggle(true);
   };
@@ -220,7 +227,7 @@ const handleShopId = async (id:any) =>{
                           buy now
                         </button>
                         <button
-                          onClick={() => handleToggle(foodData?._id)}
+                          onClick={() => handleToggle(foodData)}
                           className="w-full h-[45px] text-center text-button2 bg-none text-20px capitalize rounded-xl border-2 border-button2 transition-transform duration-300 ease-in-out transform hover:scale-95"
                         >
                           add to cart

@@ -96,7 +96,7 @@ const fetchApiCall = async (id: any) => {
     const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
     const existingItemIndex = cartItems.findIndex((item: any) => item._id === id._id);
     if(existingItemIndex === -1){
-      cartItems.push(id);
+      cartItems.push({ ...id, itemImages: id.itemImages[0] });
     }else{
       cartItems[existingItemIndex].quantity += 1;
     }
