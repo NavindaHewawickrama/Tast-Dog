@@ -1,10 +1,11 @@
 "use client";
 import Message from "@/components/Message";
 import Navbar from "@/components/Navbar";
+import Notification from "@/components/Notification";
 import Sidebar from "@/components/Sidebar";
 import { messaging } from "@/firebaseConfig";
 import { getToken, onMessage } from "firebase/messaging";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 
 export default function HomeLayout({
@@ -12,6 +13,13 @@ export default function HomeLayout({
 }: {
   children: React.ReactNode;
 }) {
+
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState({
+    message: "",
+    link: "",
+    linkText: "",
+  });
 
   useEffect(() => {
     
@@ -24,7 +32,7 @@ export default function HomeLayout({
       console.log('Requesting permission...');
       try {
         console.log('Permission:');
-        const permission = await Notification.requestPermission();
+        const permission = await window.Notification.requestPermission();
         
         if (permission === 'granted') {
           console.log('Notification permission granted.');
@@ -46,10 +54,15 @@ export default function HomeLayout({
 
     requestPermissionAndFetchToken();
 
-    onMessage(messaging, (payload) => {
-      console.log('Message received. ', payload);
-      // const { title, body, image } = payload.notification;
-      // toast(<Message notification={{ title, body, image }} />);
+    onMessage(messaging, (payload: any) => {
+      console.log('Message received layout', payload);
+      const { title, body, image } = payload.notification;
+      setNotificationMessage({
+        message: title,
+        link: "/home/notifications",
+        linkText: body,
+      });
+      setIsNotificationOpen(true);
     });
 
   }, []);
@@ -66,6 +79,13 @@ export default function HomeLayout({
 
         <main className="md:pl-[50px] lg:pl-0">{children}</main>
       </div>
+      <Notification
+        open={isNotificationOpen}
+        onClose={() => setIsNotificationOpen(false)}
+        message={notificationMessage.message}
+        link={notificationMessage.link}
+        linkText={notificationMessage.linkText} 
+      />
     </div>
   );
 }

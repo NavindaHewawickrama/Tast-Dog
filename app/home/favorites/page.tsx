@@ -131,7 +131,7 @@ const Favorites = () => {
           )}
         </div>
       </PageTransition>
-      <AddToCart open={toggle} onClose={() => setToggle(false)} />
+      <AddToCart open={toggle} onClose={() => setToggle(false)} /> 
     </>
   );
 };

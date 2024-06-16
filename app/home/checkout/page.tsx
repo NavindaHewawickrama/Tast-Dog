@@ -71,6 +71,7 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
       });
 
       const data = await response.json();
+      console.log(data);
       if (!response.ok) {
         window.alert("Payment Unsuccessful");
         console.log(response);
@@ -113,7 +114,7 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
           console.error(confirmError);
           // window.alert("Payment failed. Please try again.");
         } else {
-          // window.alert("Payment Successful");
+          window.alert("Payment Successful");
           setModalOpen(true);
           setCardholderName("");
         }
@@ -125,16 +126,20 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
 
 
   const handleShopDetails = async (secret: any) => {
+
+    console.log('hwllo0');
     const itemsCart = sessionStorage.getItem("cartItems");
+    console.log('itemsCart', itemsCart);
     const cartItems = itemsCart ? JSON.parse(itemsCart) : [];
-  
+    console.log('world');
+    console.log('cartUtems', cartItems);
     for (const element of cartItems) {
       try {
 
-        console.log('element', element.quantity);
+        console.log('element', element);
         const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/item/${element._id}`);
         const data = await response.json();
-  
+        
         if (!response.ok) {
           console.log(data.message || "An error occurred while fetching shop details.");
         } else {
@@ -182,13 +187,15 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
         body: JSON.stringify(requestBody),
       });
   
+      console.log(requestBody);
+      console.log(response);
       if (!response.ok) {
         console.error("Error placing order:", response.statusText);
         return;
       }
-      console.log("Order placed successfully");
-      sessionStorage.removeItem("cartItems");   
-      localStorage.removeItem("cartItems");
+      console.log("Order placed successfully"); 
+      // sessionStorage.removeItem("cartItems");   
+      // localStorage.removeItem("cartItems");
       window.alert("Payment success");
     } catch (error) {
       console.error("An error occurred while placing order:", error);

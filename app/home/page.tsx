@@ -8,19 +8,26 @@ import React, { useEffect, useState } from "react";
 import { messaging, getToken, onMessage } from '../../firebaseConfig';
 import { toast, ToastContainer } from "react-toastify";
 import Message from "@/components/Message";
+import AddToCart from "@/components/models/AddToCart";
+import Notification from "@/components/Notification";
 
 const Home = () => {
   const [userNames, setUserName] = useState<string | null>(null);
   const [salutation, setSalutation] = useState<string | null>(null);
-
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState({
+    message: "",
+    link: "",
+    linkText: "",
+  });
+  
   useEffect(() => {
     const userID = localStorage.getItem("userId");
     const userName = localStorage.getItem("userName");
     setUserName(userName);
 
     onMessage(messaging, (payload) => {
-      // const { title, body, image } = payload.notification;
-      // toast(<Message notification={{ title, body, image }} />);
+      
     });
 
     if (new Date().getHours() < 12) {
@@ -35,7 +42,7 @@ const Home = () => {
       console.log('Requesting permission...');
       try {
         console.log('Permission:');
-        const permission = await Notification.requestPermission();
+        const permission = await window.Notification.requestPermission();
         
         if (permission === 'granted') {
           console.log('Notification permission granted.');
@@ -58,9 +65,14 @@ const Home = () => {
     requestPermissionAndFetchToken();
 
     onMessage(messaging, (payload) => {
-      console.log('Message received. ', payload);
-      // Handle the message when the web app is in the foreground
-      // Show notification or update UI based on the payload
+      // console.log('Message received home ', payload); 
+      // const { title, body } = payload.notification;
+      // setNotificationMessage({
+      //   message: title,
+      //   link: "/home/notifications",
+      //   linkText: body,
+      // });
+      // setIsNotificationOpen(true);
     });
 
   }, []);
@@ -78,10 +90,17 @@ const Home = () => {
           <NearbyShops />
         </div>
       </PageTransition>
+      <Notification
+        open={isNotificationOpen}
+        onClose={() => setIsNotificationOpen(false)}
+        message={notificationMessage.message}
+        link={notificationMessage.link}
+        linkText={notificationMessage.linkText} 
+      />
       <div>
         <div className="px-[50px] py-[30px]">
           <FavoriteFoods />
-        </div>
+        </div> 
       </div>
      
     </>
