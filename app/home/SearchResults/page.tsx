@@ -35,7 +35,10 @@ const SearchResults = () => {
     const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
     const existingItemIndex = cartItems.findIndex((item: any) => item._id === id._id);
     if(existingItemIndex === -1){
-      cartItems.push({ ...id, itemImages: id.itemPhoto });
+      cartItems.push({ ...id,
+         itemImages: id.itemPhoto,
+         quantity:1,
+         });
     }else{
       cartItems[existingItemIndex].quantity += 1;
     }
@@ -157,7 +160,7 @@ const SearchResults = () => {
                 <div className="flex items-center ">
                   <FaStar className="w-[12px] h-[12px] text-ratings" />
                   <p className="text-[13px] text-detail font-medium ml-1">
-                    {item.averageRating}
+                    {item.averageRating.toFixed(2)}
                   </p>
                   <p className="text-[13px] text-detail"> {item.rates}</p>
                 </div>

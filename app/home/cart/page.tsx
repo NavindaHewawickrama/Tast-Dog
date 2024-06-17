@@ -15,7 +15,7 @@
       const storedCartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
       const initializedCartItems = storedCartItems.map((item: any) => ({
         ...item,
-        quantity: item.quantity ?? 1,
+        quantity: item.quantity ?? 0,
       }));
       setCartItems(initializedCartItems);
     }, []);
