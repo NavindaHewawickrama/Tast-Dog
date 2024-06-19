@@ -22,13 +22,21 @@ const FavoriteFoods = () => {
   const [shopImage, setShopImage] = useState<any | null>(null);
   const [shopId, setShopId] = useState<any | null>(null);
   const [visibleItems, setVisibleItems] = useState<any[]>([]);
-
+  const[userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     handleTopRatedFoods();
+    setUserId(localStorage.getItem("userId"));
+    handleFavouriteFoods();
   }, []);
   //#endregion
 
+
+
+
+
+//#region functions
+  
   const handleTopRatedFoods = async () => {
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/shops/shops/getTopRatedShopItems",{method:"POST"});
@@ -118,6 +126,23 @@ const FavoriteFoods = () => {
     localStorage.setItem("productIDFavouriteFoods", id);
     router.push("/home/productview");
   };
+
+  const handleFavouriteFoods = async()=>{
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/favoriteItems/favorite/${userId}`);
+      const data = await response.json();
+      if(!response.ok){
+        console.log(data.message || "An error occurred.");
+      }else{
+        setVisibleItems((prevItems)=>[...prevItems,...data]);
+      }
+    }catch(error){
+      console.log("An error occurred. Please try again later." , error);
+    }
+  }
+
+
+  //#endregion
 
   return (
     <>
