@@ -12,6 +12,8 @@ import AddToCart from "@/components/models/AddToCart";
 import Notification from "@/components/Notification";
 
 const Home = () => {
+
+  //#region states
   const [userNames, setUserName] = useState<string | null>(null);
   const [salutation, setSalutation] = useState<string | null>(null);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
@@ -29,6 +31,7 @@ const Home = () => {
     onMessage(messaging, (payload) => {
       
     });
+    
 
     if (new Date().getHours() < 12) {
       setSalutation("Good morning");
@@ -77,6 +80,9 @@ const Home = () => {
 
   }, []);
 
+  //#endregion
+  
+  
   return (
     <>
       <PageTransition>
