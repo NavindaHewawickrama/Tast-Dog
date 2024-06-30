@@ -1,28 +1,26 @@
 "use client";
+
 import FavoriteFoods from "@/components/FavoriteFoods";
 import NearbyShops from "@/components/NearbyShops";
 import PageTransition from "@/components/PageTransition";
 import Slider from "@/components/Slider";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
 import { messaging, getToken, onMessage } from '../../firebaseConfig';
 import { toast, ToastContainer } from "react-toastify";
 import Message from "@/components/Message";
 import AddToCart from "@/components/models/AddToCart";
-import Notification from "@/components/Notification";
+import Notification from "@/components/Notification"; 
+
+import React, { useEffect, useState } from "react";
 
 const Home = () => {
   const [userNames, setUserName] = useState<string | null>(null);
   const [salutation, setSalutation] = useState<string | null>(null);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState({
-    message: "",
-    link: "",
-    linkText: "",
-  });
+  
   
   useEffect(() => {
-    const userID = localStorage.getItem("userId");
+      const userID = localStorage.getItem("userId");
     const userName = localStorage.getItem("userName");
     setUserName(userName);
 
@@ -90,13 +88,6 @@ const Home = () => {
           <NearbyShops />
         </div>
       </PageTransition>
-      <Notification
-        open={isNotificationOpen}
-        onClose={() => setIsNotificationOpen(false)}
-        message={notificationMessage.message}
-        link={notificationMessage.link}
-        linkText={notificationMessage.linkText} 
-      />
       <div>
         <div className="px-[50px] py-[30px]">
           <FavoriteFoods />

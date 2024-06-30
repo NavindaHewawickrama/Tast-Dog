@@ -194,8 +194,8 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
         return;
       }
       console.log("Order placed successfully"); 
-      // sessionStorage.removeItem("cartItems");   
-      // localStorage.removeItem("cartItems");
+      sessionStorage.removeItem("cartItems");   
+      localStorage.removeItem("cartItems");
       window.alert("Payment success");
     } catch (error) {
       console.error("An error occurred while placing order:", error);

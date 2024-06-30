@@ -33,6 +33,11 @@ const Notifications: React.FC = () => {
     setUserId(userIDSvd);
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("notificationCount", "0");
+    window.dispatchEvent(new Event("storage"));
+  }, []);
+
   const fetchNotifications = async () => {
     try {
       const response = await axios.get(
@@ -101,10 +106,15 @@ const Notifications: React.FC = () => {
     return false;
   });
 
-  const leastRemainingOrders = milestones.reduce(
-    (min, milestone) => (milestone.remainingOrders < min ? milestone.remainingOrders : min),
-    Infinity
-  );
+  const milestoneWithLeastRemainingOrders = milestones.reduce((minMilestone, milestone) => {
+    return milestone.remainingOrders < minMilestone.remainingOrders ? milestone : minMilestone;
+  }, milestones[0]);
+
+  const leastRemainingOrders = milestoneWithLeastRemainingOrders?.remainingOrders;
+  const expectedTotalOrders = milestoneWithLeastRemainingOrders?.expectedTotalOrders;
+
+  console.log("Least Remaining Orders:", leastRemainingOrders);
+  console.log("Expected Total Orders:", expectedTotalOrders);
 
   return (
     <PageTransition>
@@ -169,7 +179,7 @@ const Notifications: React.FC = () => {
                   {`You Are ${leastRemainingOrders} Meals Away From our 10$ Discount`}
                 </p>
                 <div className="w-full bg-lightGreen rounded-full h-5 dark:bg-lightGreen mt-[10px]">
-                  <div className="bg-buttonGreen h-5 rounded-full" style={{ width: `${(leastRemainingOrders / 5) * 100}%` }}></div>
+                  <div className="bg-buttonGreen h-5 rounded-full" style={{ width: `${(leastRemainingOrders / expectedTotalOrders) * 100}%` }}></div>
                 </div>
               </div>
               <div className="w-full mt-[50px] flex flex-col gap-4">

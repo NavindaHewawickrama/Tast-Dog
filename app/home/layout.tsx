@@ -1,12 +1,14 @@
-"use client";
+import React, { useEffect, useState } from "react";
 import Message from "@/components/Message";
 import Navbar from "@/components/Navbar";
 import Notification from "@/components/Notification";
 import Sidebar from "@/components/Sidebar";
 import { messaging } from "@/firebaseConfig";
 import { getToken, onMessage } from "firebase/messaging";
-import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
+
+const isClient = typeof window !== "undefined";
+
 
 export default function HomeLayout({
   children, // will be a page or nested layout
@@ -33,7 +35,7 @@ export default function HomeLayout({
       try {
         console.log('Permission:');
         const permission = await window.Notification.requestPermission();
-        
+         
         if (permission === 'granted') {
           console.log('Notification permission granted.');
           const token = await getToken(messaging, { vapidKey: 'BH_yRXi3vloIr9GxIWAE-3T5t6r1wXsCSr5wWKsLKqu_Gsevi_tb9kOic7jMTypeeV5i-NB7fwrplOu5eAiOX1E' });
@@ -63,6 +65,12 @@ export default function HomeLayout({
         linkText: body,
       });
       setIsNotificationOpen(true);
+
+      const currentCount = localStorage.getItem('notificationCount');
+      const newCount = currentCount ? parseInt(currentCount) + 1 : 1;
+      localStorage.setItem('notificationCount', newCount.toString());
+      window.dispatchEvent(new Event('storage'));
+
     });
 
   }, []);
