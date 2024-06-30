@@ -90,6 +90,19 @@ const Sidebar = () => {
             </h3>
           </Link>
           <Link
+            href="/home/favouritefoods"
+            className={
+              pathname == "/home/favouritefoods"
+                ? "bg-gradient-to-r from-[#04AE5C] to-primary w-full h-[60px] flex flex-row px-[40px] items-center cursor-pointer gap-5"
+                : "w-full h-[60px] flex flex-row px-[40px] items-center cursor-pointer gap-5"
+            }
+          >
+            <IoFastFoodSharp className="text-white w-[24px] h-[24px]" />
+            <h3 className="capitalize text-white font-semibold text-[15px] font-sans">
+              favourite foods
+            </h3>
+          </Link>
+          <Link
             href="/home/rewards"
             className={
               pathname == "/home/rewards"

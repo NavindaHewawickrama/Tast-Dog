@@ -20,6 +20,7 @@ const ProductView = () => {
   const [foodData, setFoodData] = useState<any>(null);
   const [toggle, setToggle] = useState(false);
   const[userName, setUserName] = useState<string | null>(null);
+  const[userId, setUserId] = useState<string | null>(null);
   const [shopName, setShopName] = useState<any| null>(null);
   const [shopImage, setShopImage] = useState<any | null>(null);
   const [shopId, setShopId] = useState<string | null>(null);
@@ -30,6 +31,7 @@ const ProductView = () => {
   useEffect(() => {
     const foodId = localStorage.getItem("productIDFavouriteFoods");
     const userName = setUserName(localStorage.getItem("userName"));
+    const userIdG = setUserId(localStorage.getItem("userId"));
     const name = localStorage.getItem("shopName");
     const image = localStorage.getItem("shopImage");
 
@@ -165,7 +167,7 @@ const handleShopId = async (id:any) =>{
     router.push("/home/productview/placeOrder");
   };
 
-
+//rating stars
   const renderStars = () => {
     console.log('ratings', ratings);
     if (!ratings) return null; 
@@ -186,6 +188,31 @@ const handleShopId = async (id:any) =>{
     }
     return stars;
   };
+
+  //adding favourite items
+  const handleAddToFavourite=async(itemId:any)=>{
+    try{
+      const response = await fetch("https://tasty-dog.onrender.com/api/v1/favoriteItems/favorite",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+        },
+        body:JSON.stringify({
+          userId,
+          itemId,
+        }),
+      });
+      const data = await response.json();
+      if(!response.ok){
+        console.log(data.message || "An error occurred.");
+      }else{
+        console.log(data);
+        window.alert("Item marked as favourite !!!");
+      }
+    }catch(e){
+      console.log("An error occurred. Please try again later." , e);
+    }
+  }
 
   return (
     <>
@@ -232,7 +259,9 @@ const handleShopId = async (id:any) =>{
                         >
                           add to cart
                         </button>
-                        <button className="w-full h-[45px] text-center text-buttonGreen bg-none text-20px capitalize rounded-xl border-2 border-buttonGreen transition-transform duration-300 ease-in-out transform hover:scale-95">
+                        <button  
+                        onClick={()=>handleAddToFavourite(foodData?._id)}
+                        className="w-full h-[45px] text-center text-buttonGreen bg-none text-20px capitalize rounded-xl border-2 border-buttonGreen transition-transform duration-300 ease-in-out transform hover:scale-95">
                           mark as favorite
                         </button>
                       </div>

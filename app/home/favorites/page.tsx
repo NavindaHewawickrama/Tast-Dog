@@ -109,7 +109,7 @@ const Favorites = () => {
                       <div className="flex items-center ">
                         <FaStar className="w-[12px] h-[12px] text-ratings" />
                         <p className="text-[13px] text-detail font-medium ml-1">
-                        {item.averageRating}
+                        {item.averageRating.toFixed(2)}
                         </p>
                         <p className="text-[13px] text-detail"> {item.rates}</p>
                       </div>

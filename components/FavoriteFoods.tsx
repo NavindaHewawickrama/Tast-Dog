@@ -22,13 +22,21 @@ const FavoriteFoods = () => {
   const [shopImage, setShopImage] = useState<any | null>(null);
   const [shopId, setShopId] = useState<any | null>(null);
   const [visibleItems, setVisibleItems] = useState<any[]>([]);
-
+  const[userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     handleTopRatedFoods();
+    setUserId(localStorage.getItem("userId"));
+    handleFavouriteFoods();
   }, []);
   //#endregion
 
+
+
+
+
+//#region functions
+  
   const handleTopRatedFoods = async () => {
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/shops/shops/getTopRatedShopItems",{method:"POST"});
@@ -49,7 +57,9 @@ const FavoriteFoods = () => {
     const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
     const existingItemIndex = cartItems.findIndex((item: any) => item._id === id._id);
     if(existingItemIndex === -1){
-      cartItems.push(id);
+      cartItems.push({ ...id,
+        quantity: 1,
+        });
     }else{
       cartItems[existingItemIndex].quantity += 1;
     }
@@ -116,6 +126,23 @@ const FavoriteFoods = () => {
     localStorage.setItem("productIDFavouriteFoods", id);
     router.push("/home/productview");
   };
+
+  const handleFavouriteFoods = async()=>{
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/favoriteItems/favorite/${userId}`);
+      const data = await response.json();
+      if(!response.ok){
+        console.log(data.message || "An error occurred.");
+      }else{
+        setVisibleItems((prevItems)=>[...prevItems,...data]);
+      }
+    }catch(error){
+      console.log("An error occurred. Please try again later." , error);
+    }
+  }
+
+
+  //#endregion
 
   return (
     <>
@@ -186,9 +213,9 @@ const FavoriteFoods = () => {
                     <div className="flex items-center ">
                       <FaStar className="w-[12px] h-[12px] text-ratings" />
                       <p className="text-[13px] text-detail font-medium ml-1">
-                      {item.averageRating}
+                      {item.averageRating.toFixed(1)}
                       </p>
-                      <p className="text-[13px] text-detail">({item.totalRatings})</p>
+                      <p className="text-[13px] text-detail">({item.totalRatings.toFixed(2)})</p>
                     </div>
                     <button
                       onClick={(e) => {
