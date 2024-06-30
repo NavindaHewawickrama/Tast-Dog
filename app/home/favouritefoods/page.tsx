@@ -28,7 +28,6 @@ const FavouriteFoods = () => {
     setUserId(userId);
     try{
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/favoriteItems/favorite/${userId}`);
-      console.log(response);
       const data = await response.json();
       if(!response.ok){
         console.log(data.message || "An error occurred.");
@@ -43,7 +42,8 @@ const FavouriteFoods = () => {
   const handleToggle = (id: any) => {
     console.log(id);
     const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
-    const existingItemIndex = cartItems.findIndex((item: any) => item._id === id._id);
+    const existingItemIndex = cartItems.findIndex((item: any) => item._id === id.itemId);
+    console.log(existingItemIndex? "True": "False");
     if(existingItemIndex === -1){
       cartItems.push({ ...id,
         itemImages: id.itemImages[0],
@@ -52,6 +52,7 @@ const FavouriteFoods = () => {
     }else{
       cartItems[existingItemIndex].quantity += 1;
     }
+    console.log(cartItems);
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
     setToggle(true);
   };
