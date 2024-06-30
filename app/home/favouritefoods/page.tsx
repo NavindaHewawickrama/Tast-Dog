@@ -20,7 +20,7 @@ const FavouriteFoods = () => {
 
   useEffect(() => {
     handleFavouriteFoods();
-  }, []);
+  }, [visibleItems]);
 
 
   const handleFavouriteFoods = async()=>{
@@ -40,17 +40,19 @@ const FavouriteFoods = () => {
     }
   }
 
-  const handleToggle = (id: string) => {
-    // Retrieve the existing cart items array from localStorage
+  const handleToggle = (id: any) => {
+    console.log(id);
     const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
-
-    // Add the new item ID to the cart items array
-    cartItems.push(id);
-
-    // Store the updated cart items array back in localStorage
+    const existingItemIndex = cartItems.findIndex((item: any) => item._id === id._id);
+    if(existingItemIndex === -1){
+      cartItems.push({ ...id,
+        itemImages: id.itemImages[0],
+        quantity: 1,
+        });
+    }else{
+      cartItems[existingItemIndex].quantity += 1;
+    }
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
-
-    // Set the toggle state to open the AddToCart component
     setToggle(true);
   };
 
@@ -114,6 +116,29 @@ const FavouriteFoods = () => {
     router.push("/home/productview");
   };
 
+  const removeFavouriteItem = async(id:any)=>{
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/favoriteItems/favorite`,{
+        method:"DELETE",
+        headers:{
+            "Content-Type":"application/json"
+            },
+        body:JSON.stringify({
+            userId:userId,
+            itemId:id,
+        })
+        });
+      const data = await response.json();
+      if(!response.ok){
+        console.log(data.message || "An error occurred.");
+      }else{
+        window.location.reload;
+        window.alert("Item Removed"); 
+      }
+    }catch(error){
+      console.log("An error occurred. Please try again later." , error);
+    }
+  }
   
   return (
     <>
@@ -169,8 +194,17 @@ const FavouriteFoods = () => {
                         <p className="text-[13px] text-detail font-medium ml-1">
                         {item.rating.toFixed(2)}
                         </p>
-                        <p className="text-[13px] text-detail"> {item.ratingCount}</p>
+                        <p className="text-[13px] text-detail"> ({item.ratingCount})</p>
                       </div>
+                      <button
+                      onClick={(e)=>{
+                        e.stopPropagation();
+                        removeFavouriteItem(item.itemId);
+                    }}
+                        className="w-[60px] h-[27px] flex justify-center items-center bg-red-600 rounded-xl text-[8px] text-white gap-2 transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
+                      >
+                        Remove 
+                      </button>
                       <button
                         onClick={(e) => {
                           e.stopPropagation(); // Prevent event bubbling to parent div
