@@ -43,9 +43,9 @@ const FavouriteFoods = () => {
     console.log(id);
     const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
     const existingItemIndex = cartItems.findIndex((item: any) => item._id === id.itemId);
-    console.log(existingItemIndex? "True": "False");
     if(existingItemIndex === -1){
       cartItems.push({ ...id,
+        _id:id.itemId,
         itemImages: id.itemImages[0],
         quantity: 1,
         });
