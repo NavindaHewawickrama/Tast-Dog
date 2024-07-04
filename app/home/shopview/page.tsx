@@ -142,7 +142,7 @@ const fetchApiCall = async (id: any) => {
                         {item.itemName}
                       </h3>
                       <h3 className="text-[20px] font-bold text-black ">
-                        {item.price}
+                        $ {item.price}
                       </h3>
                       <div className="w-full h-full flex lg:flex-row md:flex-col lg:justify-between md:justify-center items-center mt-2">
                         <div className="flex items-center ">
