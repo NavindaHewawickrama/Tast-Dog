@@ -134,7 +134,7 @@ const ShopView = () => {
                         alt={item.itemName}
                         width={252}
                         height={189}
-                        className="w-full h-full rounded-t-xl z-0"
+                        className="w-full h-full rounded-t-xl z-0 object-cover"
                       />
                     </div>
                     <div className="w-full mb-[-20px] py-3 px-3">
@@ -180,14 +180,7 @@ const ShopView = () => {
                       alt="shopLogo"
                       width={500}
                       height={500}
-                      className="lg:flex md:hidden"
-                    />
-                    <Image
-                      src={shopImage || "/dominos.png"}
-                      alt="shopLogo"
-                      width={50}
-                      height={50}
-                      className="lg:hidden md:flex"
+                      className="w-full h-full rounded-full object-cover"
                     />
                   </div>
                   <div className="flex flex-col gap-2 justify-center">
@@ -228,7 +221,7 @@ const ShopView = () => {
                               alt="reviewer profile pic"
                               width={30}
                               height={30}
-                              className="w-full h-full rounded-full"
+                              className="w-full h-full rounded-full object-cover"
                             />
                           </div>
                           <div className="w-full">
@@ -271,7 +264,7 @@ const ShopView = () => {
                               alt="reviewer profile pic"
                               width={30}
                               height={30}
-                              className="w-full h-full rounded-full"
+                              className="w-full h-full rounded-full object-cover"
                             />
                           </div>
                           <div className="w-full">
