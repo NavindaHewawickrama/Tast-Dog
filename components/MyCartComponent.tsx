@@ -36,7 +36,7 @@ const MyCartComponent: React.FC<MyCartComponentProps> = ({
             </div>
             <div  className="flex flex-col justify-center">
               <h3 className="text-[28px] text-primary font-medium mt-4">
-                ${item.price}
+                $ {item.price}
               </h3>
             </div>
             <div  className="flex items-left justify-left gap-7 pt-[20px]">
