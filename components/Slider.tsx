@@ -23,9 +23,9 @@ const Slider = () => {
         clickable: true,
       }}
       modules={[EffectFade, Autoplay, Pagination]}
-      className="max-w-[1000px] h-[420px] mx-auto rounded-xl"
+      className="max-w-[950px] h-[435px] mx-auto rounded-xl"
     >
-      <SwiperSlide className="w-[1000px] h-[420px]">
+      <SwiperSlide className="w-[950px] h-[435px]">
         <Image
           src="/sliderImage.png"
           alt="sliderImg"
@@ -34,7 +34,7 @@ const Slider = () => {
           className="rounded-xl"
         />
       </SwiperSlide>
-      <SwiperSlide className="w-[1000px] h-[420px]">
+      <SwiperSlide className="w-[950px] h-[435px]">
         <Image
           src="/foodBanner.webp"
           alt="sliderImg"
@@ -42,7 +42,7 @@ const Slider = () => {
           className="rounded-xl h-full"
         />
       </SwiperSlide>
-      <SwiperSlide className="w-[1000px] h-[420px]">
+      <SwiperSlide className="w-[950px] h-[435px]">
         <Image
           src="/sliderDummy2.jpg"
           alt="sliderImg"
@@ -50,7 +50,7 @@ const Slider = () => {
           className="rounded-xl h-full"
         />
       </SwiperSlide>
-      <SwiperSlide className="w-[1000px] h-[420px]">
+      <SwiperSlide className="w-[950px] h-[435px]">
         <Image
           src="/foodMenu.jpg"
           alt="sliderImg"

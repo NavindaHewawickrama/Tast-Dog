@@ -122,7 +122,7 @@ const SearchResults = () => {
         {results.map((item) => (
           <div
             key={item.id}
-            className="w-full h-[310px] rounded-xl mb-7 shadow-lg z-0 cursor-pointer "
+            className="w-full h-[320px] rounded-xl mb-7 shadow-lg z-0 cursor-pointer "
             // onClick={() => router.push("/home/productview")}
             onClick={()=>handleProductViewClick(item._id)}
           >
@@ -154,7 +154,7 @@ const SearchResults = () => {
                 {item.itemName}
               </h3>
               <h3 className="text-[20px] font-bold text-black ">
-                {item.price}
+                $ {item.price}
               </h3>
               <div className="w-full flex flex-row justify-between items-center mt-2">
                 <div className="flex items-center ">

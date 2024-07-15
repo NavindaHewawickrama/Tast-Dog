@@ -28,6 +28,7 @@ const ShopView = () => {
   const [userName, setUserName] = useState<string | null>(null);
   const [ShopRating, setShopRatings] = useState<any[]>([]);
   const [ShopComments, setShopComments] = useState<any[]>([]);
+  const [swipersettings,setSwipersettings] = useState(0);
 
   useEffect(() => {
     const id = localStorage.getItem("shopId");
@@ -69,6 +70,11 @@ const ShopView = () => {
       } else {
         setShopComments(dataComments);
         console.log(dataComments);
+        if(dataComments.length < 2){
+          setSwipersettings(1);
+        }else{
+          setSwipersettings(2);
+        }
       }
     } catch (error) {
       console.log("An error occurred. Please try again later.", error);
@@ -148,11 +154,11 @@ const ShopView = () => {
                         <div className="flex items-center ">
                           <FaStar className="w-[12px] h-[12px] text-ratings" />
                           <p className="text-[13px] text-detail font-medium ml-1">
-                            {item.rating}
+                            {item.averageRating.toFixed(1)}
                           </p>
                           <p className="text-[13px] text-detail">
                             {" "}
-                            {item.rates}
+                            ({item.totalRatings})
                           </p>
                         </div>
                         <button
@@ -206,7 +212,7 @@ const ShopView = () => {
                   <Swiper
                     modules={[Navigation]}
                     spaceBetween={20}
-                    slidesPerView={1}
+                    slidesPerView={swipersettings}
                     navigation
                   >
                     {ShopComments.map((item) => (
@@ -249,7 +255,7 @@ const ShopView = () => {
                   <Swiper
                     modules={[Navigation]}
                     spaceBetween={20}
-                    slidesPerView={1}
+                    slidesPerView={swipersettings}
                     navigation
                   >
                     {ShopComments.map((item) => (

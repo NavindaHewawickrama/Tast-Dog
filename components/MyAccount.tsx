@@ -275,7 +275,7 @@ const MyAccount = () => {
                         {address.aptSuite}, {address.streetAddress}, {address.city}, {address.state}, {address.landmark}
                       </p>
                       <p className="text-[17px] capitalize text-detail">
-                        {address.mobileNumber}
+                       {phoneNumber}
                       </p>
                     </div>
                   </div>

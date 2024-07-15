@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import SuccessModel from "./SuccessModel";
+import { IoEye,IoEyeOff } from "react-icons/io5";
 
 interface ModalProps {
   open: boolean;
@@ -12,6 +13,8 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
   const [successModel, setSuccessModel] = useState(false);
   const [newPassword,setNewPassword]= useState("");
   const [confirmPassword,setConfirmPassword]= useState("");
+  const [showPassword, setShowPassword] = useState(false); 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
 
   const checkpwd =()=>{
     if(newPassword === confirmPassword){
@@ -79,24 +82,34 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
               {" "}
               new password{" "}
             </p>
-            <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
+            <div className="w-full h-[48px] flex items-center bg-inputBlue mt-5 rounded-lg border-2 border-inputBorder">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 onChange={(e)=>setNewPassword(e.target.value)}
                 className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
               />
+              < div className="w-[10%]">
+               {
+                  showPassword ? <IoEye className="text-gray-400 text-xl" onClick={e=> setShowPassword(false)} /> : <IoEyeOff className="text-gray-400 text-xl" onClick={e=> setShowPassword(true)} />
+                }
+              </div>
             </div>
           </div>
           <div className="flex flex-col mb-4 ">
             <p className="text-[12px] text-inputText capitalize mb-2 ml-1">
               confirm password
             </p>
-            <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
+            <div className="w-full h-[48px] flex items-center bg-inputBlue mt-5 rounded-lg border-2 border-inputBorder">
               <input
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 onChange={(e)=>setConfirmPassword(e.target.value)}
                 className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
               />
+              <div className="w-[10%]">
+               {
+                  showConfirmPassword ? <IoEye className="text-gray-400 text-xl" onClick={e=> setShowConfirmPassword(false)} /> : <IoEyeOff className="text-gray-400 text-xl" onClick={e=> setShowConfirmPassword(true)} />
+                }
+              </div>
             </div>
           </div>
           <button

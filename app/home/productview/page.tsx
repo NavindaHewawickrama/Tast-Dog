@@ -229,8 +229,8 @@ const handleShopId = async (id:any) =>{
                       <Image
                         src={Array.isArray(foodData?.itemImages) ? foodData?.itemImages[0] : foodData?.itemImages}
                         alt={foodData?.itemName || 'Product Name'}
-                        width={45}
-                        height={45}
+                        width={1000}
+                        height={1000}
                         className="w-full h-full rounded-2xl"
                       />
                     </div>
