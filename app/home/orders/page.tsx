@@ -44,10 +44,10 @@ const MyOrders = () => {
         if(!response){
           console.log(response);
           window.alert("Error in loading data");
-          setOrderData(data);
+          setOrderData(data.reverse());
         }else{
           console.log(data);
-          setOrderData(data);
+          setOrderData(data.reverse());
         }
       } catch (error) {
         console.log(error);

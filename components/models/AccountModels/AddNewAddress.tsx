@@ -1,6 +1,12 @@
 import React,{useState} from "react";
 import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
+import {
+  CountrySelect,
+  StateSelect,
+  CitySelect,
+} from 'react-country-state-city';
+import 'react-country-state-city/dist/react-country-state-city.css';
 
 interface ModalProps {
   open: boolean;
@@ -13,6 +19,10 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
   const [city, setCity] = useState("Melourn");
   const [state, setState] = useState("Melbourn");
   const [landmark, setLandMark] = useState("Infront of State Hospital");
+
+  const [countryId, setCountryId] = useState<number | null>(null);
+  const [stateId, setStateId] = useState<number | null>(null);
+
 
   if (!open) return null;
 
@@ -101,34 +111,39 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                   />
                 </div>
               </div>
-              <div className="w-full mb-4 flex flex-col gap-2 ">
-                <div className="flex flex-row item-center gap-3 w-full h-full">
-                  <div className="w-[225px]">
-                    <p className="text-[12px] text-inputText capitalize mb-2">
-                      city
-                    </p>
-                    <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
-                      <input
-                        type="text"
-                        onChange={(e)=>setCity(e.target.value)}
-                        className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
-                      />
-                    </div>
-                  </div>
-                  <div className="w-[225px]">
-                    <p className="text-[12px] text-inputText capitalize mb-2">
-                      state/province
-                    </p>
-                    <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
-                      <input
-                        type="text"
-                        onChange={(e)=>setState(e.target.value)}
-                        className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div className="w-full mb-4 flex flex-col gap-2">
+      <div className="mb-4">
+        <p className="text-[12px] text-inputText capitalize mb-2">Country</p>
+        <CountrySelect
+          onChange={(e) => setCountryId(e.id)}
+          placeHolder="Select Country"
+          className="w-full"
+        />
+      </div>
+      <div className="flex flex-row item-center gap-3 w-full h-full">
+        <div className="w-[225px]">
+          <p className="text-[12px] text-inputText capitalize mb-2">State/Province</p>
+          <StateSelect
+            countryid={countryId || 0}
+            onChange={(e) => setStateId(e.id)}
+            placeHolder="Select State"
+            className="w-full"
+            isDisabled={!countryId}
+          />
+        </div>
+        <div className="w-[225px]">
+          <p className="text-[12px] text-inputText capitalize mb-2">City</p>
+          <CitySelect
+            countryid={countryId || 0}
+            stateid={stateId || 0}
+            onChange={(e) => console.log(e)}
+            placeHolder="Select City"
+            className="w-full"
+            isDisabled={!stateId}
+          />
+        </div>
+      </div>
+    </div>
               <div className="w-full mb-4 flex flex-col gap-2 ">
                 <p className="text-[12px] text-inputText capitalize">
                   Landmark
