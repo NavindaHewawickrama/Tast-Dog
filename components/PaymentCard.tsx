@@ -44,6 +44,7 @@ const PaymentCard = () => {
             <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
               <input
                 type="text"
+                maxLength={16}
                 className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
               />
             </div>

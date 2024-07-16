@@ -5,7 +5,7 @@ import NearbyShops from "@/components/NearbyShops";
 import PageTransition from "@/components/PageTransition";
 import Slider from "@/components/Slider";
 import { useRouter } from "next/navigation";
-import { messaging, getToken, onMessage } from '../../firebaseConfig';
+// import { messaging, getToken, onMessage } from '../../firebaseConfig';
 import { toast, ToastContainer } from "react-toastify";
 import Message from "@/components/Message";
 import AddToCart from "@/components/models/AddToCart";
@@ -26,9 +26,9 @@ const Home = () => {
     const userName = localStorage.getItem("userName");
     setUserName(userName);
 
-    onMessage(messaging, (payload) => {
+    // onMessage(messaging, (payload) => {
       
-    });
+    // });
     
 
     if (new Date().getHours() < 12) {
@@ -47,7 +47,8 @@ const Home = () => {
         
         if (permission === 'granted') {
           console.log('Notification permission granted.');
-          const token = await getToken(messaging, { vapidKey: 'BH_yRXi3vloIr9GxIWAE-3T5t6r1wXsCSr5wWKsLKqu_Gsevi_tb9kOic7jMTypeeV5i-NB7fwrplOu5eAiOX1E' });
+          // const token = await getToken(messaging, { vapidKey: 'BH_yRXi3vloIr9GxIWAE-3T5t6r1wXsCSr5wWKsLKqu_Gsevi_tb9kOic7jMTypeeV5i-NB7fwrplOu5eAiOX1E' });
+          const token = '';
           console.log('Token:', token);
             if (token) {
               console.log('Device token:', token);
@@ -65,16 +66,16 @@ const Home = () => {
 
     requestPermissionAndFetchToken();
 
-    onMessage(messaging, (payload) => {
-      // console.log('Message received home ', payload); 
-      // const { title, body } = payload.notification;
-      // setNotificationMessage({
-      //   message: title,
-      //   link: "/home/notifications",
-      //   linkText: body,
-      // });
-      // setIsNotificationOpen(true);
-    });
+    // onMessage(messaging, (payload) => {
+    //   // console.log('Message received home ', payload); 
+    //   // const { title, body } = payload.notification;
+    //   // setNotificationMessage({
+    //   //   message: title,
+    //   //   link: "/home/notifications",
+    //   //   linkText: body,
+    //   // });
+    //   // setIsNotificationOpen(true);
+    // });
 
   }, []);
 

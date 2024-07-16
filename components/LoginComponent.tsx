@@ -97,7 +97,7 @@ const Login = () => {
             <div className="w-full h-[48px] bg-inputBlue mt-5 rounded-lg border-2 border-inputBorder">
               <input
                 type="text"
-                placeholder="E-Mail/Username/Phone Number"
+                placeholder="E-Mail"
                 className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
               />
             </div>
@@ -139,7 +139,7 @@ const Login = () => {
             </div>
           </div>
           <p className="text-center text-[12px] mt-20 mb-[-50px] text-copyrightText">
-            Developed by FoxtXcore
+            Developed by FortXcore
           </p>
         </div>
         <div className="lg:w-[50%] md:w-[40%] flex flex-col md:h-screen items-center justify-center bg-auth-pattern bg-cover bg-no-repeat bg-center"></div>

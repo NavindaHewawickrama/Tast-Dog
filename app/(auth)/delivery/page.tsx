@@ -188,7 +188,7 @@ const DeliveryDetails = () => {
           </button>
         </div>
         <p className="text-center text-[12px] mt-12 text-lightGray">
-          Developed by FoxtXcore
+          Developed by FortXcore
         </p>
 
         <div className="absolute top-[-70px] left-[-215px] rotate-[-25deg] opacity-30">
