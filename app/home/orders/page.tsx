@@ -50,7 +50,7 @@ const MyOrders = () => {
           setOrderData(data.reverse());
         }
       } catch (error) {
-        console.log(error);
+        console.log(error); 
       }
     };
 
