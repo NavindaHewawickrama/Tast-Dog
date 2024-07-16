@@ -61,7 +61,7 @@ const Favorites = () => {
     <>
       <PageTransition>
         <div className="w-full my-[50px] px-[50px] overflow-hidden">
-          <h1 className="capitalize text-[32px] font-bold">favorites</h1>
+          <h1 className="capitalize text-[32px] font-bold">Top Rated Favourite Foods</h1>
 
           {visibleItems.length === 0 ? (
             <div className="flex justify-center items-center h-[550px]">
@@ -72,7 +72,7 @@ const Favorites = () => {
               {visibleItems.map((item) => (
                 <div
                   key={item.id}
-                  className="lg:w-full md:w-full xl:w-[95%] h-[300px] rounded-xl mb-5 shadow-lg z-0 cursor-pointer"
+                  className="lg:w-full md:w-full xl:w-[95%] h-[320px] rounded-xl mb-5 shadow-lg z-0 cursor-pointer"
                   onClick={() => handleProductViewClick(item._id)}
                 >
                   <div className="relative w-full h-[189px] rounded-t-xl z-0">
@@ -103,7 +103,7 @@ const Favorites = () => {
                     {item.itemName}
                     </h3>
                     <h3 className="text-[20px] font-bold text-black ">
-                      {item.price}
+                      $ {item.price}
                     </h3>
                     <div className="w-full flex flex-row justify-between items-center mt-2">
                       <div className="flex items-center ">
@@ -118,7 +118,7 @@ const Favorites = () => {
                           e.stopPropagation(); // Prevent event bubbling to parent div
                           handleToggle(item);
                         }}
-                        className="w-[86px] h-[27px] flex justify-center items-center bg-button2 rounded-xl text-[10px] text-white gap-2 transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
+                        className="w-[86px] h-[25px] flex justify-center items-center bg-button2 rounded-xl text-[10px] text-white gap-2 transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
                       >
                         <FaCartShopping />
                         <p className="capitalize">add to cart</p>

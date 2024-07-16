@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import TopFoods from "@/constants/TopFoods";
 import { FaStar } from "react-icons/fa6";
 import { FaCartShopping } from "react-icons/fa6";
@@ -20,14 +20,15 @@ import PageTransition from "@/components/PageTransition";
 
 const ShopView = () => {
   const router = useRouter();
-  const[shopId, setShopId] = useState<any | null>(null);
+  const [shopId, setShopId] = useState<any | null>(null);
   const [toggle, setToggle] = useState(false);
   const [shopName, setShopName] = useState<any | null>(null);
-  const[shopImage, setShopImage] = useState<any | null>(null);
-  const[shopData, setShopData] = useState<any[]>([]);
-  const[userName, setUserName] = useState<string | null>(null);
+  const [shopImage, setShopImage] = useState<any | null>(null);
+  const [shopData, setShopData] = useState<any[]>([]);
+  const [userName, setUserName] = useState<string | null>(null);
   const [ShopRating, setShopRatings] = useState<any[]>([]);
-  const[ShopComments,setShopComments] = useState<any[]>([]);
+  const [ShopComments, setShopComments] = useState<any[]>([]);
+  const [swipersettings,setSwipersettings] = useState(0);
 
   useEffect(() => {
     const id = localStorage.getItem("shopId");
@@ -44,49 +45,54 @@ const ShopView = () => {
     }
   }, []);
 
-//handling shop data
-const fetchApiCall = async (id: any) => {
-  setShopId(localStorage.getItem("shopId"));
-  try{
-    const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shop-items-shop/${id}`);
-    const data = await response.json();
-    if(!response.ok){
-      console.log(data.message || "An error occurred.");
-    }else{
-      setShopData(data);
+  //handling shop data
+  const fetchApiCall = async (id: any) => {
+    setShopId(localStorage.getItem("shopId"));
+    try {
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shop-items-shop/${id}`);
+      const data = await response.json();
+      if (!response.ok) {
+        console.log(data.message || "An error occurred.");
+      } else {
+        setShopData(data);
+      }
+    } catch (error) {
+      console.log("An error occurred. Please try again later.", error);
     }
-  }catch(error){
-    console.log("An error occurred. Please try again later." , error);
   }
-}
 
   const handleShopComments = async (id: string) => {
-    try{
+    try {
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-reviews/shop-reviews/${id}`);
       const dataComments = await response.json();
-      if(!response.ok){
+      if (!response.ok) {
         console.log(dataComments.message || "An error occurred.");
-      }else{
+      } else {
         setShopComments(dataComments);
         console.log(dataComments);
+        if(dataComments.length < 2){
+          setSwipersettings(1);
+        }else{
+          setSwipersettings(2);
+        }
       }
-    }catch(error){
-      console.log("An error occurred. Please try again later." , error);
+    } catch (error) {
+      console.log("An error occurred. Please try again later.", error);
     }
   }
 
 
   const handleShopReviews = async (id: string) => {
-    try{
+    try {
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shop-ratings/shop-ratings/${id}`);
       const dataReviews = await response.json();
-      if(!response.ok){
+      if (!response.ok) {
         console.log(dataReviews.message || "An error occurred.");
-      }else{
+      } else {
         setShopRatings(dataReviews);
       }
-    }catch(error){
-      console.log("An error occurred. Please try again later." , error);
+    } catch (error) {
+      console.log("An error occurred. Please try again later.", error);
     }
   };
 
@@ -95,9 +101,9 @@ const fetchApiCall = async (id: any) => {
     console.log(id);
     const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
     const existingItemIndex = cartItems.findIndex((item: any) => item._id === id._id);
-    if(existingItemIndex === -1){
+    if (existingItemIndex === -1) {
       cartItems.push({ ...id, itemImages: id.itemImages[0] });
-    }else{
+    } else {
       cartItems[existingItemIndex].quantity += 1;
     }
     console.log(cartItems);
@@ -106,10 +112,10 @@ const fetchApiCall = async (id: any) => {
   };
 
   //going to product page
-  const handleProduct =(id:any)=>{
-    localStorage.setItem("shopName",shopName);
+  const handleProduct = (id: any) => {
+    localStorage.setItem("shopName", shopName);
     localStorage.setItem("shopImage", shopImage);
-    localStorage.setItem("productIDFavouriteFoods",id);
+    localStorage.setItem("productIDFavouriteFoods", id);
     router.push("/home/productview");
   }
 
@@ -126,7 +132,7 @@ const fetchApiCall = async (id: any) => {
                     key={item.id}
                     className="w-full h-full rounded-xl mb-10 shadow-lg z-0 cursor-pointer "
                     // onClick={() => router.push("/home/productview")}
-                    onClick={()=>handleProduct(item._id)}
+                    onClick={() => handleProduct(item._id)}
                   >
                     <div className="relative w-full h-[189px] rounded-t-xl z-0">
                       <Image
@@ -134,7 +140,7 @@ const fetchApiCall = async (id: any) => {
                         alt={item.itemName}
                         width={252}
                         height={189}
-                        className="w-full h-full rounded-t-xl z-0"
+                        className="w-full h-full rounded-t-xl z-0 object-cover"
                       />
                     </div>
                     <div className="w-full mb-[-20px] py-3 px-3">
@@ -142,17 +148,17 @@ const fetchApiCall = async (id: any) => {
                         {item.itemName}
                       </h3>
                       <h3 className="text-[20px] font-bold text-black ">
-                        {item.price}
+                      $ {item.price}
                       </h3>
                       <div className="w-full h-full flex lg:flex-row md:flex-col lg:justify-between md:justify-center items-center mt-2">
                         <div className="flex items-center ">
                           <FaStar className="w-[12px] h-[12px] text-ratings" />
                           <p className="text-[13px] text-detail font-medium ml-1">
-                            {item.rating}
+                            {item.averageRating.toFixed(1)}
                           </p>
                           <p className="text-[13px] text-detail">
                             {" "}
-                            {item.rates}
+                            ({item.totalRatings})
                           </p>
                         </div>
                         <button
@@ -180,14 +186,7 @@ const fetchApiCall = async (id: any) => {
                       alt="shopLogo"
                       width={500}
                       height={500}
-                      className="lg:flex md:hidden"
-                    />
-                    <Image
-                      src= {shopImage || "/dominos.png"}
-                      alt="shopLogo"
-                      width={50}
-                      height={50}
-                      className="lg:hidden md:flex"
+                      className="w-full h-full rounded-full object-cover"
                     />
                   </div>
                   <div className="flex flex-col gap-2 justify-center">
@@ -213,7 +212,7 @@ const fetchApiCall = async (id: any) => {
                   <Swiper
                     modules={[Navigation]}
                     spaceBetween={20}
-                    slidesPerView={1}
+                    slidesPerView={swipersettings}
                     navigation
                   >
                     {ShopComments.map((item) => (
@@ -224,16 +223,16 @@ const fetchApiCall = async (id: any) => {
                         <div className="flex  gap-5">
                           <div className="w-[30px] h-[30px] rounded-full">
                             <Image
-                              src={item.userId? item.userId.profilePhoto : profilePic }
+                              src={item.userId ? item.userId.profilePhoto : profilePic}
                               alt="reviewer profile pic"
                               width={30}
                               height={30}
-                              className="w-full h-full rounded-full"
+                              className="w-full h-full rounded-full object-cover"
                             />
                           </div>
                           <div className="w-full">
                             <h2 className="text-[17px] font-semibold capitalize">
-                              {item.userId? item.userId.fullName : "Customer"}
+                              {item.userId ? item.userId.fullName : "Customer"}
                             </h2>
                             <p className="text-[11px] text-inputText mt-2 text-justify">
                               {item.comment}
@@ -244,7 +243,7 @@ const fetchApiCall = async (id: any) => {
                               <FaStar className="text-starColor2 text-[15px]" />
                               <FaStar className="text-starColor2 text-[15px]" />
                               <FaRegStar className="text-starColor2 text-[15px]" />
-                              
+
                             </div>
                           </div>
                         </div>
@@ -256,7 +255,7 @@ const fetchApiCall = async (id: any) => {
                   <Swiper
                     modules={[Navigation]}
                     spaceBetween={20}
-                    slidesPerView={1}
+                    slidesPerView={swipersettings}
                     navigation
                   >
                     {ShopComments.map((item) => (
@@ -267,19 +266,19 @@ const fetchApiCall = async (id: any) => {
                         <div className="flex  gap-5">
                           <div className="w-[30px] h-[30px] rounded-full">
                             <Image
-                              src={item.userId?item.userId.profilePhoto:profilePic}
+                              src={item.userId ? item.userId.profilePhoto : profilePic}
                               alt="reviewer profile pic"
                               width={30}
                               height={30}
-                              className="w-full h-full rounded-full"
+                              className="w-full h-full rounded-full object-cover"
                             />
                           </div>
                           <div className="w-full">
                             <h2 className="text-[17px] font-semibold capitalize">
-                            {item.userId? item.userId.fullName: "Cutomer Name"}
+                              {item.userId ? item.userId.fullName : "Cutomer Name"}
                             </h2>
                             <p className="text-[11px] text-inputText mt-2 text-justify">
-                            {item.comment}
+                              {item.comment}
                             </p>
                             <div className="flex flex-row items-center mt-3">
                               <FaStar className="text-starColor2 text-[15px]" />
@@ -297,14 +296,19 @@ const fetchApiCall = async (id: any) => {
               </div>
 
               <div className="w-full flex flex-col items-center mt-[80px]">
-                <div className="w-[75px] h-[75px] rounded-full bg-white flex justify-center items-center border-2 border-primary">
+                <div className="w-[75px] h-[75px] rounded-full bg-white flex justify-center items-center overflow-hidden">
                   <Image
                     src={shopImage || "/dominos.png"}
                     alt="dominos"
                     width={75}
                     height={75}
+                    style={{
+                      maskImage: "radial-gradient(circle, white 99%, transparent 100%)",
+                      WebkitMaskImage: "radial-gradient(circle, white 99%, transparent 100%)",
+                    }}
                   />
                 </div>
+
                 <h3 className="text-[18px] font-medium mt-2">{shopName}</h3>
                 <div className="flex items-center gap-2 mt-5">
                   <FaStar className="text-starColor lg:text-[32px] md:text-[30px]" />
@@ -313,66 +317,66 @@ const fetchApiCall = async (id: any) => {
                   <FaStar className="text-starColor lg:text-[32px] md:text-[30px]" />
                   <FaRegStar className="text-starColor lg:text-[32px] md:text-[30px]" />
                 </div>
-                {ShopRating.map((item)=>(
-                <div key={item._id} className="flex flex-col justify-center gap-3 mt-10">
-                  
-                  <div className="flex items-center justify-center lg:gap-5 md:gap-2">
-                    <p className="text-[14px] text-primary font-semibold">
-                      5 Stars
-                    </p>
+                {ShopRating.map((item) => (
+                  <div key={item._id} className="flex flex-col justify-center gap-3 mt-10">
 
-                    <div className="xl:w-[320px] lg:w-[200px] md:w-[120px] xl:h-[25px] md:h-[18px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[85%]"></div>
+                    <div className="flex items-center justify-center lg:gap-5 md:gap-2">
+                      <p className="text-[14px] text-primary font-semibold">
+                        5 Stars
+                      </p>
+
+                      <div className="xl:w-[320px] lg:w-[200px] md:w-[120px] xl:h-[25px] md:h-[18px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
+                        <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[85%]"></div>
+                      </div>
+
+                      <p className="text-[14px] text-inputText">({item.fiveStarCount})</p>
                     </div>
 
-                    <p className="text-[14px] text-inputText">({item.fiveStarCount})</p>
-                  </div>
+                    <div className="flex items-center lg:gap-5 md:gap-2">
+                      <p className="text-[14px] text-primary font-semibold">
+                        4 Stars
+                      </p>
 
-                  <div className="flex items-center lg:gap-5 md:gap-2">
-                    <p className="text-[14px] text-primary font-semibold">
-                      4 Stars
-                    </p>
+                      <div className="xl:w-[320px] lg:w-[200px] md:w-[120px] xl:h-[25px] md:h-[18px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
+                        <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[60%]"></div>
+                      </div>
 
-                    <div className="xl:w-[320px] lg:w-[200px] md:w-[120px] xl:h-[25px] md:h-[18px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[60%]"></div>
+                      <p className="text-[14px] text-inputText">({item.fourStarCount})</p>
                     </div>
+                    <div className="flex items-center lg:gap-5 md:gap-2">
+                      <p className="text-[14px] text-primary font-semibold">
+                        3 Stars
+                      </p>
 
-                    <p className="text-[14px] text-inputText">({item.fourStarCount})</p>
-                  </div>
-                  <div className="flex items-center lg:gap-5 md:gap-2">
-                    <p className="text-[14px] text-primary font-semibold">
-                      3 Stars
-                    </p>
+                      <div className="xl:w-[320px] lg:w-[200px] md:w-[120px] xl:h-[25px] md:h-[18px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
+                        <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[35%]"></div>
+                      </div>
 
-                    <div className="xl:w-[320px] lg:w-[200px] md:w-[120px] xl:h-[25px] md:h-[18px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[35%]"></div>
+                      <p className="text-[14px] text-inputText">({item.threeStarCount})</p>
                     </div>
+                    <div className="flex items-center lg:gap-5 md:gap-2">
+                      <p className="text-[14px] text-primary font-semibold">
+                        2 Stars
+                      </p>
 
-                    <p className="text-[14px] text-inputText">({item.threeStarCount})</p>
-                  </div>
-                  <div className="flex items-center lg:gap-5 md:gap-2">
-                    <p className="text-[14px] text-primary font-semibold">
-                      2 Stars
-                    </p>
+                      <div className="xl:w-[320px] lg:w-[200px] md:w-[120px] xl:h-[25px] md:h-[18px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
+                        <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[25%]"></div>
+                      </div>
 
-                    <div className="xl:w-[320px] lg:w-[200px] md:w-[120px] xl:h-[25px] md:h-[18px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[25%]"></div>
+                      <p className="text-[14px] text-inputText">({item.twoStarCount})</p>
                     </div>
+                    <div className="flex items-center lg:gap-5 md:gap-2">
+                      <p className="text-[14px] text-primary font-semibold">
+                        1 Stars
+                      </p>
 
-                    <p className="text-[14px] text-inputText">({item.twoStarCount})</p>
-                  </div>
-                  <div className="flex items-center lg:gap-5 md:gap-2">
-                    <p className="text-[14px] text-primary font-semibold">
-                      1 Stars
-                    </p>
+                      <div className="xl:w-[320px] lg:w-[200px] md:w-[120px] xl:h-[25px] md:h-[18px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
+                        <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[10%]"></div>
+                      </div>
 
-                    <div className="xl:w-[320px] lg:w-[200px] md:w-[120px] xl:h-[25px] md:h-[18px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen xl:h-[25px] md:h-[18px] rounded-full w-[10%]"></div>
+                      <p className="text-[14px] text-inputText">({item.oneStarCount})</p>
                     </div>
-
-                    <p className="text-[14px] text-inputText">({item.oneStarCount})</p>
                   </div>
-                </div>
                 ))}
               </div>
 

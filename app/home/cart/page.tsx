@@ -70,21 +70,21 @@
               my cart
             </h2>
             <div className="w-full flex lg:flex-row md:flex-col gap-6">
-              <div className="xl:w-[65%] lg:w-[60%] md:w-[100%]">
-              <MyCartComponent 
-              cartItems={cartItems}
-              incrementQty={incrementQty}
-              decrementQty={decrementQty}
-              removeItem={removeItem}
-            />
-              </div>
-              <div className="xl:w-[35%] lg:w-[40%] md:w-[80%] md:mx-auto  h-full">
-              <CartTotal 
-              cartItems={cartItems}
-              totalPrice={totalPrice}
-            />
-              </div>
-            </div>
+                    <div className="xl:w-[50%] lg:w-[60%] md:w-[100%]">
+                    <MyCartComponent 
+                    cartItems={cartItems}
+                    incrementQty={incrementQty}
+                    decrementQty={decrementQty}
+                    removeItem={removeItem}
+                  />
+                    </div>
+                    <div className="xl:w-[35%] lg:w-[40%] md:w-[80%] md:mx-auto  h-full">
+                    <CartTotal 
+                    cartItems={cartItems}
+                    totalPrice={totalPrice}
+                  />
+                    </div>
+                  </div>
           </div>
         </PageTransition>
       </>

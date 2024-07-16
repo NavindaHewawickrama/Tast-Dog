@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useRef } from "react";
 import { useState } from "react";
-import { IoEye } from "react-icons/io5";
+import { IoEye,IoEyeOff } from "react-icons/io5";
 import ForgotPassword from "@/components/models/ForgotPassword";
 import { signInWithGoogle, signInWithFacebook, logInWithGoogle } from '../../auth';
 import { useRouter } from "next/navigation";
@@ -20,6 +20,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [otp, setOtp] = useState<any>(null);
   const [enteredCode, setEnteredCode] = useState("");
+  const [showPassword, setShowPassword] = useState(false); 
   console.log(openModel);
 
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
@@ -198,13 +199,16 @@ const Login = () => {
 
             <div className="w-full h-[48px] flex items-center bg-inputBlue mt-5 rounded-lg border-2 border-inputBorder">
               <input
-                type="Password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 className="w-[90%] outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div className="w-[10%]">
-                <IoEye className="text-gray-400 text-xl" />
+                {/* <IoEye className="text-gray-400 text-xl" onClick={e=> showPassword? setShowPassword(false): setShowPassword(true)} /> */}
+                {
+                  showPassword ? <IoEye className="text-gray-400 text-xl" onClick={e=> setShowPassword(false)} /> : <IoEyeOff className="text-gray-400 text-xl" onClick={e=> setShowPassword(true)} />
+                }
               </div>
             </div>
             <button

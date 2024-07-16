@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useRef } from "react";
-import { IoEye } from "react-icons/io5";
+import { IoEye,IoEyeOff } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signInWithGoogle, signInWithFacebook, signUpWithGoogle } from '../../auth';
@@ -23,6 +23,8 @@ const Register = () => {
   const [nextModel, setNextModel] = useState(true);
   const [otp, setOtp] = useState<any>(null);
   const [enteredCode, setEnteredCode] = useState("");
+  const [showPassword, setShowPassword] = useState(false); 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
   var userId = ("");
 
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
@@ -127,35 +129,7 @@ const Register = () => {
     }
   };
 
-  // const handleVerifyOTP = async () => {
-  //   console.log(email, otp);
-  //   try {
-  //     const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/verifyOtp", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         emailOrPhoneNumber: email,
-  //         otp: otp,
-  //       }),
-  //     });
-  
-  //     if (!response.ok) {
-  //       const errorData = await response.json();
-  //       window.alert(errorData.message || "Invalid contact info");
-  //       console.log("Error response:", errorData);
-  //     } else {
-  //       const data = await response.json();
-  //       window.alert("OTP Correct");
-  //       localStorage.setItem("forgotPasswordEmailorPhoneNumber", email);
-  //       router.push('/delivery');
-  //     }
-  //   } catch (e) {
-  //     console.log("An error occurred:", e);
-  //     window.alert("An error occurred. Please try again later.");
-  //   }
-  // };
+
 
   const handleVerifyOTP = async () => {
     try {
@@ -260,17 +234,27 @@ const Register = () => {
             </div>
             <div className="w-full h-[48px] flex items-center mt-3 rounded-lg border-2 border-inputBorder">
               <input
-                type="password"
+                type={showPassword? "text": "password"}
                 placeholder="Password"
                 className="w-[90%] outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                 onChange={(e) => setPassword(e.target.value)} />
+                <div className="w-[10%]">
+                  {
+                    showPassword ? <IoEye className="text-gray-400 text-xl" onClick={e=> setShowPassword(false)} /> : <IoEyeOff className="text-gray-400 text-xl" onClick={e=> setShowPassword(true)} />
+                  } 
+                </div>
             </div>
             <div className="w-full h-[48px] flex items-center mt-3 rounded-lg border-2 border-inputBorder">
               <input
-                type="password"
+                type={showConfirmPassword?"text":"password"}
                 placeholder="Confirm Password"
                 className="w-[90%] outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                 onChange={(e) => setConfirmPassword(e.target.value)} />
+                <div className="w-[10%]">
+                  {
+                    showConfirmPassword ? <IoEye className="text-gray-400 text-xl" onClick={e=> setShowConfirmPassword(false)} /> : <IoEyeOff className="text-gray-400 text-xl" onClick={e=> setShowConfirmPassword(true)} />
+                  }
+                </div>
             </div>
             <button
               onClick={() => handleSubmit()}

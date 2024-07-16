@@ -1,6 +1,6 @@
 "use client";
 //#region imports
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa6";
@@ -18,16 +18,16 @@ const FavoriteFoods = () => {
 
   const [toggle, setToggle] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [shopName, setShopName] = useState<any| null>(null);
+  const [shopName, setShopName] = useState<any | null>(null);
   const [shopImage, setShopImage] = useState<any | null>(null);
   const [shopId, setShopId] = useState<any | null>(null);
   const [visibleItems, setVisibleItems] = useState<any[]>([]);
-  const[userId, setUserId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     handleTopRatedFoods();
     setUserId(localStorage.getItem("userId"));
-    handleFavouriteFoods();
+    
   }, []);
   //#endregion
 
@@ -81,8 +81,8 @@ const FavoriteFoods = () => {
         handleShopData(data.shopId);
         // router.push("/home/shopview");
       }
-    }catch{
-
+    }catch(e){
+      console.log(e);
     }
   };
 
@@ -127,19 +127,7 @@ const FavoriteFoods = () => {
     router.push("/home/productview");
   };
 
-  const handleFavouriteFoods = async()=>{
-    try{
-      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/favoriteItems/favorite/${userId}`);
-      const data = await response.json();
-      if(!response.ok){
-        console.log(data.message || "An error occurred.");
-      }else{
-        setVisibleItems((prevItems)=>[...prevItems,...data]);
-      }
-    }catch(error){
-      console.log("An error occurred. Please try again later." , error);
-    }
-  }
+ 
 
 
   //#endregion
@@ -150,7 +138,7 @@ const FavoriteFoods = () => {
         <div className="mt-[50px] w-full overflow-hidden">
           <div className="flex justify-between items-center">
             <h2 className="capitalize text-[24px] font-bold mb-[20px]">
-              your favorites
+              Top Rated Foods
             </h2>
             <Link
               href="/home/favorites"
@@ -176,7 +164,7 @@ const FavoriteFoods = () => {
             {visibleItems.map((item) => (
               <div
                 key={item._id}
-                className="lg:w-full md:w-full xl:w-[95%] h-[300px] rounded-xl mb-5 shadow-lg z-0 cursor-pointer"
+                className="lg:w-full md:w-full xl:w-[95%] h-[320px] rounded-xl mb-5 shadow-lg z-0 cursor-pointer"
                 onClick={() => handleProductViewClick(item._id)}
               >
                 <div className="relative w-full h-[189px] rounded-t-xl z-0">
@@ -207,7 +195,7 @@ const FavoriteFoods = () => {
                     {item.itemName}
                   </h3>
                   <h3 className="text-[20px] font-bold text-black ">
-                    {item.price}
+                    $ {item.price}
                   </h3>
                   <div className="w-full flex flex-row justify-between items-center mt-2">
                     <div className="flex items-center ">
@@ -224,7 +212,7 @@ const FavoriteFoods = () => {
                       }}
                       className="w-[86px] h-[27px] flex justify-center items-center bg-button2 rounded-xl text-[10px] text-white gap-2 transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
                     >
-                      <FaCartShopping />
+                     <FaCartShopping className="w-[12px] h-[12px]" />
                       <p className="capitalize">add to cart</p>
                     </button>
                   </div>
