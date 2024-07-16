@@ -404,11 +404,18 @@ const handleShopId = async (id:any) =>{
                           {item.comment}
                         </p>
                         <div className="flex flex-row items-center mt-3">
+                          {/* <FaStar className="text-starColor2 text-[15px]" />
                           <FaStar className="text-starColor2 text-[15px]" />
                           <FaStar className="text-starColor2 text-[15px]" />
                           <FaStar className="text-starColor2 text-[15px]" />
-                          <FaStar className="text-starColor2 text-[15px]" />
-                          <FaRegStar className="text-starColor2 text-[15px]" />
+                          <FaRegStar className="text-starColor2 text-[15px]" /> */}
+                          {Array.from({ length: 5 }, (_, index) => (
+                                index < item.rating ? (
+                                  <FaStar key={index} className="text-starColor2 text-[15px]" />
+                                ) : (
+                                  <FaRegStar key={index} className="text-starColor2 text-[15px]" />
+                                )
+                              ))}
                         </div>
                         Rating : {item.rating}
                       </div>
