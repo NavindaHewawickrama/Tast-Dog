@@ -38,7 +38,7 @@ const MyAccount = () => {
   const [cvv, setCvv]  = useState("");
   const [cardname, setName]  = useState("");
   const [cardId, setCardId] = useState("");
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleDelete = async ()=>{
     try{
@@ -150,10 +150,16 @@ const MyAccount = () => {
     setChangeAddress(true);
   }
 
-  const handleImageChange = (event: any) => {
-    const newImage = event.target.files[0];
-    setImageUrl(URL.createObjectURL(newImage)); // Preview image locally (optional)
-    setImageFile(newImage);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newImage = event.target.files?.[0];
+    if (newImage) {
+      setImageUrl(URL.createObjectURL(newImage)); // Preview image locally (optional)
+      setImageFile(newImage);
+    }
+  };
+
+  const triggerFileInputClick = () => {
+    document.getElementById("imageInput")?.click();
   };
 
   const changePhoto = async () => {
@@ -200,16 +206,19 @@ const MyAccount = () => {
             />
             <br/>
             <input
-              type="file"
-              id="profile-image-input"
-              className="show" // Hide the file input visually
-              placeholder="Enter Image to change"
-              onChange={handleImageChange}
-            />
-            {/* <button onClick={() =>changePhoto()}
-            className="absolute bottom-0 right-0 w-[33px] h-[33px] bg-button2 rounded-full flex justify-center items-center transition-transform duration-300 ease-in-out transform hover:scale-[1.1]">
-              <MdEdit size={23} color="white" />
-            </button> */}
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ display: "none" }}
+              />
+
+              <button
+                onClick={triggerFileInputClick}
+                className="absolute show bottom-0 right-0 w-[33px] h-[33px] bg-button2 rounded-full flex justify-center items-center transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
+              >
+                <MdEdit size={23} color="white" />
+              </button>
           </div>
 
           <div className="w-full flex flex-col gap-3">
