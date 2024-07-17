@@ -174,7 +174,7 @@ const Register = () => {
   return (
     <div className="w-screen h-screen hidden md:flex flex-row overflow-hidden">
       {nextModel ? (
-      <><div className="relative lg:w-[50%] md:w-[60%] flex flex-col items-center justify-center shadow-2xl shadow-black overflow-hidden">
+      <><div className="relative w-[50%]  flex flex-col items-center justify-center shadow-2xl shadow-black overflow-hidden">
           <Image src="/Logo.png" alt="logo" width={330} height={94} />
           <div className="w-[444px] flex flex-col items-center justify-center mt-[30px]">
             <h2 className="text-[32px] font-Lato font-bold leading-4 text-[#3C3939]">
@@ -367,7 +367,7 @@ const Register = () => {
           </div>
           
         )}
-        <div className="w-[50%] flex flex-col items-center justify-center bg-auth-pattern"></div>
+        
       </div>
       
   );

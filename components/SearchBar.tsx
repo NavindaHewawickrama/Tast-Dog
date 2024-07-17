@@ -68,7 +68,7 @@ const SearchBar: React.FC = () => {
 // };
 
 const handleSearch = () => {
-  
+  window.location.reload;
 try{
   // console.log(filteredResults);
   if(query == ""){
