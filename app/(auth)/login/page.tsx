@@ -47,6 +47,7 @@ const Login = () => {
         window.alert("Login UnSuccessful");
         console.log(data);
       }else{
+        localStorage.setItem("phoneNumber",data.customer.secondaryNumber);
         if(data.customer.isVerified === false){
           setNextModel(false);
           try {

@@ -22,6 +22,7 @@ const PlaceOrder = () => {
   const [stateProvince, setStateProvince] = useState<string | null>("");
   const [landMark, setLandMark] = useState<string | null>("");
   const [userName, setUserName] = useState<string | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const [product, setProduct] = useState<any[]>([]);
@@ -32,9 +33,14 @@ const PlaceOrder = () => {
   //#endregion
 
 
+
   const getUserAddress = async () => {
     const id = localStorage.getItem("userId");
     const buyingProduct = localStorage.getItem("buyProductPlaceOrder");
+    const uName = localStorage.getItem("userName");
+    setUserName(uName);
+    const pNo = localStorage.getItem("phoneNumber");
+    setPhoneNumber(pNo);
     setShopName(localStorage.getItem("buyProductShopName"));
     setShopImage(localStorage.getItem("buyProductShopImage"));
     // Check if buyingProduct exists and is an array before setting
@@ -52,6 +58,7 @@ const PlaceOrder = () => {
         console.log(data);
       }else{
         setAddress1(data);  
+        
       }
     }catch(error){
       console.error(error);
@@ -113,7 +120,7 @@ const handleCheckout=()=>{
                       {address.aptSuite}, {address.streetAddress}, {address.city}, {address.state}, {address.landmark}
                     </h3>
                     <p className="text-[12px] text-inputText">
-                      {userName}: +94 222 222 222
+                      {userName}: {phoneNumber}
                     </p>
                   </div>
                   ))}
