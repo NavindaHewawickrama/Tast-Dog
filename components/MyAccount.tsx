@@ -341,7 +341,7 @@ const MyAccount = () => {
               className="w-[320px] h-[50px] text-center text-red-600 bg-none rounded-lg capitalize text-[20px] border-2 border-red-600 transition-transform duration-300 ease-in-out transform hover:scale-95"
               onClick={() => setDeleteModel(true)}
             >
-              delete account
+              deactivate account
             </button>
           </div>
         </div>

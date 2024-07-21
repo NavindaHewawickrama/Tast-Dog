@@ -98,7 +98,7 @@ return (
       handleSearch();
     }
   }}
-      placeholder="Search Foods"
+      placeholder="Search Foods or Restaurant"
       className="w-[92%] outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
     />
   </div>
