@@ -89,7 +89,7 @@ const Home = () => {
           <h2 className="capitalize text-[24px] font-bold">
             {salutation} {userNames}
           </h2>
-          <div className="mt-2 xl:px-[40px] md:px-[35px] w-full h-[390px]">
+          <div className="mt-2 xl:px-[40px] md:px-[35px] w-[1400px]] h-[550px]">
             <Slider />
           </div>
           <NearbyShops />

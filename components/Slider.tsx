@@ -23,7 +23,7 @@ const Slider = () => {
         clickable: true,
       }}
       modules={[EffectFade, Autoplay, Pagination]}
-      className="max-w-[1800px] h-[435px]  rounded-xl"
+      className="max-w-[1500px] h-[550px]  rounded-xl"
     >
       <SwiperSlide className="w-[1800px] h-[500px]">
         <Image
