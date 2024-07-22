@@ -156,7 +156,7 @@ const FavouriteFoods = () => {
               {visibleItems.map((item) => (
                 <div
                   key={item.id}
-                  className="lg:w-full md:w-full xl:w-[95%] h-[300px] rounded-xl mb-5 shadow-lg z-0 cursor-pointer"
+                  className="lg:w-full md:w-full xl:w-[95%] h-[320px] rounded-xl mb-5 shadow-lg z-0 cursor-pointer"
                   onClick={() => handleProductViewClick(item.itemId)}
                 >
                   <div className="relative w-full h-[189px] rounded-t-xl z-0">
@@ -187,7 +187,7 @@ const FavouriteFoods = () => {
                     {item.itemName}
                     </h3>
                     <h3 className="text-[20px] font-bold text-black ">
-                      {item.price}
+                      $ {item.price}
                     </h3>
                     <div className="w-full flex flex-row justify-between items-center mt-2">
                       <div className="flex items-center ">
@@ -202,7 +202,7 @@ const FavouriteFoods = () => {
                         e.stopPropagation();
                         removeFavouriteItem(item.itemId);
                     }}
-                        className="w-[60px] h-[27px] flex justify-center items-center bg-red-600 rounded-xl text-[8px] text-white gap-2 transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
+                        className="w-[60px] h-[25px] flex justify-center items-center bg-red-600 rounded-xl text-[10px] text-white gap-2 transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
                       >
                         Remove 
                       </button>
@@ -211,7 +211,7 @@ const FavouriteFoods = () => {
                           e.stopPropagation(); // Prevent event bubbling to parent div
                           handleToggle(item);
                         }}
-                        className="w-[86px] h-[27px] flex justify-center items-center bg-button2 rounded-xl text-[10px] text-white gap-2 transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
+                        className="w-[86px] h-[25px] flex justify-center items-center bg-button2 rounded-xl text-[10px] text-white gap-2 transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
                       >
                         <FaCartShopping />
                         <p className="capitalize">add to cart</p>

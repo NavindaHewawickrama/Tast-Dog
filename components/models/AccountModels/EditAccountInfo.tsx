@@ -1,6 +1,8 @@
 import React,{useEffect, useState} from "react";
 import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 interface ModalProps {
   open: boolean;
@@ -13,7 +15,8 @@ interface ModalProps {
 const EditAccountInfo: React.FC<ModalProps> = ({open, onClose, userName, email, phoneNumber }) => {
   const [name, setName] = useState<string | null>(userName);
   const [emailAddress, setEmailAddress] = useState<string | null>(email);
-  const [phone, setPhone] = useState<string | null>(phoneNumber);
+  // const [phone, setPhone] = useState<string | null>(phoneNumber);
+  const [phone, setPhone] = useState<string>('');
 
  
   useEffect(() => {
@@ -106,14 +109,31 @@ const EditAccountInfo: React.FC<ModalProps> = ({open, onClose, userName, email, 
               <p className="text-[12px] text-inputText capitalize">
                 phone number
               </p>
-              <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
-                <input
-                  type="tel"
-                  value={phone || ""}
-                  className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
-                  onChange={(e)=>setPhone(e.target.value)}
-                />
-              </div>
+              <div className="w-full h-[48px] bg-inputBlue rounded-lg border-2 border-inputBorder">
+      <PhoneInput
+        country={'us'}
+        value={phone}
+        onChange={(phone: string) => setPhone(phone)}
+        inputStyle={{
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'transparent',
+          border: 'none',
+          outline: 'none',
+          fontSize: '14px',
+          color: '#000', 
+        }}
+        buttonStyle={{
+          backgroundColor: 'transparent',
+          border: 'none',
+          outline: 'none',
+        }}
+        containerStyle={{
+          width: '100%',
+          height: '100%',
+        }}
+      />
+    </div>
             </div>
           </div>
           <div className="w-full flex items-center gap-5 mt-10">

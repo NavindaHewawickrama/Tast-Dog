@@ -45,13 +45,13 @@ const NearbyShops = () => {
   return (
     <div className="mt-[50px] w-full overflow-hidden ">
       <h2 className="capitalize text-[24px] font-bold mb-[20px]">
-       Top Rated Shops
+       Shops Nearby
       </h2>
       <div className="md:hidden xl:flex">
         <Swiper
           modules={[Navigation]}
           spaceBetween={25}
-          slidesPerView={1}
+          slidesPerView={4}
           navigation
         >
           {Shop && Shop.map((item) => (
@@ -91,7 +91,7 @@ const NearbyShops = () => {
         <Swiper
           modules={[Navigation]}
           spaceBetween={25}
-          slidesPerView={1}
+          slidesPerView={2}
           navigation
         >
           {Shop && Shop.map((item) => (

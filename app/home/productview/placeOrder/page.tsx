@@ -10,6 +10,7 @@ import Link from "next/link";
 import ChangeAddress from "@/components/models/AccountModels/ChangeAddress";
 import PageTransition from "@/components/PageTransition";
 import profilePic from "./../../../../public/Logo2.png";
+import AddNewAddress from "@/components/models/AccountModels/AddNewAddress";
 
 //#endregion
 
@@ -22,6 +23,7 @@ const PlaceOrder = () => {
   const [stateProvince, setStateProvince] = useState<string | null>("");
   const [landMark, setLandMark] = useState<string | null>("");
   const [userName, setUserName] = useState<string | null>(null);
+  const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const [product, setProduct] = useState<any[]>([]);
@@ -29,12 +31,19 @@ const PlaceOrder = () => {
   const [shopImage, setShopImage] = useState<any | null>(null);
   const [total, setTotal] = useState<any | null>(null);
   const [cartItems, setCartItems] = useState<any[]|null>(null);
+  const [newAddress, setNewAddress] = useState(false);
+  const [changeAddress, setChangeAddress] = useState(false);
   //#endregion
+
 
 
   const getUserAddress = async () => {
     const id = localStorage.getItem("userId");
     const buyingProduct = localStorage.getItem("buyProductPlaceOrder");
+    const uName = localStorage.getItem("userName");
+    setUserName(uName);
+    const pNo = localStorage.getItem("phoneNumber");
+    setPhoneNumber(pNo);
     setShopName(localStorage.getItem("buyProductShopName"));
     setShopImage(localStorage.getItem("buyProductShopImage"));
     // Check if buyingProduct exists and is an array before setting
@@ -52,6 +61,7 @@ const PlaceOrder = () => {
         console.log(data);
       }else{
         setAddress1(data);  
+        
       }
     }catch(error){
       console.error(error);
@@ -96,6 +106,11 @@ const handleCheckout=()=>{
     getUserAddress();
   },[]);
 
+  const handleAddressChange =(id:any)=>{
+    localStorage.setItem("addressId", id);
+    setToggle(true);
+  }
+
   return (
     <>
       <PageTransition>
@@ -106,24 +121,27 @@ const handleCheckout=()=>{
                 <div className="flex items-center gap-[60px]">
                   <FaLocationDot className="text-[25px] text-button2" />
                   {address1.length > 0 &&
-                    address1.slice(0, 3).map((address: any) => (
-                  <div className="flex flex-col justify-center gap-1" key={address1._id}>
-                    <h3 className="text-[14px] fpnt-semibold">
-                      {/* {address1} , {address2}, {city}, {stateProvince}, {landMark}, */}
-                      {address.aptSuite}, {address.streetAddress}, {address.city}, {address.state}, {address.landmark}
-                    </h3>
-                    <p className="text-[12px] text-inputText">
-                      {userName}: +94 222 222 222
-                    </p>
-                  </div>
-                  ))}
+                      address1.slice(0, 3).map((address: any) => (
+                        <div className="flex justify-between items-center" key={address._id}>
+                          <div className="flex flex-col justify-center gap-1">
+                            <h3 className="text-[14px] font-semibold">
+                              {address.aptSuite}, {address.streetAddress}, {address.city}, {address.state}, {address.landmark}
+                            </h3>
+                            <p className="text-[12px] text-inputText">
+                              {userName}: {phoneNumber}
+                            </p>
+                          </div>
+                          <div className="flex justify-center items-center ml-9">
+                            <CiEdit
+                              className="text-[30px] cursor-pointer text-inputText"
+                              onClick={() => handleAddressChange(address._id)}
+                            />
+                          </div>
+                        </div>
+                      ))
+                    }
                 </div>
-                <div className="flex justify-center items-center">
-                  <CiEdit
-                    className="text-[30px] cursor-pointer text-inputText"
-                    onClick={() => setToggle(true)}
-                  />
-                </div>
+                
               </div>
               {product.length > 0 && (product.map((item: any) => (
               <div className="w-full h-[350px] flex flex-col gap-5 px-[50px] py-[25px] rounded-[20px] shadow-xl" key={item._id}>
@@ -218,7 +236,7 @@ const handleCheckout=()=>{
           </div>
         </section>
       </PageTransition>
-      <ChangeAddress open={toggle} onClose={() => setToggle(false)} addresses={[]} />
+      <ChangeAddress open={toggle} onClose={() => setToggle(false)} addresses={address1} />
     </>
   );
 };

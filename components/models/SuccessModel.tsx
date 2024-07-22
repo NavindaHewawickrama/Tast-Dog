@@ -14,8 +14,8 @@ const SuccessModel: React.FC<ModalProps> = ({ open }) => {
         <Image
           src="/passwordSuc.webp"
           alt="succsess_logo"
-          width={225}
-          height={200}
+          width={150}
+          height={125}
         />
         <h2 className="text-[16px] capitalize font-semibold">
           Password Resetted Successfully{" "}

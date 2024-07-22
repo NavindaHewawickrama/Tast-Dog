@@ -47,28 +47,9 @@ const SearchBar: React.FC = () => {
   };
 
 
-//   const handleSearch = async () => {
-//     await fetchDataFromAPI();
-//     let filteredResults: any[] = [];
-
-//     for (let i = 0; i < allData.length; i++) {
-//       if (allData[i].itemName === query.toString()) {
-//         filteredResults.push(allData[i]);
-//       }
-//     }
-//     if(filteredResults.length === 0){
-//       setSearchResults(filteredResults);
-//       localStorage.setItem("searchResults", query);
-//       router.push("/home/SearchResults");
-//     }else{
-//       setSearchResults(filteredResults);
-//       localStorage.setItem("searchResults", JSON.stringify(filteredResults));
-//       router.push("/home/SearchResults");
-//     }
-// };
 
 const handleSearch = () => {
-  
+  window.location.reload;
 try{
   // console.log(filteredResults);
   if(query == ""){
@@ -93,13 +74,6 @@ try{
   }
 
   
-
-  // setSearchResults(filteredResults);
-  // localStorage.removeItem("searchResults");
-  //   localStorage.setItem("searchResults", JSON.stringify(filteredResults));
-  //   localStorage.setItem("query", query);
-  //   router.push("/home/SearchResults");
-  //   window.location.reload()
 }catch(e){
   console.log(e);
 }
@@ -124,7 +98,7 @@ return (
       handleSearch();
     }
   }}
-      placeholder="Search Foods"
+      placeholder="Search Foods or Restaurant"
       className="w-[92%] outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
     />
   </div>

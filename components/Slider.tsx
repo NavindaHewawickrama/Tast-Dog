@@ -12,7 +12,7 @@ import Image from "next/image";
 const Slider = () => {
   return (
     <Swiper
-      spaceBetween={30}
+      spaceBetween={20}
       effect={"fade"}
       centeredSlides={true}
       autoplay={{
@@ -23,18 +23,18 @@ const Slider = () => {
         clickable: true,
       }}
       modules={[EffectFade, Autoplay, Pagination]}
-      className="max-w-[1000px] h-[420px] mx-auto rounded-xl"
+      className="max-w-[1800px] h-[435px]  rounded-xl"
     >
-      <SwiperSlide className="w-[1000px] h-[420px]">
+      <SwiperSlide className="w-[1800px] h-[500px]">
         <Image
           src="/sliderImage.png"
           alt="sliderImg"
           fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes="(max-width: 768px) 100vw, (max-width: 1800px) 50vw, 33vw"
           className="rounded-xl"
         />
       </SwiperSlide>
-      <SwiperSlide className="w-[1000px] h-[420px]">
+      <SwiperSlide className="w-[1800px] h-[500px]">
         <Image
           src="/foodBanner.webp"
           alt="sliderImg"
@@ -42,19 +42,21 @@ const Slider = () => {
           className="rounded-xl h-full"
         />
       </SwiperSlide>
-      <SwiperSlide className="w-[1000px] h-[420px]">
+      <SwiperSlide className="w-[1200px] h-[500px]">
         <Image
           src="/sliderDummy2.jpg"
           alt="sliderImg"
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 768px) 50vw, 33vw"
           className="rounded-xl h-full"
         />
       </SwiperSlide>
-      <SwiperSlide className="w-[1000px] h-[420px]">
+      <SwiperSlide className="w-[1200px] h-[300px]">
         <Image
           src="/foodMenu.jpg"
           alt="sliderImg"
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 768px) 50vw, 33vw"
           className="rounded-xl h-full"
         />
       </SwiperSlide>
