@@ -218,7 +218,7 @@ const handleShopId = async (id:any) =>{
     <>
       <PageTransition>
         
-        <div className="w-full px-[70px] py-[50px]">
+        <div className="w-full px-[70px] py-[50px] bg-aashColor">
           
           <div className="max-w-[1075px] flex flex-col">
            
@@ -314,7 +314,7 @@ const handleShopId = async (id:any) =>{
                       5 Stars
                     </p>
 
-                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
+                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-gray-300 mt-[10px]">
                       <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.fiveStarCount / item.totalRatings) * 100}%` }}></div>
                     </div>
 
@@ -325,7 +325,7 @@ const handleShopId = async (id:any) =>{
                       4 Stars
                     </p>
 
-                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
+                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-gray-300 mt-[10px]">
                       <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.fourStarCount/ item.totalRatings) * 100}%` }}></div>
                     </div>
 
@@ -336,7 +336,7 @@ const handleShopId = async (id:any) =>{
                       3 Stars
                     </p>
 
-                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
+                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-gray-300 mt-[10px]">
                       <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.threeStarCount / item.totalRatings) * 100}%` }}></div>
                     </div>
 
@@ -347,7 +347,7 @@ const handleShopId = async (id:any) =>{
                       2 Stars
                     </p>
 
-                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
+                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-gray-300 mt-[10px]">
                       <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.twoStarCount / item.totalRatings) * 100}%` }}></div>
                     </div>
 
@@ -358,7 +358,7 @@ const handleShopId = async (id:any) =>{
                       1 Stars
                     </p>
 
-                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
+                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-gray-300 mt-[10px]">
                       <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.oneStarCount / item.totalRatings) * 100}%` }}></div>
                     </div>
 
