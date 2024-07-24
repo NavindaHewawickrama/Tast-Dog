@@ -27,6 +27,7 @@ const ProductView = () => {
   const [ShopRating, setShopRatings] = useState<any[]>([]);
   const[itemComments,setItemComments] = useState<any[]>([]);
   const [ratings, setRatings] = useState<any>(null);
+  const [swipersettings,setSwipersettings] = useState(0);
 
   useEffect(() => {
     const foodId = localStorage.getItem("productIDFavouriteFoods");
@@ -73,6 +74,14 @@ const ProductView = () => {
         const dataComments = await response.json();
         console.log(dataComments);
         setItemComments(dataComments);
+        
+        if(dataComments.length < 2){
+          setSwipersettings(1);
+        }else if(dataComments.length < 3  ){
+          setSwipersettings(2);
+        }else{
+          setSwipersettings(3);
+        }
       }
     } catch (error) {
       console.log("An error occurred. Please try again later.", error);
@@ -108,6 +117,7 @@ const handleShopId = async (id:any) =>{
       }else{
         setShopRatings(dataReviews);
         console.log('dataReviews', dataReviews);
+        
       }
     }catch(error){
       console.log("An error occurred. Please try again later." , error);
@@ -248,7 +258,7 @@ const handleShopId = async (id:any) =>{
                       </div>
                       <div className="flex flex-col gap-2 mt-[75px]">
                         <button
-                          className="w-full h-[45px] text-center text-white bg-buttonGreen text-20px capitalize rounded-xl transition-transform duration-300 ease-in-out transform hover:scale-95"
+                          className="w-full h-[45px] text-center text-white bg-green-900 text-20px capitalize rounded-xl transition-transform duration-300 ease-in-out transform hover:scale-95"
                           onClick={() => handleBuyProduct(foodData)}
                         >
                           buy now
@@ -314,8 +324,8 @@ const handleShopId = async (id:any) =>{
                       5 Stars
                     </p>
 
-                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.fiveStarCount / item.totalRatings) * 100}%` }}></div>
+                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lime-100 rounded-full dark:bg-lime-100 mt-[10px]">
+                      <div className="bg-green-900 h-[15px] rounded-full" style={{ width: `${(item.fiveStarCount / item.totalRatings) * 100}%` }}></div>
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.fiveStarCount})</p>
@@ -325,8 +335,8 @@ const handleShopId = async (id:any) =>{
                       4 Stars
                     </p>
 
-                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.fourStarCount/ item.totalRatings) * 100}%` }}></div>
+                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lime-100 rounded-full dark:bg-lime-100 mt-[10px]">
+                      <div className="bg-green-900 h-[15px] rounded-full" style={{ width: `${(item.fourStarCount/ item.totalRatings) * 100}%` }}></div>
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.fourStarCount})</p>
@@ -336,8 +346,8 @@ const handleShopId = async (id:any) =>{
                       3 Stars
                     </p>
 
-                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.threeStarCount / item.totalRatings) * 100}%` }}></div>
+                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lime-100 rounded-full dark:bg-lime-100 mt-[10px]">
+                      <div className="bg-green-900 h-[15px] rounded-full" style={{ width: `${(item.threeStarCount / item.totalRatings) * 100}%` }}></div>
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.threeStarCount})</p>
@@ -347,8 +357,8 @@ const handleShopId = async (id:any) =>{
                       2 Stars
                     </p>
 
-                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.twoStarCount / item.totalRatings) * 100}%` }}></div>
+                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lime-100 rounded-full dark:bg-lime-100 mt-[10px]">
+                      <div className="bg-green-900 h-[15px] rounded-full" style={{ width: `${(item.twoStarCount / item.totalRatings) * 100}%` }}></div>
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.twoStarCount})</p>
@@ -358,8 +368,8 @@ const handleShopId = async (id:any) =>{
                       1 Stars
                     </p>
 
-                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lightGreen rounded-full dark:bg-lightGreen mt-[10px]">
-                      <div className="bg-buttonGreen h-[15px] rounded-full" style={{ width: `${(item.oneStarCount / item.totalRatings) * 100}%` }}></div>
+                    <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lime-100 rounded-full dark:bg-lime-100 mt-[10px]">
+                      <div className="bg-green-900 h-[15px] rounded-full" style={{ width: `${(item.oneStarCount / item.totalRatings) * 100}%` }}></div>
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.oneStarCount})</p>
@@ -378,13 +388,13 @@ const handleShopId = async (id:any) =>{
               <Swiper
                 modules={[Navigation]}
                 spaceBetween={25}
-                slidesPerView={1}
+                slidesPerView={swipersettings}
                 navigation
               >
                 {itemComments.map((item) => (
                   <SwiperSlide
                     key={item._id}
-                    className="w-[230px] px-3 py-4 bg-lighterGreen rounded-lg"
+                    className="w-[230px] px-3 py-4 bg-lighterGreen rounded-lg border-gray-300 border-2"
                   >
                     <div className="flex  gap-5">
                       <div className="w-[30px] h-[30px] rounded-full">
@@ -429,13 +439,13 @@ const handleShopId = async (id:any) =>{
               <Swiper
                 modules={[Navigation]}
                 spaceBetween={20}
-                slidesPerView={1}
+                slidesPerView={swipersettings}
                 navigation
               >
                 {itemComments.map((item) => (
                   <SwiperSlide
                     key={item._id}
-                    className="w-[230px] px-3 py-4 bg-lighterGreen rounded-lg"
+                    className="w-[230px] px-3 py-4 bg-lighterGreen rounded-lg border-gray-300 border-2"
                   >
                     <div className="flex  gap-5">
                       <div className="w-[30px] h-[30px] rounded-full">
