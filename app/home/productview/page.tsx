@@ -228,7 +228,7 @@ const handleShopId = async (id:any) =>{
     <>
       <PageTransition>
         
-        <div className="w-full px-[70px] py-[50px]">
+        <div className="w-full px-[70px] py-[50px] bg-aashColor">
           
           <div className="max-w-[1075px] flex flex-col">
            
@@ -323,9 +323,9 @@ const handleShopId = async (id:any) =>{
                     <p className="text-[13px] text-primary font-semibold">
                       5 Stars
                     </p>
-
                     <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lime-100 rounded-full dark:bg-lime-100 mt-[10px]">
                       <div className="bg-green-900 h-[15px] rounded-full" style={{ width: `${(item.fiveStarCount / item.totalRatings) * 100}%` }}></div>
+
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.fiveStarCount})</p>
@@ -337,6 +337,7 @@ const handleShopId = async (id:any) =>{
 
                     <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lime-100 rounded-full dark:bg-lime-100 mt-[10px]">
                       <div className="bg-green-900 h-[15px] rounded-full" style={{ width: `${(item.fourStarCount/ item.totalRatings) * 100}%` }}></div>
+
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.fourStarCount})</p>
@@ -348,6 +349,7 @@ const handleShopId = async (id:any) =>{
 
                     <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lime-100 rounded-full dark:bg-lime-100 mt-[10px]">
                       <div className="bg-green-900 h-[15px] rounded-full" style={{ width: `${(item.threeStarCount / item.totalRatings) * 100}%` }}></div>
+
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.threeStarCount})</p>
@@ -357,8 +359,10 @@ const handleShopId = async (id:any) =>{
                       2 Stars
                     </p>
 
+
                     <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lime-100 rounded-full dark:bg-lime-100 mt-[10px]">
                       <div className="bg-green-900 h-[15px] rounded-full" style={{ width: `${(item.twoStarCount / item.totalRatings) * 100}%` }}></div>
+
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.twoStarCount})</p>
@@ -370,6 +374,7 @@ const handleShopId = async (id:any) =>{
 
                     <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lime-100 rounded-full dark:bg-lime-100 mt-[10px]">
                       <div className="bg-green-900 h-[15px] rounded-full" style={{ width: `${(item.oneStarCount / item.totalRatings) * 100}%` }}></div>
+
                     </div>
 
                     <p className="text-[13px] text-inputText">({item.oneStarCount})</p>

@@ -14,7 +14,7 @@
     "axios": "^1.6.8",
     "firebase": "^10.12.1",
     "framer-motion": "^11.0.6",
-    "next": "^14.2.4",
+    "next": "^14.2.5",
     "nextjs": "^0.0.3",
     "react": "^18",
     "react-country-state-city": "^1.1.3",
