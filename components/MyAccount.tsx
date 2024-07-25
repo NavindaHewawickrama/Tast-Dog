@@ -113,9 +113,9 @@ const MyAccount = () => {
     const emails = localStorage.getItem("userEmail");
     const pkey = localStorage.getItem("pwReg");
     var userId = localStorage.getItem("userId");
-    // console.log('email is ' + emails);
-    // console.log('password is ' + pkey);
-    // console.log('userId is ' + userId);
+    console.log('email is ' + emails);
+    console.log('password is ' + pkey);
+    console.log('userId is ' + userId);
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/login",{
         method:"POST",
@@ -223,7 +223,7 @@ const MyAccount = () => {
 
           <div className="w-full flex flex-col gap-3">
             <div className="w-full flex justify-between items-center">
-              <h3 className="text-[18px] font-bold capitalize">
+              <h3 className="text-[16px] font-semibold capitalize">
                 personal info
               </h3>
               <button
@@ -238,19 +238,19 @@ const MyAccount = () => {
                 <p className="text-[16px] text-inputText capitalize">
                   full name:
                 </p>
-                <p className="text-[16px] text-detail font-bold capitalize">{userName}</p>
+                <p className="text-[16px] text-detail capitalize">{userName}</p>
               </div>
               <div className="flex items-center gap-4">
                 <p className="text-[16px] text-inputText capitalize">
                   Phone Number:
                 </p>
-                <p className="text-[16px] text-detail font-bold capitalize">
+                <p className="text-[16px] text-detail capitalize">
                   {phoneNumber}
                 </p>
               </div>
               <div className="flex items-center gap-4">
                 <p className="text-[16px] text-inputText capitalize">email:</p>
-                <p className="text-[16px] text-detail font-bold ">
+                <p className="text-[16px] text-detail ">
                   {email}
                 </p>
               </div>

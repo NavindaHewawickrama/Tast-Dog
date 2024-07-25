@@ -124,7 +124,7 @@ const MyOrders = () => {
                   onClick={()=>handleOrder(item)}
                 >
                   <div>
-                    <h2 className="text-[16px] text-primary">ID #00500 </h2>
+                    <h2 className="text-[16px] text-primary">{item.itemId.itemName}</h2>
                     <Image
                       src={item.itemId.itemImages[0] || item.itemId.itemImages}
                       // src="/path/to/your/image.jpg"
@@ -136,22 +136,18 @@ const MyOrders = () => {
                   </div>
 
                   <div className="flex flex-col justify-center">
-                  <h2
-                      className={`font-normal mb-1 ${
-                        item.itemId.itemName.length > 16 ? 'text-[14px]' : 'xl:text-[24px] md:text-[18px]'
-                      }`}
-                    >
-                      {item.itemId.itemName} 
+                    <h2 className="xl:text-[24px] md:text-[15px] font-normal mb-1">
+                      {item.itemId.itemName}
                     </h2>
                     <p className="text-[16px] text-green-700 font-semibold">
-                      Total: <span> ${item.price}</span>
+                      Total: <span>{item.price}</span>
                     </p>
                     <p className="text-[16px] font-semibold text-inputText">
-                     x{item.quantity}
+                      {item.quantity}
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-2 ml-10 mr-0">
+                  <div className="flex items-center gap-1 ml-10">
                     <GoDotFill
                       className={
                         item.status == "Processing"
@@ -198,9 +194,9 @@ const MyOrders = () => {
                   </div>
                 </div>
                 <div className="xl:w-[380px] lg:w-[300px] md:w-[200px] h-full mx-auto mt-7">
-                  <div className="w-full flex flex-col px-[15px] py-[15px] bg-lighterGreen gap-1 border-gray-200 border-2">
+                  <div className="w-full flex flex-col px-[15px] py-[15px] bg-lighterGreen gap-1">
                     <p className="text-[12px] text-inputText capitalize">
-                      Delivered & billed To
+                      Delivered & billled To
                     </p>
                     <h4 className="text-[16px] text-primary font-medium capitalize">
                       {name}
@@ -216,7 +212,7 @@ const MyOrders = () => {
                     </p>
                   </div>
                   <div className="w-full mt-10">
-                    <p className="text-[12px] text-inputText">Items Qty</p>
+                    <p className="text-[12px] text-inputText">Item Qty</p>
 
                     <div className="w-full h-[210px] flex flex-col gap-5 rounded-xl shadow-xl px-[15px] py-[15px] mt-4 ">
                       <div className="flex items-center gap-4">
@@ -232,7 +228,7 @@ const MyOrders = () => {
                             {itemName}
                           </h4>
                           <p className="text-[13px] text-detail capitalize">
-                          Total :${itemPrice}
+                            {itemPrice}
                           </p>
                           <p className="text-[13px] text-inputText ">xl</p>
                         </div>
@@ -267,9 +263,9 @@ const MyOrders = () => {
                   </div>
                 </div>
                 <div className="xl:w-[380px] lg:w-[300px] md:w-[200px] h-full mx-auto mt-10">
-                  <div className="w-full flex flex-col px-[15px] py-[15px] bg-lighterGreen gap-1  border-gray-200 border-2">
+                  <div className="w-full flex flex-col px-[15px] py-[15px] bg-lighterGreen gap-1">
                     <p className="text-[12px] text-inputText capitalize">
-                      Delivered & billed To
+                      Delivered & billled To
                     </p>
                     <h4 className="text-[16px] text-primary font-medium capitalize">
                     {name}
@@ -285,7 +281,7 @@ const MyOrders = () => {
                     </p>
                   </div>
                   <div className="w-full mt-10">
-                    <p className="text-[12px] text-inputText">Items Qty</p>
+                    <p className="text-[12px] text-inputText">Items</p>
                     <div className="w-full h-full bg-inputBlue shadow-xl rounded-xl px-[20px] py-[20px] flex flex-col gap-4 mt-5">
                       <div className="flex items-center bg-white gap-4 px-[10px] py-[10px] rounded-xl ">
                         <Image
@@ -300,7 +296,7 @@ const MyOrders = () => {
                           {itemName}
                           </h4>
                           <p className="text-[13px] text-detail capitalize">
-                          Total :${itemPrice}
+                          {itemPrice}
                           </p>
                           <p className="text-[13px] text-inputText ">xl</p>
                         </div>
@@ -338,9 +334,9 @@ const MyOrders = () => {
                   </div>
                 </div>
                 <div className="xl:w-[380px] lg:w-[300px] md:w-[200px] h-full mx-auto mt-10">
-                  <div className="w-full flex flex-col px-[15px] py-[15px] bg-lighterGreen gap-1  border-gray-200 border-2">
+                  <div className="w-full flex flex-col px-[15px] py-[15px] bg-lighterGreen gap-1">
                     <p className="text-[12px] text-inputText capitalize">
-                      Delivered & billed To
+                      Delivered & billled To
                     </p>
                     <h4 className="text-[16px] text-primary font-medium capitalize">
                     {name}
@@ -356,7 +352,7 @@ const MyOrders = () => {
                     </p>
                   </div>
                   <div className="w-full mt-10">
-                    <p className="text-[12px] text-inputText">Items Qty</p>
+                    <p className="text-[12px] text-inputText">Items</p>
                     <div className="w-full h-full bg-inputBlue shadow-xl rounded-xl px-[20px] py-[20px] flex flex-col gap-4 mt-5">
                       <div className="flex items-center bg-white gap-4 px-[10px] py-[10px] rounded-xl ">
                         <Image
@@ -371,7 +367,7 @@ const MyOrders = () => {
                             {itemName}
                           </h4>
                           <p className="text-[13px] text-detail capitalize">
-                          Total :${itemPrice}
+                            {itemPrice}
                           </p>
                           <p className="text-[13px] text-inputText ">xl</p>
                         </div>
@@ -410,9 +406,9 @@ const MyOrders = () => {
                   </div>
                 </div>
                 <div className="xl:w-[380px] lg:w-[300px] md:w-[200px] h-full mx-auto mt-10">
-                  <div className="w-full flex flex-col px-[15px] py-[15px] bg-lighterGreen gap-1  border-gray-200 border-2">
+                  <div className="w-full flex flex-col px-[15px] py-[15px] bg-lighterGreen gap-1">
                     <p className="text-[12px] text-inputText capitalize">
-                      Delivered & billed To
+                      Delivered & billled To
                     </p>
                     <h4 className="text-[16px] text-primary font-medium capitalize">
                     {name}
@@ -428,27 +424,27 @@ const MyOrders = () => {
                     </p>
                   </div>
                   <div className="w-full mt-10">
-                    <p className="text-[12px] text-inputText">Items Qty</p>
-                    <div className="w-full h-full bg-white shadow-inner rounded-xl px-[20px] py-[20px] flex flex-col gap-4 mt-5 overflow-y-auto">
-                    <div className="flex items-center bg-white gap-4 px-[10px] py-[10px] rounded-xl">
-                      <Image
-                        src={itemImage}
-                        alt="product_image"
-                        width={65}
-                        height={65}
-                        className="rounded-full"
-                      />
-                      <div className="flex flex-col">
-                        <h4 className="text-primary text-[16px] font-bold capitalize">
-                          {itemName}
-                        </h4>
-                        <p className="text-[13px] text-detail capitalize">
-                          Total: ${itemPrice}
-                        </p>
-                        <p className="text-[13px] text-inputText">xl</p>
+                    <p className="text-[12px] text-inputText">Items</p>
+                    <div className="w-full h-full bg-inputBlue shadow-xl rounded-xl px-[20px] py-[20px] flex flex-col gap-4 mt-5">
+                      <div className="flex items-center bg-white gap-4 px-[10px] py-[10px] rounded-xl ">
+                        <Image
+                          src={itemImage}
+                          alt="product_image"
+                          width={65}
+                          height={65}
+                          className="rounded-full"
+                        />
+                        <div className="flex flex-col">
+                          <h4 className="text-primary text-[16px] font-bold capitalize">
+                            {itemName}
+                          </h4>
+                          <p className="text-[13px] text-detail capitalize">
+                            {itemPrice}
+                          </p>
+                          <p className="text-[13px] text-inputText ">xl</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
                   </div>
                   <div className="mt-[75px] w-full flex flex-col gap-3">
                     <button
