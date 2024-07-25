@@ -322,7 +322,7 @@ const handleShopId = async (id:any) =>{
                   <div className="flex items-center justify-center gap-5">
                     <p className="text-[13px] text-primary font-semibold">
                       5 Stars
-              
+                    </p>
                     <div className="xl:w-[241px] md:w-[150px]  h-[15px] bg-lime-100 rounded-full dark:bg-lime-100 mt-[10px]">
                       <div className="bg-green-900 h-[15px] rounded-full" style={{ width: `${(item.fiveStarCount / item.totalRatings) * 100}%` }}></div>
 
