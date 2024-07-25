@@ -58,7 +58,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
         window.location.reload()
       }
     }catch(e){
-
+      console.log(e);
     }
   }
   return (
@@ -118,6 +118,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                   Country
                 </p>
                 <CountrySelect
+                  value={countryId as  any}  // Add this line
                   onChange={(e: any) => {
                     setCountryId(e.id);
                     setCountry(e.name);
@@ -132,6 +133,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                 </p>
                 <StateSelect
                   countryid={countryId || 0}
+                  value={stateId as any}  // Add this line
                   onChange={(e: any) => {
                     setStateId(e.id);
                     setState(e.name);

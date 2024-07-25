@@ -152,8 +152,8 @@ const Register = () => {
         const data = await response.json();
         window.alert("OTP Correct");
         localStorage.setItem("forgotPasswordEmailorPhoneNumber", email);
-        // router.push('/delivery');
-        router.push('/home');
+        router.push('/delivery');
+        // router.push('/home');
         
       }
     } catch (e) {

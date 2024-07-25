@@ -16,6 +16,7 @@ const DeliveryDetails = () => {
   const [landMark, setLandMark] = useState<string | null>(null);
   const [address1, setAddress1] = useState<string | null>(null);
   const [address2, setAddress2] = useState<string | null>(null);
+  const [country, setCountry] = useState("Australia");
 
   const getUserID = useCallback (async () => {
     const emails = localStorage.getItem("userEmail");
@@ -62,20 +63,20 @@ const DeliveryDetails = () => {
 
   const handeClick = async () =>{
     try{
-      const response = await fetch('https://tasty-dog.onrender.com/api/v1/addresses/addAddress', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/addAddress`,{method:"POST",
+        headers: {
+          "Content-Type":"application/json",
+        },
           body: JSON.stringify({
-            userId: userId,
-            userName: userName,
-            mobileNumber: email,
-            aptSuite: address1,
-            streetAddress: address2,
-            city: city,
+            landmark: landMark,
             state: stateProvince,
-            landmark: landMark
+            city,
+            streetAddress: address2,
+            aptSuite: address1,
+            mobileNumber: email,
+            userName,
+            userId,
+            country,
           }),
         });
         if (!response.ok) {
@@ -92,9 +93,13 @@ const DeliveryDetails = () => {
           router.push(`/home`);
         }
     }catch(error){
-      console.error(error);
+      console.error("Error bn error",error);
     }
   };
+
+  const handleCountry = (value:any) =>{
+    setCountry(value);
+  }
 
   return (
     <div className="w-screen h-screen hidden md:flex flex-row overflow-hidden">
@@ -115,6 +120,7 @@ const DeliveryDetails = () => {
             <input
               type="search"
               placeholder="Search Your Location"
+              onChange={(e)=>handleCountry(e.target.value)}
               className="w-[92%] outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
             />
           </div>
