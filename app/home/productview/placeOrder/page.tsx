@@ -33,6 +33,7 @@ const PlaceOrder = () => {
   const [cartItems, setCartItems] = useState<any[]|null>(null);
   const [newAddress, setNewAddress] = useState(false);
   const [changeAddress, setChangeAddress] = useState(false);
+  const [price, setPrice] = useState<any | null>(null);
   //#endregion
 
 
@@ -71,13 +72,16 @@ const PlaceOrder = () => {
 const handlePrice = (price:any)=>{
   let priceItem = parseInt(price);
   priceItem = priceItem + 1.99;
-  localStorage.setItem("totalPriceBuyNow",priceItem.toString());
+  // localStorage.setItem("totalPriceBuyNow",priceItem.toString());
+  localStorage.setItem("nowPrice",priceItem.toString());
   return priceItem;
 }
 
 
 //handling sending price to checkout
 const handleCheckout=()=>{
+  setPrice(parseFloat(localStorage.getItem("nowPrice") ?? ""));
+  console.log(price);
   if(address1.length == 1){
     localStorage.setItem("buyerAddress", address1);
     console.log('address1', address1)
@@ -221,7 +225,14 @@ const handleCheckout=()=>{
                     </div>
                     <div className="flex justify-between">
                       <p className="text-[15px] text-detail">Total Payment</p>
-                      <p className="text-[15px] text-detail">${handlePrice(item.price)}</p>
+                      <p className="text-[15px] text-detail">
+                        ${(() => {
+                          const totalPrice = (parseFloat(item.price) + 1.99).toFixed(2);
+                          const itemPrice = (parseFloat(item.price)).toFixed(2);
+                          localStorage.setItem('totalPriceCart', itemPrice);
+                          return totalPrice;
+                        })()}
+                      </p>
                     </div>
                   </div>
                 )))}
