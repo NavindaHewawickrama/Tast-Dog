@@ -19,7 +19,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
   const [city, setCity] = useState("Melourn");
   const [state, setState] = useState("Melbourn");
   const [landmark, setLandMark] = useState("Infront of State Hospital");
-
+  const [country, setCountry] = useState("Australia");
   const [countryId, setCountryId] = useState<number | null>(null);
   const [stateId, setStateId] = useState<number | null>(null);
 
@@ -30,7 +30,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
   const handleAddingNewAddress = async()=>{
     const userId = localStorage.getItem("userId");
     const userName= localStorage.getItem("userName");
-    const mobileNumber = localStorage.getItem("userEmail");
+    const mobileNumber = localStorage.getItem("phoneNumber");
 
     try{
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/addAddress`,{method:"POST",
@@ -46,6 +46,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
         mobileNumber,
         userName,
         userId,
+        country,
       })
       });
       const data = await response.json();
@@ -53,6 +54,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
         window.alert("Some kind of problem occured. Please try again.");
         console.log(data);
       }else{
+        window.alert(" Changes Saved")
         window.location.reload()
       }
     }catch(e){
@@ -111,6 +113,20 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                   />
                 </div>
               </div>
+             <div className="w-full mb-4 flex flex-col gap-2">
+                <p className="text-[12px] text-inputText capitalize">
+                  Country
+                </p>
+                <CountrySelect
+                  value={countryId as  any}  // Add this line
+                  onChange={(e: any) => {
+                    setCountryId(e.id);
+                    setCountry(e.name);
+                  }}
+                  placeHolder="Select Country"
+                  className="w-full"
+                />
+              </div>
               <div className="w-full mb-4 flex flex-col gap-2">
       <div className="mb-4">
         <p className="text-[12px] text-inputText capitalize mb-2">Country</p>
@@ -144,6 +160,35 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
         </div>
       </div>
     </div>
+                <p className="text-[12px] text-inputText capitalize">
+                  State/Province
+                </p>
+                <StateSelect
+                  countryid={countryId || 0}
+                  value={stateId as any}  // Add this line
+                  onChange={(e: any) => {
+                    setStateId(e.id);
+                    setState(e.name);
+                  }}
+                  placeHolder="Select State"
+                  className="w-full"
+                  isDisabled={!countryId}
+                />
+              </div>
+              <div className="w-full mb-4 flex flex-col gap-2">
+                <p className="text-[12px] text-inputText capitalize">
+                  City
+                </p>
+                <CitySelect
+                  countryid={countryId || 0}
+                  stateid={stateId || 0}
+                  onChange={(e: any) => setCity(e.name)}
+                  placeHolder="Select City"
+                  className="w-full"
+                  isDisabled={!stateId}
+                />
+              </div>
+
               <div className="w-full mb-4 flex flex-col gap-2 ">
                 <p className="text-[12px] text-inputText capitalize">
                   Landmark

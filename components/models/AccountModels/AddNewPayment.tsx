@@ -64,6 +64,20 @@ const AddNewPayment: React.FC<ModalProps> = ({ open, onClose }) => {
     }
   };
 
+  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, ""); // Remove non-digit characters
+
+    if (value.length > 16) {
+      value = value.slice(0, 16);
+    }
+
+    const formattedValue = value
+      .match(/.{1,4}/g)
+      ?.join(" ")
+      .trim() || "";
+
+    setCardNumber(formattedValue);
+  };
 
   
 
@@ -127,12 +141,13 @@ const AddNewPayment: React.FC<ModalProps> = ({ open, onClose }) => {
                 card Number
               </p>
               <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
-                <input
-                  type="text"
-                  maxLength={16}
-                  className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
-                  onChange={(e)=>setCardNumber(e.target.value)}
-                />
+              <input
+                type="text"
+                maxLength={19} // Limit input to 16 digits
+                className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+                value={cardNumber}
+                onChange={handleCardNumberChange}
+              />
               </div>
             </div>
             <div className="w-full mb-4 flex flex-col gap-2 ">

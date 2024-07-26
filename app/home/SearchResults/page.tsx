@@ -6,6 +6,8 @@ import { FaStar } from "react-icons/fa6";
 import { FaCartShopping } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import AddToCart from "@/components/models/AddToCart";
+import NoResultImage from "./../../../public/no_result.webp"
+import SearchBar from "./../../../components/SearchBar"
 
 const SearchResults = () => {
   const router = useRouter();
@@ -28,7 +30,7 @@ const SearchResults = () => {
 
     const searchQuery = localStorage.getItem("query");
     setQuery(searchQuery);
-  }, []);
+  }, [query]);
 
   const handleToggle = (id: any) => {
     console.log(id);
@@ -118,6 +120,19 @@ const SearchResults = () => {
         {results.length} results found for
         <span className="text-button2 ml-2">&quot;{query}&quot;</span>
       </h6>
+      {results.length === 0 ? (
+        <div className="flex flex-col items-center mt-[50px]">
+          <Image
+            src={NoResultImage}
+            alt="No results found"
+            width={400}
+            height={400}
+          />
+          <p className="text-[14px] text-detail font-medium mt-4">
+            No results found for <span className="text-button2 ml-2">&quot;{query}&quot;</span>
+          </p>
+        </div>
+      ) : (
       <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-[50px] gap-10">
         {results.map((item) => (
           <div
@@ -179,6 +194,7 @@ const SearchResults = () => {
           </div>
         ))}
       </div>
+      )}
       <AddToCart open={toggle} onClose={() => setToggle(false)} />
     </div>
   );
