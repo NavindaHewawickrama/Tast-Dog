@@ -70,7 +70,8 @@ const PlaceOrder = () => {
 
 const handlePrice = (price:any)=>{
   let priceItem = parseInt(price);
-  priceItem = priceItem - 1.99;
+  priceItem = priceItem + 1.99;
+  localStorage.setItem("totalPriceCart",priceItem.toString());
   return priceItem;
 }
 
