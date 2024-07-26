@@ -43,7 +43,7 @@ const DeliveryDetails = () => {
         console.log(data.customer._id);
         console.log(data.customer.fullName);
         setUserId(data.customer._id);
-        window.alert("Registered Successfully.");
+        // window.alert("Registered Successfully.");
         localStorage.setItem("userId",data.customer._id);
         localStorage.setItem("userName",data.customer.fullName);
       }

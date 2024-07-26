@@ -12,6 +12,7 @@
     "@stripe/react-stripe-js": "^2.7.1",
     "@stripe/stripe-js": "^3.4.1",
     "axios": "^1.6.8",
+    "country-list": "^2.3.0",
     "firebase": "^10.12.1",
     "framer-motion": "^11.0.6",
     "next": "^14.2.5",
@@ -27,6 +28,7 @@
     "swiper": "^11.0.6"
   },
   "devDependencies": {
+    "@types/country-list": "^2.1.4",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

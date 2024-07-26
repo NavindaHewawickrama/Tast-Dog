@@ -58,7 +58,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
         window.location.reload()
       }
     }catch(e){
-      console.log(e);
+
     }
   }
   return (
