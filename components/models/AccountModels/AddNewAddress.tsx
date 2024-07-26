@@ -2,10 +2,10 @@ import React,{useState} from "react";
 import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
 import {
+  CitySelect,
   CountrySelect,
   StateSelect,
-  CitySelect,
-} from 'react-country-state-city';
+} from "react-country-state-city";
 import 'react-country-state-city/dist/react-country-state-city.css';
 
 interface ModalProps {
@@ -115,7 +115,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
       <div className="mb-4">
         <p className="text-[12px] text-inputText capitalize mb-2">Country</p>
         <CountrySelect
-          onChange={(e) => setCountryId(e.id)}
+          onChange={(e: { id: number }) => setCountryId(e.id)}
           placeHolder="Select Country"
           className="w-full"
         />
@@ -125,7 +125,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
           <p className="text-[12px] text-inputText capitalize mb-2">State/Province</p>
           <StateSelect
             countryid={countryId || 0}
-            onChange={(e) => setStateId(e.id)}
+            onChange={(e: { id: number }) => setStateId(e.id)}
             placeHolder="Select State"
             className="w-full"
             isDisabled={!countryId}
@@ -136,7 +136,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
           <CitySelect
             countryid={countryId || 0}
             stateid={stateId || 0}
-            onChange={(e) => console.log(e)}
+            onChange={(e: any) => console.log(e)}
             placeHolder="Select City"
             className="w-full"
             isDisabled={!stateId}
