@@ -6,6 +6,7 @@ import { IoLocation } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 
 const DeliveryDetails = () => {
+  //#region 
   const router = useRouter();
   const [userName, setUserName] = useState<string | null>(null);
   const [pkey, setPkey] = useState<string | null>(null);
@@ -17,6 +18,8 @@ const DeliveryDetails = () => {
   const [address1, setAddress1] = useState<string | null>(null);
   const [address2, setAddress2] = useState<string | null>(null);
   const [country, setCountry] = useState("Australia");
+  const [loading, setLoading] = useState(false);
+//#endregion
 
   const getUserID = useCallback (async () => {
     const emails = localStorage.getItem("userEmail");
@@ -62,6 +65,7 @@ const DeliveryDetails = () => {
   
 
   const handeClick = async () =>{
+    setLoading(true);  // Start loading
     try{
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/addAddress`,{method:"POST",
         headers: {
@@ -81,6 +85,7 @@ const DeliveryDetails = () => {
         });
         if (!response.ok) {
           throw new Error('Registration failed');
+          setLoading(false); // Stop loading
         }else{
           const data = response.json();
           console.log(data);
@@ -91,9 +96,11 @@ const DeliveryDetails = () => {
           localStorage.setItem("landMark", landMark ?? "");
           window.alert("Address Added Successfully");
           router.push(`/home`);
+          setLoading(false); // Stop loading
         }
     }catch(error){
-      console.error("Error bn error",error);
+      // console.error("Error bn error",error);
+      setLoading(false); // Stop loading
     }
   };
 

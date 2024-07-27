@@ -8,7 +8,7 @@ import { IoEye,IoEyeOff } from "react-icons/io5";
 import ForgotPassword from "@/components/models/ForgotPassword";
 import { signInWithGoogle, signInWithFacebook, logInWithGoogle } from '../../auth';
 import { useRouter } from "next/navigation";
-
+import "./../../globals.css";
 
 
 const Login = () => {
@@ -21,12 +21,16 @@ const Login = () => {
   const [otp, setOtp] = useState<any>(null);
   const [enteredCode, setEnteredCode] = useState("");
   const [showPassword, setShowPassword] = useState(false); 
+  const [loading, setLoading] = useState(false);
   console.log(openModel);
 
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
+  
+
 
   const handleLogin = async () => {
+    setLoading(true);  // Start loading
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/login",{
         method:"POST",
@@ -46,6 +50,7 @@ const Login = () => {
         setError(data.message || "An error occurred.");
         window.alert("Login UnSuccessful");
         console.log(data);
+        setLoading(false); // Stop loading
       }else{
         localStorage.setItem("phoneNumber",data.customer.secondaryNumber);
         if(data.customer.isVerified === false){
@@ -69,6 +74,7 @@ const Login = () => {
           } catch (error) {
             console.error("Failed to request password reset", error);
             setError("Failed to request password reset. Please try again later.");
+            setLoading(false); // Stop loading
           }
         }else{
           localStorage.setItem("token", data.token);
@@ -81,10 +87,12 @@ const Login = () => {
 
         console.log(data.customer.fullName);
         router.push("/home"); 
+        setLoading(false); // Stop loading after navigation
         }
       }
     }catch(error){
       setError("An error occurred. Please try again later.");
+      setLoading(false); // Stop loading
     }
     
     };
@@ -143,6 +151,15 @@ const Login = () => {
     };
   return (
     <>
+    {loading && (
+        <div className="loading-overlay">
+          <div className="loading-spinner">
+            <div className="bubble"></div>
+            <div className="bubble"></div>
+            <div className="bubble"></div>
+          </div>
+        </div>
+      )}
       <div className="w-screen h-screen hidden lg:flex flex-row overflow-hidden">
         {nextModel ? (
           <>
@@ -232,7 +249,7 @@ const Login = () => {
                 Not Registered Yet ?
                 <span className="text-link ml-2">
                   <Link href="/register" className="text-[12px] font-normal]">
-                    REGISTER NOW
+                  <span onClick={() => setLoading(true)}>REGISTER NOW</span>
                   </Link>
                 </span>
               </p>
