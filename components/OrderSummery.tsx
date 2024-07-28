@@ -90,10 +90,23 @@ const OrderSummery = () => {
   };
 
   useEffect(()=>{
+    var hasBuyNowPrice;
     if (typeof window !== 'undefined') {
-    const totalPrice = localStorage.getItem("totalPriceCart") ?? "";
-    setTotalPriceCart(totalPrice);
-    fetchMilestones();
+        // if((localStorage.getItem("hasBuyNowPrice"))?.toString() == "yes"){
+        //   const totalPrice = localStorage.getItem("totalPriceBuyNow") ?? "";
+        //   setTotalPriceCart(totalPrice);
+        //   fetchMilestones();
+        //   hasBuyNowPrice = "No";
+        //   localStorage.setItem("hasBuyNowPrice", hasBuyNowPrice);
+        // }else{
+        //   const totalPrice = localStorage.getItem("totalPriceCart") ?? "";
+        //   setTotalPriceCart(totalPrice);
+        //   fetchMilestones();
+        // }
+
+        const totalPrice = localStorage.getItem("totalPriceCart") ?? "";
+          setTotalPriceCart(totalPrice);
+          fetchMilestones();
     }
   },[userId])
 

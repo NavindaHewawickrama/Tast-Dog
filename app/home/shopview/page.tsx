@@ -26,6 +26,8 @@ const ShopView = () => {
   const [shopImage, setShopImage] = useState<any | null>(null);
   const [shopData, setShopData] = useState<any[]>([]);
   const [userName, setUserName] = useState<string | null>(null);
+  const [shopPhone, setShopPhone] = useState<string | null>(null);
+  const [shopEmail, setShopEmail] = useState<string | null>(null);
   const [ShopRating, setShopRatings] = useState<any[]>([]);
   const [ShopComments, setShopComments] = useState<any[]>([]);
   const [swipersettings,setSwipersettings] = useState(0);
@@ -45,9 +47,27 @@ const ShopView = () => {
     }
   }, []);
 
+  //getting shop phone number
+  const handleShopDetails = async (id:any) =>{
+   
+    try{
+      const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shops/${id}`);
+      const data = await response.json();
+      if (!response.ok) {
+        console.log(data.message || "An error occurred.");
+      } else {
+        setShopPhone(data.phoneNumber);
+        setShopEmail(data.email);
+      }
+    }catch(e){
+      console.log(e);
+    }
+  }
+
   //handling shop data
   const fetchApiCall = async (id: any) => {
     setShopId(localStorage.getItem("shopId"));
+    handleShopDetails(id);
     try {
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shop-items-shop/${id}`);
       const data = await response.json();
@@ -118,6 +138,21 @@ const ShopView = () => {
     localStorage.setItem("productIDFavouriteFoods", id);
     router.push("/home/productview");
   }
+
+//contact shop
+const handleContactShop = () => {
+  const choice = window.confirm("Do you want to Email the Shop?");
+  if (choice) {
+    // User wants to email
+    window.location.href = `mailto:${shopEmail}`;
+  } else {
+    const choice2 = window.confirm("Do you want to Call the Shop?");
+    if(choice2){
+      window.alert(`Call the Shop with the number ${shopPhone}`);
+      window.location.href = `tel:${shopPhone}`;
+    }
+  }
+};
 
   return (
     <>
@@ -394,7 +429,9 @@ const ShopView = () => {
                 ))}
               </div>
 
-              <button className="md:w-[80%] h-[48px] mx-auto bg-none border border-lightGray rounded-lg lg:text-[20px] md:text-[16px] text-primary flex justify-center items-center lg:gap-5 md:gap-3 mt-[100px] mb-[25px] font-medium transition-transform duration-300 ease-in-out transform hover:scale-95">
+              <button 
+              onClick={()=>handleContactShop()}
+              className="md:w-[80%] h-[48px] mx-auto bg-none border border-lightGray rounded-lg lg:text-[20px] md:text-[16px] text-primary flex justify-center items-center lg:gap-5 md:gap-3 mt-[100px] mb-[25px] font-medium transition-transform duration-300 ease-in-out transform hover:scale-95">
                 <MdCall className="text-primary" />
                 Contact Shop
               </button>

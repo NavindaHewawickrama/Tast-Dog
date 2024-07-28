@@ -26,19 +26,14 @@ const MyAccount = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
-  const [password, setPassword] = useState<string | null>(null);
   const [address1, setAddress1] = useState<any | null>([]);
-  // const [address2, setAddress2] = useState<string | null>("Road 2 nnoe");
-  // const [city, setCity] = useState<string | null>("");
-  // const [stateProvince, setStateProvince] = useState<string | null>("");
-  // const [landMark, setLandMark] = useState<string | null>("");
   const [imageUrl, setImageUrl] = useState<string | null>("");
   const [cardNumber, setCardNumber]  = useState("");
   const [date, setDate]  = useState("");
   const [cvv, setCvv]  = useState("");
   const [cardname, setName]  = useState("");
   const [cardId, setCardId] = useState("");
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleDelete = async ()=>{
     try{
@@ -113,9 +108,9 @@ const MyAccount = () => {
     const emails = localStorage.getItem("userEmail");
     const pkey = localStorage.getItem("pwReg");
     var userId = localStorage.getItem("userId");
-    console.log('email is ' + emails);
-    console.log('password is ' + pkey);
-    console.log('userId is ' + userId);
+    // console.log('email is ' + emails);
+    // console.log('password is ' + pkey);
+    // console.log('userId is ' + userId);
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/customers/login",{
         method:"POST",
@@ -150,10 +145,16 @@ const MyAccount = () => {
     setChangeAddress(true);
   }
 
-  const handleImageChange = (event: any) => {
-    const newImage = event.target.files[0];
-    setImageUrl(URL.createObjectURL(newImage)); // Preview image locally (optional)
-    setImageFile(newImage);
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newImage = event.target.files?.[0];
+    if (newImage) {
+      setImageUrl(URL.createObjectURL(newImage)); // Preview image locally (optional)
+      setImageFile(newImage);
+    }
+  };
+
+  const triggerFileInputClick = () => {
+    document.getElementById("imageInput")?.click();
   };
 
   const changePhoto = async () => {
@@ -200,21 +201,24 @@ const MyAccount = () => {
             />
             <br/>
             <input
-              type="file"
-              id="profile-image-input"
-              className="show" // Hide the file input visually
-              placeholder="Enter Image to change"
-              onChange={handleImageChange}
-            />
-            {/* <button onClick={() =>changePhoto()}
-            className="absolute bottom-0 right-0 w-[33px] h-[33px] bg-button2 rounded-full flex justify-center items-center transition-transform duration-300 ease-in-out transform hover:scale-[1.1]">
-              <MdEdit size={23} color="white" />
-            </button> */}
+                type="file"
+                id="imageInput"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ display: "none" }}
+              />
+
+              <button
+                onClick={triggerFileInputClick}
+                className="absolute show bottom-0 right-0 w-[33px] h-[33px] bg-button2 rounded-full flex justify-center items-center transition-transform duration-300 ease-in-out transform hover:scale-[1.1]"
+              >
+                <MdEdit size={23} color="white" />
+              </button>
           </div>
 
           <div className="w-full flex flex-col gap-3">
             <div className="w-full flex justify-between items-center">
-              <h3 className="text-[16px] font-semibold capitalize">
+              <h3 className="text-[18px] font-bold capitalize">
                 personal info
               </h3>
               <button
@@ -229,19 +233,19 @@ const MyAccount = () => {
                 <p className="text-[16px] text-inputText capitalize">
                   full name:
                 </p>
-                <p className="text-[16px] text-detail capitalize">{userName}</p>
+                <p className="text-[16px] text-detail font-bold capitalize">{userName}</p>
               </div>
               <div className="flex items-center gap-4">
                 <p className="text-[16px] text-inputText capitalize">
                   Phone Number:
                 </p>
-                <p className="text-[16px] text-detail capitalize">
+                <p className="text-[16px] text-detail font-bold capitalize">
                   {phoneNumber}
                 </p>
               </div>
               <div className="flex items-center gap-4">
                 <p className="text-[16px] text-inputText capitalize">email:</p>
-                <p className="text-[16px] text-detail ">
+                <p className="text-[16px] text-detail font-bold ">
                   {email}
                 </p>
               </div>
@@ -272,7 +276,7 @@ const MyAccount = () => {
                         {address.userName}
                       </h3>
                       <p className="text-[17px] capitalize text-detail">
-                        {address.aptSuite}, {address.streetAddress}, {address.city}, {address.state}, {address.landmark}
+                        {address.aptSuite}, {address.streetAddress}, {address.city}, {address.state}, {address.landmark}, {address.country}
                       </p>
                       <p className="text-[17px] capitalize text-detail">
                        {phoneNumber}
@@ -332,7 +336,7 @@ const MyAccount = () => {
               className="w-[320px] h-[50px] text-center text-red-600 bg-none rounded-lg capitalize text-[20px] border-2 border-red-600 transition-transform duration-300 ease-in-out transform hover:scale-95"
               onClick={() => setDeleteModel(true)}
             >
-              delete account
+              deactivate account
             </button>
           </div>
         </div>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import React ,{useState} from "react";
 import { usePathname } from "next/navigation";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
-import { IoFastFoodSharp } from "react-icons/io5";
+import { IoFastFoodSharp , IoHeart} from "react-icons/io5";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaGift } from "react-icons/fa";
 import { IoIosSettings } from "react-icons/io";
@@ -97,7 +97,7 @@ const Sidebar = () => {
                 : "w-full h-[60px] flex flex-row px-[40px] items-center cursor-pointer gap-5"
             }
           >
-            <IoFastFoodSharp className="text-white w-[24px] h-[24px]" />
+            <IoHeart className="text-white w-[24px] h-[24px]" />
             <h3 className="capitalize text-white font-semibold text-[15px] font-sans">
               favourites
             </h3>

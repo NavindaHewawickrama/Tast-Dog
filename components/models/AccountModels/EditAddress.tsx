@@ -20,6 +20,7 @@ const EditAddress: React.FC<ModalProps> = ({ open, onClose, addressData }) => {
   const [city, setCity] = useState(addressData.city);
   const [state, setState] = useState(addressData.state);
   const [landmark, setLandMark] = useState(addressData.landmark);
+  const [country, setCountry] = useState("");
 
   if (!open) return null;
 
@@ -42,6 +43,7 @@ const EditAddress: React.FC<ModalProps> = ({ open, onClose, addressData }) => {
           city,
           state,
           landmark,
+          country,
         }),
       });
       const data = response.json;
@@ -109,6 +111,19 @@ const EditAddress: React.FC<ModalProps> = ({ open, onClose, addressData }) => {
                     value={aptSuite}
                     className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                     onChange={(e) => setSuitNo(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="w-full mb-4 flex flex-col gap-2 ">
+                <p className="text-[12px] text-inputText capitalize">
+                  country
+                </p>
+                <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
+                  <input
+                    type="text"
+                    value={country}
+                    className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+                    onChange={(e) => setCountry(e.target.value)}
                   />
                 </div>
               </div>

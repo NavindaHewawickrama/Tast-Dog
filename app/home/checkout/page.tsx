@@ -127,12 +127,12 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
 
   const handleShopDetails = async (secret: any) => {
 
-    console.log('hwllo0');
+    // console.log('hwllo0');
     const itemsCart = sessionStorage.getItem("cartItems");
-    console.log('itemsCart', itemsCart);
+    // console.log('itemsCart', itemsCart);
     const cartItems = itemsCart ? JSON.parse(itemsCart) : [];
-    console.log('world');
-    console.log('cartUtems', cartItems);
+    // console.log('world');
+    // console.log('cartUtems', cartItems);
     for (const element of cartItems) {
       try {
 
