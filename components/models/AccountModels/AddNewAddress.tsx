@@ -128,6 +128,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                 />
               </div>
               <div className="w-full mb-4 flex flex-col gap-2">
+
       <div className="mb-4">
         <p className="text-[12px] text-inputText capitalize mb-2">Country</p>
         <CountrySelect
@@ -160,6 +161,7 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
         </div>
       </div>
     </div>
+
                 <p className="text-[12px] text-inputText capitalize">
                   State/Province
                 </p>
