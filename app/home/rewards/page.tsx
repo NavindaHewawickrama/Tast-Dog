@@ -17,7 +17,9 @@ interface Milestone {
 const Page: React.FC = () => {
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
-
+  const [inputPromoCode,setInputPromoCode]=useState("");
+  const [promoCodeData, setpromoCodeData] = useState<any[]>([]);
+  const [discount, setDiscount]=useState<GLfloat | null>(null);
   useEffect(() => {
     const userIDSvd = localStorage.getItem("userId");
     setUserId(userIDSvd);
@@ -53,6 +55,43 @@ const Page: React.FC = () => {
     (min, milestone) => (milestone.remainingOrders < min ? milestone.remainingOrders : min),
     Infinity
   );
+
+  const handlePromoCode =async()=>{
+    console.log("Redeem button clicked"); // Debugging line
+    if (typeof window !== 'undefined') {
+      const promoCodeShopID = sessionStorage.getItem("promoCodeShopId");
+      try{
+        const response = await fetch(`https://tasty-dog.onrender.com/api/v1/promocodes/promocodes/getPromoCodesByShopId/${promoCodeShopID}`);
+        const data = await response.json();
+        console.log('data', data);
+        if(!response || data.length === 0){
+          alert('Invalid promo or expired');
+        }else{
+          setpromoCodeData(data);
+          validatePromoCode();
+        }
+      }catch(e){
+        console.log(e);
+      }
+    }
+  };
+
+
+  const validatePromoCode = ()=>{
+    const data = promoCodeData;
+    data.forEach(element => {
+      if(element.code === inputPromoCode){
+        const date = Date();
+        if(date < element.validTillDate){
+          setDiscount(element.discountAmount);
+        }
+      }else{
+        console.log("not found");
+      }
+    });
+    
+  }
+
 
   return (
     <>
@@ -97,7 +136,25 @@ const Page: React.FC = () => {
               </div>
               </>}
             </div>
-            
+            <div className="flex flex-col items-center bg-green-50 mt-10 shadow-black border rounded-xl border-gray-300 p-5">
+              <div className="flex flex-row w-full gap-5 items-center justify-center">
+                <AiOutlinePercentage className="text-[36px] text-buttonGreen" />
+                <div className="flex-grow  h-[45px] border bg-inputBlue rounded-xl border-inputBorder ">
+                  <input
+                    type="text"
+                    placeholder="promo code"
+                    onChange={(e) => setInputPromoCode(e.target.value)}
+                    className="w-full h-[45px] rounded-xl bg-inputBlue border-none px-3 text-inputText2 text-left text-[18px] "
+                  />
+                </div>
+                <button
+                  onClick={handlePromoCode}
+                  className="py-[10px] px-5 h-[45px] rounded-xl bg-buttonGreen text-[16px] text-white capitalize cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-95"
+                >
+                  Redeem
+                </button>
+              </div>
+            </div>
           </div>
 
           <div className="w-[50%] lg:flex md:hidden flex-1 flex justify-center items-center">

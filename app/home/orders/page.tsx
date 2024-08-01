@@ -13,6 +13,7 @@ const MyOrders = () => {
   const [reviewModal, setReviewModal] = useState(false);
   const [orderData, setOrderData] = useState<any[]>([]);
   const [name,setName] = useState(null);
+  const [orderNumber,setOrderNumber] = useState(null);
   const [address, setAddress] = useState(null);
   const [time,setTime] = useState("");
   const [itemName,setItemName]= useState("");
@@ -63,7 +64,7 @@ const MyOrders = () => {
     setName(item.userName);
     setAddress(item.orderAddress);
     setItemImage(item.itemId.itemImages[0]);
-  
+    setOrderNumber(item.orderNumber);
     // Extract date and time from the datetime string
     const dateTime = new Date(item.createdAt);
     const date = dateTime.toLocaleDateString();
@@ -72,14 +73,16 @@ const MyOrders = () => {
     setTime(date);
     setItemName(item.itemId.itemName);
     setItemPrice(item.price);
-    setItemId(item.itemId._id);
+    setItemId(item._id);
     setShopIdOrder(item.shopId);
   }
 
   const handleCancel = async (id: any ) =>{
     const uId = localStorage.getItem("userId");
+    console.log(uId);
+    console.log(id);
     try{
-      const response = await fetch("https://tasty-dog.onrender.com//api/v1/orders/cancelOrder",{
+      const response = await fetch("https://tasty-dog.onrender.com/api/v1/orders/cancelOrder",{
         method:"POST",
         headers: {
           "Content-Type":"application/json",
@@ -87,7 +90,7 @@ const MyOrders = () => {
         body: JSON.stringify({
           orderId: id,
           userId: uId,
-          userType: "owner",
+          userType: "customer",
         }),
       });
       const data = await response.json();
@@ -97,7 +100,7 @@ const MyOrders = () => {
         window.alert("Order cancelled successfully");
       }
     }catch(error){
-      console.log(error);
+      console.log("error in cancelling the order",error);
     }
   }
 
@@ -124,7 +127,7 @@ const MyOrders = () => {
                   onClick={()=>handleOrder(item)}
                 >
                   <div>
-                    <h2 className="text-[16px] text-primary">ID #00500 </h2>
+                    <h2 className="text-[16px] text-primary">ID #{item.orderNumber} </h2>
                     <Image
                       src={item.itemId.itemImages[0] || item.itemId.itemImages}
                       // src="/path/to/your/image.jpg"
@@ -186,7 +189,7 @@ const MyOrders = () => {
             ) : statusVal === "Processing" ? (
               <div className="w-[45%] flex flex-col px-[30px] py-[25px] rounded-xl  shadow-gray-300 shadow-xl">
                 <h3 className="text-[20px] text-inputText capitalize">
-                  order id: <span className="text-primary"> #00500</span>{" "}
+                  order id: <span className="text-primary"> #{orderNumber}</span>{" "}
                 </h3>
                 <div className="flex items-center gap-5 mt-1">
                   <h3 className="text-[20px] text-inputText capitalize">
@@ -255,7 +258,7 @@ const MyOrders = () => {
             ) :statusVal === "Completed" ? (
               <div className="w-[45%] flex flex-col rounded-xl px-[30px] py-[25px] shadow-gray-300 shadow-xl">
                 <h3 className="text-[20px] text-inputText capitalize">
-                  order id: <span className="text-primary"> #00500</span>{" "}
+                  order id: <span className="text-primary"> #{orderNumber}</span>{" "}
                 </h3>
                 <div className="flex items-center gap-5 mt-1">
                   <h3 className="text-[20px] text-inputText capitalize">
@@ -326,7 +329,7 @@ const MyOrders = () => {
             ):statusVal === "Cancelled" ?(
               <div className="w-[45%] flex flex-col rounded-xl px-[30px] py-[25px] shadow-gray-300 shadow-xl">
                 <h3 className="text-[20px] text-inputText capitalize">
-                  order id: <span className="text-primary"> #00500</span>{" "}
+                  order id: <span className="text-primary"> #{orderNumber}</span>{" "}
                 </h3>
                 <div className="flex items-center gap-5 mt-1">
                   <h3 className="text-[20px] text-inputText capitalize">
@@ -398,7 +401,7 @@ const MyOrders = () => {
             ):(
               <div className="w-[45%] flex flex-col rounded-xl px-[30px] py-[25px] shadow-gray-300 shadow-xl">
                 <h3 className="text-[20px] text-inputText capitalize">
-                  order id: <span className="text-primary"> #00500</span>{" "}
+                  order id: <span className="text-primary">#{orderNumber}</span>{" "}
                 </h3>
                 <div className="flex items-center gap-5 mt-1">
                   <h3 className="text-[20px] text-inputText capitalize">
@@ -449,6 +452,13 @@ const MyOrders = () => {
                       </div>
                     </div>
                   </div>
+                  </div>
+                  <div className="flex flex-col gap-2 mt-10">
+                    <button 
+                    onClick={()=>handleCancel(itemId)}
+                    className="w-full flex justify-center items-center h-[38px] bg-none border border-button2 rounded-lg text-[12px] text-button2 capitalize transition-transform duration-300 ease-in-out transform hover:scale-95">
+                      cancel order
+                    </button>
                   </div>
                   <div className="mt-[75px] w-full flex flex-col gap-3">
                     <button

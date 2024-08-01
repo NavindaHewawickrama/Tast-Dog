@@ -26,12 +26,7 @@ const MyAccount = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
-  const [password, setPassword] = useState<string | null>(null);
   const [address1, setAddress1] = useState<any | null>([]);
-  // const [address2, setAddress2] = useState<string | null>("Road 2 nnoe");
-  // const [city, setCity] = useState<string | null>("");
-  // const [stateProvince, setStateProvince] = useState<string | null>("");
-  // const [landMark, setLandMark] = useState<string | null>("");
   const [imageUrl, setImageUrl] = useState<string | null>("");
   const [cardNumber, setCardNumber]  = useState("");
   const [date, setDate]  = useState("");
@@ -281,7 +276,7 @@ const MyAccount = () => {
                         {address.userName}
                       </h3>
                       <p className="text-[17px] capitalize text-detail">
-                        {address.aptSuite}, {address.streetAddress}, {address.city}, {address.state}, {address.landmark}
+                        {address.aptSuite}, {address.streetAddress}, {address.city}, {address.state}, {address.landmark}, {address.country}
                       </p>
                       <p className="text-[17px] capitalize text-detail">
                        {phoneNumber}
