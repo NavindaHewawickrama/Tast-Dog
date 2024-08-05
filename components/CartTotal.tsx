@@ -32,7 +32,7 @@ const CartTotal: React.FC<CartTotalProps> = ({ cartItems, totalPrice }) => {
                 {item.quantity}
               </h3>
               <h3 className="xl:text-[18px] md:text-[16px] capitalize font-medium">
-                {item.price}
+                ${item.price}
               </h3>
             </div>
           </div>

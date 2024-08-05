@@ -13,6 +13,7 @@ import PaymentCard from "@/components/PaymentCard";
 const stripePromise = loadStripe('pk_test_51P7Kv2P2T7YncC47Pyuo5PkqEX7wM9DPFBqRvGXhTksCqiwSg50p9qazEUc11BFZiyvAM9J6iThRvn7cdt6zC7GG00ZPU92lqa');
 
 const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { setModalOpen: React.Dispatch<React.SetStateAction<boolean>>, cardholderName: string, setCardholderName: React.Dispatch<React.SetStateAction<string>> }) => {
+  //#region
   const stripe = useStripe();
   const elements = useElements();
   const [clientSecret, setClientSecret] = useState<any>("");
@@ -22,6 +23,8 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
   const [userName, setUserName] = useState<string | null>("");
   const [addressBuyer, setAddressBuyer] = useState<string | null>("");
   const [address1, setAddress1] = useState<any | null>([]);
+
+  //#endregion
 
   const getUserAddress = async () => {
 
@@ -127,12 +130,12 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
 
   const handleShopDetails = async (secret: any) => {
 
-    // console.log('hwllo0');
+
     const itemsCart = sessionStorage.getItem("cartItems");
-    // console.log('itemsCart', itemsCart);
+    console.log(itemsCart);
     const cartItems = itemsCart ? JSON.parse(itemsCart) : [];
-    // console.log('world');
-    // console.log('cartUtems', cartItems);
+    console.log(cartItems);
+
     for (const element of cartItems) {
       try {
 
