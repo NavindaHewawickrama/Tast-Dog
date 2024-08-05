@@ -41,6 +41,7 @@ const PlaceOrder = () => {
   const getUserAddress = async () => {
     const id = localStorage.getItem("userId");
     const buyingProduct = localStorage.getItem("buyProductPlaceOrder");
+    console.log(buyingProduct);
     const uName = localStorage.getItem("userName");
     setUserName(uName);
     const pNo = localStorage.getItem("phoneNumber");
@@ -80,8 +81,8 @@ const handlePrice = (price:any)=>{
 
 //handling sending price to checkout
 const handleCheckout=()=>{
-  setPrice(parseFloat(localStorage.getItem("nowPrice") ?? ""));
-  console.log(price);
+  // setPrice(parseFloat(localStorage.getItem("nowPrice") ?? ""));
+  // console.log(localStorage.getItem("buyProductPlaceOrder"));
   if(address1.length == 1){
     localStorage.setItem("buyerAddress", address1);
     console.log('address1', address1)
@@ -102,6 +103,7 @@ const handleCheckout=()=>{
       // If the product does not exist, add it to the cart
       cartItems.push({ ...item, quantity: 1 }); 
     }
+    
     localStorage.removeItem("buyProductPlaceOrder");
   });
 
