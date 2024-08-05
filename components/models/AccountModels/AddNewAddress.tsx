@@ -130,8 +130,12 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
               <div className="w-full mb-4 flex flex-col gap-2">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 1820ca325af6d08f4f33c4980d8be61d668bbefa
+=======
+
+>>>>>>> 5f19459e965de1a592a6fa29eb237600fa9158ca
       <div className="mb-4">
         <p className="text-[12px] text-inputText capitalize mb-2">Country</p>
         <CountrySelect
@@ -165,9 +169,13 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
       </div>
     </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 1820ca325af6d08f4f33c4980d8be61d668bbefa
+=======
+
+>>>>>>> 5f19459e965de1a592a6fa29eb237600fa9158ca
                 <p className="text-[12px] text-inputText capitalize">
                   State/Province
                 </p>
@@ -197,10 +205,14 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                 />
               </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 81d84ca96e1c3f733a46872e433b343930d0dff5
 =======
 
 >>>>>>> 1820ca325af6d08f4f33c4980d8be61d668bbefa
+=======
+
+>>>>>>> 5f19459e965de1a592a6fa29eb237600fa9158ca
               <div className="w-full mb-4 flex flex-col gap-2 ">
                 <p className="text-[12px] text-inputText capitalize">
                   Landmark
