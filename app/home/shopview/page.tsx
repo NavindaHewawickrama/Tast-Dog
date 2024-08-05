@@ -141,15 +141,15 @@ const ShopView = () => {
 
 //contact shop
 const handleContactShop = () => {
-  const choice = window.confirm("Do you want to Email the Shop?");
+  const choice = window.confirm("Do you want to Call the Shop?");
   if (choice) {
     // User wants to email
-    window.location.href = `mailto:${shopEmail}`;
+    window.location.href = `tel:${shopPhone}`;
   } else {
-    const choice2 = window.confirm("Do you want to Call the Shop?");
+    const choice2 = window.confirm("Do you want to Email the Shop?");
     if(choice2){
       window.alert(`Call the Shop with the number ${shopPhone}`);
-      window.location.href = `tel:${shopPhone}`;
+      window.location.href = `mailto:${shopEmail}`;
     }
   }
 };

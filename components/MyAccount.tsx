@@ -189,7 +189,7 @@ const MyAccount = () => {
   return (
     <>
       <PageTransition>
-        <div className="relative max-w-[775px] flex flex-col gap-10">
+        <div className="relative max-w-[950px] flex flex-col gap-10">
           <h2 className="text-[24px] font-semibold capitalize">my profile</h2>
           <div className="relative w-[146px] h-[146px] rounded-full mb-2">
             <Image
@@ -229,23 +229,23 @@ const MyAccount = () => {
               </button>
             </div>
             <div className="w-full h-[90px] shadow-xl  flex justify-center items-center gap-10">
-              <div className="flex items-center gap-4">
-                <p className="text-[16px] text-inputText capitalize">
+              <div className="flex items-center gap-3">
+                <p className="text-[14px] text-inputText capitalize">
                   full name:
                 </p>
-                <p className="text-[16px] text-detail font-bold capitalize">{userName}</p>
+                <p className="text-[14px] text-detail font-bold capitalize">{userName}</p>
               </div>
-              <div className="flex items-center gap-4">
-                <p className="text-[16px] text-inputText capitalize">
+              <div className="flex items-center gap-3">
+                <p className="text-[14px] text-inputText capitalize">
                   Phone Number:
                 </p>
-                <p className="text-[16px] text-detail font-bold capitalize">
+                <p className="text-[14px] text-detail font-bold capitalize">
                   {phoneNumber}
                 </p>
               </div>
-              <div className="flex items-center gap-4">
-                <p className="text-[16px] text-inputText capitalize">email:</p>
-                <p className="text-[16px] text-detail font-bold ">
+              <div className="flex items-center gap-3">
+                <p className="text-[14px] text-inputText capitalize">email:</p>
+                <p className="text-[14px] text-detail font-bold ">
                   {email}
                 </p>
               </div>

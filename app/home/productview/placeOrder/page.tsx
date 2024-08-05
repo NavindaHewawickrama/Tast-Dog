@@ -41,18 +41,39 @@ const PlaceOrder = () => {
   const getUserAddress = async () => {
     const id = localStorage.getItem("userId");
     const buyingProduct = localStorage.getItem("buyProductPlaceOrder");
+    //  console.log(buyingProduct);
     const uName = localStorage.getItem("userName");
     setUserName(uName);
     const pNo = localStorage.getItem("phoneNumber");
     setPhoneNumber(pNo);
     setShopName(localStorage.getItem("buyProductShopName"));
     setShopImage(localStorage.getItem("buyProductShopImage"));
-    // Check if buyingProduct exists and is an array before setting
-    if (buyingProduct && Array.isArray(JSON.parse(buyingProduct))) {
-      setProduct(JSON.parse(buyingProduct));
-    } else {
-      setProduct([]); // Set to empty array if not an array or doesn't exist
+    // // Check if buyingProduct exists and is an array before setting
+    // if (buyingProduct && Array.isArray(JSON.parse(buyingProduct))) {
+    //   setProduct(JSON.parse(buyingProduct));
+    //   console.log(product);
+    // } else {
+    //   setProduct([]); // Set to empty array if not an array or doesn't exist
+    // }
+
+    try {
+      const parsedBuyingProduct = JSON.parse(buyingProduct || "");
+      // Check if parsedBuyingProduct is an array
+      if (Array.isArray(parsedBuyingProduct)) {
+        setProduct(parsedBuyingProduct);
+webkitURL
+      } else {
+        setProduct([]); // Set to empty array if not an array
+      }
+    } catch (e) {
+      console.error("Error parsing buyProductPlaceOrder:", e);
+      setProduct([]); // Set to empty array if parsing fails
     }
+
+
+
+
+
     setUserId(id);
     try{
       const response2 = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/${id}`);
@@ -79,33 +100,62 @@ const handlePrice = (price:any)=>{
 
 
 //handling sending price to checkout
-const handleCheckout=()=>{
-  setPrice(parseFloat(localStorage.getItem("nowPrice") ?? ""));
-  console.log(price);
-  if(address1.length == 1){
-    localStorage.setItem("buyerAddress", address1);
-    console.log('address1', address1)
-  }else{
-    localStorage.setItem("buyerAddress", address1[0]);
-    console.log('address[0]1',address1[0] ); 
-  }
+// const handleCheckout=()=>{
+//   // setPrice(parseFloat(localStorage.getItem("nowPrice") ?? ""));
+//   // console.log(localStorage.getItem("buyProductPlaceOrder"));
+//   if(address1.length == 1){
+//     localStorage.setItem("buyerAddress", address1);
+//     console.log('address1', address1)
+//   }else{
+//     localStorage.setItem("buyerAddress", address1[0]);
+//     console.log('address[0]1',address1[0] ); 
+//   }
 
 
   
-  let cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
-  product.forEach((item) => {
-    const existingProductIndex = cartItems.findIndex((cartItem: { _id: any; }) => cartItem._id === item._id);
-    if (existingProductIndex > -1) {
-      // If the product already exists, update its quantity
-      cartItems[existingProductIndex].quantity += 1; 
-    } else {
-      // If the product does not exist, add it to the cart
-      cartItems.push({ ...item, quantity: 1 }); 
-    }
-    localStorage.removeItem("buyProductPlaceOrder");
-  });
+//   let cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+//   product.forEach((item) => {
+//     const existingProductIndex = cartItems.findIndex((cartItem: { _id: any; }) => cartItem._id === item._id);
+//     if (existingProductIndex > -1) {
+//       // If the product already exists, update its quantity
+//       cartItems[existingProductIndex].quantity += 1; 
+//     } else {
+//       // If the product does not exist, add it to the cart
+//       cartItems.push({ ...item, quantity: 1 }); 
+//     }
+    
+//     localStorage.removeItem("buyProductPlaceOrder");
+//   });
+// }
 
-}
+const handleCheckout = () => {
+  if (address1.length == 1) {
+    localStorage.setItem("buyerAddress", address1);
+    console.log('address1', address1);
+  } else {
+    localStorage.setItem("buyerAddress", address1[0]);
+    console.log('address[0]1', address1[0]);
+  }
+
+  // Clear the existing cart items
+  localStorage.removeItem("cartItems");
+
+  // Initialize a new cart
+  let newCartItems: any[] = [];
+
+  // Add the new product items to the cart
+  product.forEach((item) => {
+    newCartItems.push({ ...item, quantity: 1 });
+  });
+console.log(newCartItems);
+  // Update the cart items in localStorage
+  localStorage.setItem("cartItems", JSON.stringify(newCartItems));
+  sessionStorage.setItem("cartItems", JSON.stringify(newCartItems));
+
+  // Remove the buyProductPlaceOrder item from localStorage
+  localStorage.removeItem("buyProductPlaceOrder");
+};
+
 
   useEffect(() => {
     getUserAddress();
@@ -126,7 +176,7 @@ const handleCheckout=()=>{
                 <div className="flex items-center gap-[60px]">
                   <FaLocationDot className="text-[25px] text-button2" />
                   {address1.length > 0 &&
-                      address1.slice(0, 3).map((address: any) => (
+                      address1.slice(0, 1).map((address: any) => (
                         <div className="flex justify-between items-center" key={address._id}>
                           <div className="flex flex-col justify-center gap-1">
                             <h3 className="text-[14px] font-semibold">
