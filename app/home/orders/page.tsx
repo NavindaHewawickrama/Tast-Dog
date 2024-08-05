@@ -13,6 +13,7 @@ const MyOrders = () => {
   const [reviewModal, setReviewModal] = useState(false);
   const [orderData, setOrderData] = useState<any[]>([]);
   const [name,setName] = useState(null);
+  const [phoneNo,setPhoneNo] = useState<string | null>(null);
   const [orderNumber,setOrderNumber] = useState(null);
   const [address, setAddress] = useState(null);
   const [time,setTime] = useState("");
@@ -22,6 +23,8 @@ const MyOrders = () => {
   const[itemId, setItemId] = useState("");
   const [shopIdOrder, setShopIdOrder] = useState("");
   const [userId, setUserId] = useState<any | null>("");
+  const [shopPhone, setShopPhone] = useState<string | null>(null);
+  const [shopEmail, setShopEmail] = useState<string | null>(null);
   
 
   const handleReview = () => {
@@ -60,6 +63,7 @@ const MyOrders = () => {
   }, []);
 
   const handleOrder = (item: any) => {
+  setPhoneNo(localStorage.getItem("phoneNumber"));
     setStatusVal(item.status);
     setName(item.userName);
     setAddress(item.orderAddress);
@@ -103,6 +107,40 @@ const MyOrders = () => {
       console.log("error in cancelling the order",error);
     }
   }
+
+ 
+  
+
+  //contact shop
+const handleContactShop = async (id:any) => {
+  //getting shop phone number
+
+  try{
+    const response = await fetch(`https://tasty-dog.onrender.com/api/v1/shops/shops/${id}`);
+    const data = await response.json();
+    if (!response.ok) {
+      console.log(data.message || "An error occurred.");
+    } else {
+      setShopPhone(data.phoneNumber);
+      setShopEmail(data.email);
+
+      const choice = window.confirm("Do you want to Call the Shop?");
+      if (choice) {
+        // User wants to email
+        window.location.href = `tel:${shopPhone}`;
+      } else {
+        const choice2 = window.confirm("Do you want to Email the Shop?");
+        if(choice2){
+          window.alert(`Call the Shop with the number ${shopPhone}`);
+          window.location.href = `mailto:${shopEmail}`;
+        }
+      }
+    }
+  }catch(e){
+    console.log(e);
+  }
+  
+};
 
  
   return (
@@ -209,7 +247,7 @@ const MyOrders = () => {
                       {name}
                     </h4>
                     <h4 className="text-[16px] text-detail font-medium capitalize">
-                      +94 222 322 232
+                      {phoneNo}
                     </h4>
                     <p className="text-[15px] text-inputText capitalize">
                       {address}
@@ -243,7 +281,7 @@ const MyOrders = () => {
                     </div>
                   </div>
                   <div className="flex flex-col gap-2 mt-10">
-                    <button className="w-full h-[38px] flex justify-center items-center gap-4 bg-buttonGreen rounded-lg text-white transition-transform duration-300 ease-in-out transform hover:scale-95">
+                    <button onClick={()=>handleContactShop(shopIdOrder)} className="w-full h-[38px] flex justify-center items-center gap-4 bg-buttonGreen rounded-lg text-white transition-transform duration-300 ease-in-out transform hover:scale-95">
                       <FaPhoneAlt className="text-[12px]" />
                       <p className="text-[12px] capitalize">Contact shop</p>
                     </button>
@@ -278,7 +316,7 @@ const MyOrders = () => {
                     {name}
                     </h4>
                     <h4 className="text-[16px] text-detail font-medium capitalize">
-                      +94 222 322 232
+                      {phoneNo}
                     </h4>
                     <p className="text-[15px] text-inputText capitalize">
                       {address}
@@ -319,7 +357,7 @@ const MyOrders = () => {
                       <FaStar className="text-[15px] " />
                       <p className="text-[13px] capitalize">Write A Review</p>
                     </button>
-                    <button className="w-full h-[40px] bg-buttonGreen flex justify-center items-center gap-5 text-white rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-95">
+                    <button  onClick={()=>handleContactShop(shopIdOrder)} className="w-full h-[40px] bg-buttonGreen flex justify-center items-center gap-5 text-white rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-95">
                       <FaPhoneAlt className="text-[15px] " />
                       <p className="text-[13px] capitalize">contact shop</p>
                     </button>
@@ -349,7 +387,7 @@ const MyOrders = () => {
                     {name}
                     </h4>
                     <h4 className="text-[16px] text-detail font-medium capitalize">
-                      +94 222 322 232
+                      {phoneNo}
                     </h4>
                     <p className="text-[15px] text-inputText capitalize">
                     {address}
@@ -390,7 +428,7 @@ const MyOrders = () => {
                       <FaStar className="text-[15px] " />
                       <p className="text-[13px] capitalize">Write A Review</p>
                     </button>
-                    <button className="w-full h-[40px] bg-buttonGreen flex justify-center items-center gap-5 text-white rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-95">
+                    <button  onClick={()=>handleContactShop(shopIdOrder)} className="w-full h-[40px] bg-buttonGreen flex justify-center items-center gap-5 text-white rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-95">
                       <FaPhoneAlt className="text-[15px] " />
                       <p className="text-[13px] capitalize">contact shop</p>
                     </button>
@@ -421,7 +459,7 @@ const MyOrders = () => {
                     {name}
                     </h4>
                     <h4 className="text-[16px] text-detail font-medium capitalize">
-                      +94 222 322 232
+                      {phoneNo}
                     </h4>
                     <p className="text-[15px] text-inputText capitalize">
                     {address}
@@ -469,7 +507,7 @@ const MyOrders = () => {
                       <FaStar className="text-[15px] " />
                       <p className="text-[13px] capitalize">Write A Review</p>
                     </button>
-                    <button className="w-full h-[40px] bg-buttonGreen flex justify-center items-center gap-5 text-white rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-95">
+                    <button  onClick={()=>handleContactShop(shopIdOrder)} className="w-full h-[40px] bg-buttonGreen flex justify-center items-center gap-5 text-white rounded-lg transition-transform duration-300 ease-in-out transform hover:scale-95">
                       <FaPhoneAlt className="text-[15px] " />
                       <p className="text-[13px] capitalize">contact shop</p>
                     </button>

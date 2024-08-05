@@ -155,34 +155,25 @@ const DeliveryDetails = () => {
           </div>
 
           <div className="flex flex-row items-center gap-4 mt-3">
-            <div className="w-[214px] h-[48px] flex items-center rounded-lg border-2  border-inputBorder">
-              <select className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+            <div className="w-[214px] h-[48px] flex items-center rounded-lg border-2 border-inputBorder">
+              <input
+                type="text"
+                placeholder="City"
+                className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                 onChange={(e) => setCity(e.target.value)}
-              >
-                <option value="" disabled selected className="text-inputText">
-                  City
-                </option>
-                <option value="Colombo" className="text-inputText">
-                  Colombo
-                </option>
-                <option value="Kandy" className="text-inputText">
-                  kandy
-                </option>
-              </select>
+              />
             </div>
 
-            <div className="w-[214px] h-[48px] flex items-center rounded-lg border-2  border-inputBorder">
-              <select className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+            <div className="w-[214px] h-[48px] flex items-center rounded-lg border-2 border-inputBorder">
+              <input
+                type="text"
+                placeholder="State/province"
+                className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
                 onChange={(e) => setStateProvince(e.target.value)}
-              >
-                <option value="" disabled selected>
-                  State/province
-                </option>
-                <option value="1">1</option>
-                <option value="1">1</option>
-              </select>
+              />
             </div>
           </div>
+
 
           <div className="w-full h-[48px] flex items-center  mt-3 rounded-lg border-2 bg-inputBlue border-inputBorder">
             <input

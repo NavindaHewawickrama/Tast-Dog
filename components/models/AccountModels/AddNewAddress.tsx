@@ -370,146 +370,20 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                     isDisabled={!countryId}
                   />
                 </div>
-<<<<<<< HEAD
-              </div>
-              <div className="w-full mb-4 flex flex-col gap-2 ">
-                <p className="text-[12px] text-inputText capitalize">
-                  apt/suit no.
-                </p>
-                <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
-                  <input
-                    type="text"
-                    onChange={(e)=>setSuitNo(e.target.value)}
-                    className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
-                  />
-                </div>
-              </div>
-             <div className="w-full mb-4 flex flex-col gap-2">
-                <p className="text-[12px] text-inputText capitalize">
-                  Country
-                </p>
-                <CountrySelect
-                  value={countryId as  any}  // Add this line
-                  onChange={(e: any) => {
-                    setCountryId(e.id);
-                    setCountry(e.name);
-                  }}
-                  placeHolder="Select Country"
-                  className="w-full"
-                />
-              </div>
-              <div className="w-full mb-4 flex flex-col gap-2">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 1820ca325af6d08f4f33c4980d8be61d668bbefa
-=======
-
->>>>>>> 5f19459e965de1a592a6fa29eb237600fa9158ca
-      <div className="mb-4">
-        <p className="text-[12px] text-inputText capitalize mb-2">Country</p>
-        <CountrySelect
-          onChange={(e: { id: number }) => setCountryId(e.id)}
-          placeHolder="Select Country"
-          className="w-full"
-        />
-      </div>
-      <div className="flex flex-row item-center gap-3 w-full h-full">
-        <div className="w-[225px]">
-          <p className="text-[12px] text-inputText capitalize mb-2">State/Province</p>
-          <StateSelect
-            countryid={countryId || 0}
-            onChange={(e: { id: number }) => setStateId(e.id)}
-            placeHolder="Select State"
-            className="w-full"
-            isDisabled={!countryId}
-          />
-        </div>
-        <div className="w-[225px]">
-          <p className="text-[12px] text-inputText capitalize mb-2">City</p>
-          <CitySelect
-            countryid={countryId || 0}
-            stateid={stateId || 0}
-            onChange={(e: any) => console.log(e)}
-            placeHolder="Select City"
-            className="w-full"
-            isDisabled={!stateId}
-          />
-        </div>
-      </div>
-    </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 1820ca325af6d08f4f33c4980d8be61d668bbefa
-=======
-
->>>>>>> 5f19459e965de1a592a6fa29eb237600fa9158ca
-                <p className="text-[12px] text-inputText capitalize">
-                  State/Province
-                </p>
-                <StateSelect
-                  countryid={countryId || 0}
-                  value={stateId as any}  // Add this line
-                  onChange={(e: any) => {
-                    setStateId(e.id);
-                    setState(e.name);
-                  }}
-                  placeHolder="Select State"
-                  className="w-full"
-                  isDisabled={!countryId}
-                />
-              </div>
-              <div className="w-full mb-4 flex flex-col gap-2">
-                <p className="text-[12px] text-inputText capitalize">
-                  City
-                </p>
-                <CitySelect
-                  countryid={countryId || 0}
-                  stateid={stateId || 0}
-                  onChange={(e: any) => setCity(e.name)}
-                  placeHolder="Select City"
-                  className="w-full"
-                  isDisabled={!stateId}
-                />
-              </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 81d84ca96e1c3f733a46872e433b343930d0dff5
-=======
-
->>>>>>> 1820ca325af6d08f4f33c4980d8be61d668bbefa
-=======
-
->>>>>>> 5f19459e965de1a592a6fa29eb237600fa9158ca
-              <div className="w-full mb-4 flex flex-col gap-2 ">
-                <p className="text-[12px] text-inputText capitalize">
-                  Landmark
-                </p>
-                <div className="w-full h-[48px] bg-inputBlue  rounded-lg border-2 border-inputBorder">
-                  <input
-                    type="text"
-                    onChange={(e)=>setLandMark(e.target.value)}
-                    className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
-=======
                 <div className="w-[225px]">
                   <p className="text-[12px] text-inputText capitalize mb-2">City</p>
                   <CitySelect
                     countryid={countryId || 0}
                     stateid={stateId || 0}
-                    value={city as any}
                     onChange={(e: any) => setCity(e.name)}
                     placeHolder="Select City"
                     className="w-full"
                     isDisabled={!stateId}
->>>>>>> 0c945f555700dc0da4183283d563bf5d19b2b5cd
                   />
                 </div>
               </div>
             </div>
-            <div className="w-full mb-4 flex flex-col gap-2 ">
+            <div className="w-full mb-4 flex flex-col gap-2">
               <p className="text-[12px] text-inputText capitalize">
                 Landmark
               </p>
@@ -522,20 +396,20 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                 />
               </div>
             </div>
-          </div>
-          <div className="w-full flex items-center gap-5 mt-10">
-            <button
-              className="w-[214px] h-[38px] text-center bg-Green2 text-[14px] text-white rounded-md transition-transform duration-300 ease-in-out transform hover:scale-95"
-              onClick={handleAddingNewAddress}
-            >
-              Save
-            </button>
-            <button
-              className="w-[214px] h-[38px] text-center bg-none text-[14px] text-button2 rounded-md border border-button2 transition-transform duration-300 ease-in-out transform hover:scale-95"
-              onClick={onClose}
-            >
-              Cancel
-            </button>
+            <div className="w-full flex items-center gap-5 mt-10">
+              <button
+                className="w-[214px] h-[38px] text-center bg-Green2 text-[14px] text-white rounded-md transition-transform duration-300 ease-in-out transform hover:scale-95"
+                onClick={handleAddingNewAddress}
+              >
+                Save
+              </button>
+              <button
+                className="w-[214px] h-[38px] text-center bg-none text-[14px] text-button2 rounded-md border border-button2 transition-transform duration-300 ease-in-out transform hover:scale-95"
+                onClick={onClose}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       </motion.div>
@@ -544,4 +418,3 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
 };
 
 export default AddNewAddress;
-
