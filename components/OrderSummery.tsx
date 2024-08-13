@@ -52,20 +52,31 @@ const OrderSummery = () => {
   };
 
 
-  const validatePromoCode = ()=>{
+  const validatePromoCode = () => {
     const data = promoCodeData;
+    let promoCodeFound = false;
+
     data.forEach(element => {
-      if(element.code === inputPromoCode){
-        const date = Date();
-        if(date < element.validTillDate){
-          setDiscount(element.discountAmount);
+        if (element.code === inputPromoCode) {
+            promoCodeFound = true;
+            const currentDate = new Date(); // Get the current date
+            const validTillDate = new Date(element.validTillDate); // Convert the validTillDate string to a Date object
+
+            if (currentDate < validTillDate) {
+                setDiscount(element.discountAmount);
+                console.log(element.discountAmount);
+                window.alert("Promo code found! Discount added!");
+            } else {
+                window.alert("Promo code expired.");
+            }
+            return; // Exit the loop since we found the promo code
         }
-      }else{
-        console.log("not found");
-      }
     });
-    
-  }
+
+    if (!promoCodeFound) {
+        window.alert("Promo code incorrect.");
+    }
+};
 
   //check for milestones
   const fetchMilestones = async () => {
@@ -117,7 +128,7 @@ const OrderSummery = () => {
     var totalNew = price + parseFloat(deliveryFee); 
     var total = Math.round(totalNew * 100) / 100;
     if(discount != null){
-      total = total - total*(discount/100);
+      total = total - discount ;
       total = Math.round(total * 100) / 100;
 
 
@@ -165,13 +176,13 @@ const OrderSummery = () => {
               key={milestone.milestoneId}
               className="flex flex-col bg-lighterGreen p-2 rounded-lg shadow-lg mt-2"
             >
-              <h4 className="text-[14px] font-medium text-white">
+              <h4 className="text-[14px] font-medium text-black">
                 {milestone.name}
               </h4>
-              <p className="text-[12px] text-white">
+              <p className="text-[12px] text-black">
                 {milestone.description}
               </p>
-              <p className="text-[12px] text-white">
+              <p className="text-[12px]text-black">
                 {`Remaining Orders: ${milestone.remainingOrders}/${milestone.expectedTotalOrders}`}
               </p>
             </div>

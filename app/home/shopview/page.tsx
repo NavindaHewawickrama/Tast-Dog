@@ -141,18 +141,22 @@ const ShopView = () => {
 
 //contact shop
 const handleContactShop = () => {
-  const choice = window.confirm("Do you want to Call the Shop?");
-  if (choice) {
-    // User wants to email
-    window.location.href = `tel:${shopPhone}`;
-  } else {
-    const choice2 = window.confirm("Do you want to Email the Shop?");
-    if(choice2){
-      window.alert(`Call the Shop with the number ${shopPhone}`);
-      window.location.href = `mailto:${shopEmail}`;
+  if (shopPhone) {
+    const choice = window.confirm("Do you want to Call the Shop?");
+    if (choice) {
+      // User wants to call
+      window.location.href = `tel:${shopPhone}`;
+    } else {
+      const choice2 = window.confirm("Do you want to Email the Shop?");
+      if (choice2) {
+        window.location.href = `mailto:${shopEmail}`;
+      }
     }
+  } else {
+    alert("Phone number not available for this shop.");
   }
 };
+
 
   return (
     <>

@@ -10,9 +10,11 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
+
 const NearbyShops = () => {
   const router = useRouter();
   const [Shop, setShops] = useState<any[]>([]);
+  const [swipersettings,setSwipersettings] = useState(0);
   useEffect(() => {
     handleNearbyhops();
   }, []);
@@ -26,6 +28,11 @@ const NearbyShops = () => {
         console.log(data.message || "An error occurred.");
       }else{
         setShops(data);
+        if(data.length < 6){
+          setSwipersettings(5);
+        }else{
+          setSwipersettings(7);
+        }
       }
     }catch(error){
       console.log("An error occurred. Please try again later." , error);
@@ -51,7 +58,7 @@ const NearbyShops = () => {
         <Swiper
           modules={[Navigation]}
           spaceBetween={15}
-          slidesPerView={5}
+          slidesPerView={swipersettings}
           navigation
         >
           {Shop &&

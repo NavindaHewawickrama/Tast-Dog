@@ -183,7 +183,7 @@ console.log(newCartItems);
                               {address.aptSuite}, {address.streetAddress}, {address.city}, {address.state}, {address.landmark}
                             </h3>
                             <p className="text-[12px] text-inputText">
-                              {userName}: {phoneNumber}
+                              {userName}
                             </p>
                           </div>
                           <div className="flex justify-center items-center ml-9">
