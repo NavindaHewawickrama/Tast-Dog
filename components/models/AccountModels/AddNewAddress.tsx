@@ -356,14 +356,15 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
             <div className="w-full mb-4 flex flex-col gap-2">
               <p className="text-[12px] text-inputText capitalize">Country</p>
               <div className="w-full h-[48px] bg-inputBlue rounded-lg border-2 border-inputBorder">
-                <CountrySelect
-                  value={countryId}
-                  onChange={(value: { name: React.SetStateAction<string>; id: React.SetStateAction<number | null>; }) => {
-                    setCountry(value.name);
-                    setCountryId(value.id);
-                  }}
-                  className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
-                />
+              <CountrySelect
+                value={countryId}
+                onChange={(e: any) => {
+                  setCountryId(e.id);
+                  setCountry(e.name);
+                }}
+                placeHolder="Select Country"
+                className="w-full"
+              />
               </div>
             </div>
             <div className="w-full mb-4 flex flex-col gap-2">
@@ -379,14 +380,16 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                     />
                   </div> */}
                   <div className="w-full h-[48px] bg-inputBlue rounded-lg border-2 border-inputBorder">
-                    <StateSelect
-                      countryId={countryId}
+                  <StateSelect
+                      countryid={countryId || 0}
                       value={stateId}
-                      onChange={(value: { name: React.SetStateAction<string>; id: React.SetStateAction<number | null>; }) => {
-                        setState(value.name);
-                        setStateId(value.id);
+                      onChange={(e: any) => {
+                        setStateId(e.id);
+                        setState(e.name);
                       }}
-                      className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+                      placeHolder="Select State"
+                      className="w-full"
+                      isDisabled={!countryId}
                     />
                   </div>
                 </div>
@@ -402,11 +405,13 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
                   </div> */}
 
                   <div className="w-full h-[48px] bg-inputBlue rounded-lg border-2 border-inputBorder">
-                      <CitySelect
-                        stateId={stateId}
-                        value={city}
-                        onChange={(value: { name: React.SetStateAction<string>; }) => setCity(value.name)}
-                        className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
+                  <CitySelect
+                        countryid={countryId || 0}
+                        stateid={stateId || 0}
+                        onChange={(e: any) => setCity(e.name)}
+                        placeHolder="Select City"
+                        className="w-full"
+                        isDisabled={!stateId}
                       />
                     </div>
                 </div>
