@@ -234,6 +234,8 @@ import {
   StateSelect,
 } from "react-country-state-city";
 import 'react-country-state-city/dist/react-country-state-city.css';
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
+
 
 interface ModalProps {
   open: boolean;
@@ -249,6 +251,8 @@ const AddNewAddress: React.FC<ModalProps> = ({ open, onClose }) => {
   const [country, setCountry] = useState("Australia");
   const [countryId, setCountryId] = useState<number | null>(null);
   const [stateId, setStateId] = useState<number | null>(null);
+
+  const [region, setRegion] = useState('');
 
   if (!open) return null;
 
