@@ -117,15 +117,15 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
             }}
           >
             <div className="flex flex-row justify-between">
-              <h4 className="text-[15px] capitalize">forget password</h4>
+              <h4 className="text-[20px] capitalize">forget password</h4>
               <p
-                className="text-[15px] cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.3] hover:text-red-600"
+                className="text-[20px] cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.3] hover:text-red-600"
                 onClick={onClose}
               >
                 X
               </p>
             </div>
-            <div className="mt-[150px] flex flex-col">
+            <div className="mt-[70px] flex flex-col">
               <h4 className="text-[15px] font-medium text-[#000000]">
                 Enter Your Mobile Number Or Email To get a verification code to
                 reset your password
@@ -165,7 +165,7 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
                 forget password
               </h4>
               <p
-                className="text-[15px] cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.3] hover:text-red-600"
+                className="text-[20px] cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-[1.3] hover:text-red-600"
                 onClick={onClose}
               >
                 X

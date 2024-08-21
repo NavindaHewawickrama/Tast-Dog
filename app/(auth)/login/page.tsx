@@ -9,6 +9,7 @@ import ForgotPassword from "@/components/models/ForgotPassword";
 import { signInWithGoogle, signInWithFacebook, logInWithGoogle } from '../../auth';
 import { useRouter } from "next/navigation";
 import "./../../globals.css";
+import CustomAlert from '../../alerts/customalert';
 
 
 const Login = () => {
@@ -22,12 +23,17 @@ const Login = () => {
   const [enteredCode, setEnteredCode] = useState("");
   const [showPassword, setShowPassword] = useState(false); 
   const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   console.log(openModel);
 
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
   
-
+  const handleShowAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 1000); // Auto-close after 3 seconds
+  };
 
   const handleLogin = async () => {
     setLoading(true);  // Start loading
@@ -48,7 +54,9 @@ const Login = () => {
       localStorage.setItem("pwReg", password);
       if(!response.ok){
         setError(data.message || "An error occurred.");
-        window.alert("Login UnSuccessful");
+        // window.alert("Login UnSuccessful");
+        setAlertMessage("Login Unsuccessful");
+        handleShowAlert();
         console.log(data);
         setLoading(false); // Stop loading
       }else{
@@ -80,13 +88,18 @@ const Login = () => {
           localStorage.setItem("token", data.token);
         // localStorage.setItem("userId", data.customer._id);
         // console.log(data.customer._id);
-        window.alert("Login Successful");
-       
+        // window.alert("Login Successful");
+        setAlertMessage("Login Successful");
+        handleShowAlert();
+        
         localStorage.setItem("userId", data.customer._id);
         localStorage.setItem("userName", data.customer.fullName);
 
         console.log(data.customer.fullName);
-        router.push("/home"); 
+        setTimeout(() => {
+          router.push("/home"); // Replace with your target route
+      }, 2000);
+        
         setLoading(false); // Stop loading after navigation
         }
       }
@@ -235,6 +248,11 @@ const Login = () => {
             >
               LOG IN
             </button>
+            <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
             <div className="w-full flex flex-row justify-between mt-2">
               <p className="text-link">
                 <Link
@@ -256,7 +274,7 @@ const Login = () => {
             </div>
           </div>
           <p className="text-center text-[12px] mt-20 mb-[-50px] text-copyrightText">
-            Developed by FortXcore
+            <a href="https://www.fortxcore.com/" target="blank">Developed by FortXcore</a> 
           </p>
         </div>
           </>

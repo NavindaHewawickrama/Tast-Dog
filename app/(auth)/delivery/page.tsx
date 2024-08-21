@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useCallback, useEffect,useState } from "react";
 import { IoLocation } from "react-icons/io5";
 import { useRouter } from "next/navigation";
+import CustomAlert from '../../alerts/customalert';
 
 const DeliveryDetails = () => {
   //#region 
@@ -19,7 +20,14 @@ const DeliveryDetails = () => {
   const [address2, setAddress2] = useState<string | null>(null);
   const [country, setCountry] = useState("Australia");
   const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 //#endregion
+
+const handleShowAlert = () => {
+  setShowAlert(true);
+  setTimeout(() => setShowAlert(false), 1000); // Auto-close after 3 seconds
+};
 
   const getUserID = useCallback (async () => {
     const emails = localStorage.getItem("userEmail");
@@ -40,7 +48,9 @@ const DeliveryDetails = () => {
       const data = await response.json();
       if(!response.ok){
        // console.log(data);
-       window.alert("Some kind of problem occured. Please try again.");
+      //  window.alert("Some kind of problem occured. Please try again.");
+       setAlertMessage("Some kind of problem occured. Please try again.");
+        handleShowAlert();
        console.log(data);
       }else{
         console.log(data.customer._id);
@@ -94,7 +104,9 @@ const DeliveryDetails = () => {
           localStorage.setItem("city", city ?? "");
           localStorage.setItem("stateProvince", stateProvince ?? "");
           localStorage.setItem("landMark", landMark ?? "");
-          window.alert("Address Added Successfully");
+          // window.alert("Address Added Successfully");
+          setAlertMessage("Address Added Successfully");
+        handleShowAlert();
           router.push(`/home`);
           setLoading(false); // Stop loading
         }
@@ -116,6 +128,11 @@ const DeliveryDetails = () => {
           <h2 className="text-[28px] font-Lato font-bold leading-4  text-[#3C3939] capitalize">
             delivery details
           </h2>
+          <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
 
           <div className="w-full h-[48px] flex flex-row mt-10 rounded-lg border-2 border-inputBorder">
             <div className="w-[8%] flex flex-col items-center justify-center">
