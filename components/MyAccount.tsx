@@ -253,7 +253,7 @@ const MyAccount = () => {
           </div>
           <div className="w-full flex flex-col gap-5">
             <h3 className="text-[16px] font-semibold capitalize">
-              address bank
+              address book
             </h3>
             <div className="flex flex-row gap-4">
               {address1.length > 0 &&

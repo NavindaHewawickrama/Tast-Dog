@@ -147,11 +147,15 @@ const Login = () => {
     
         if (!response.ok) {
           const errorData = await response.json();
-          window.alert(errorData.message || "Invalid contact info");
+          // window.alert(errorData.message || "Invalid contact info");
+          setAlertMessage(errorData.message || "Invalid contact info");
+        handleShowAlert();
           console.log("Error response:", errorData);
         } else {
           const data = await response.json();
-          window.alert("OTP Correct");
+          // window.alert("OTP Correct");
+          setAlertMessage("OTP Correct");
+          handleShowAlert();
           localStorage.setItem("forgotPasswordEmailorPhoneNumber", emailOrPhoneNumber);
           // router.push('/delivery');
           router.push('/home');
@@ -159,7 +163,9 @@ const Login = () => {
         }
       } catch (e) {
         console.log("An error occurred:", e);
-        window.alert("An error occurred. Please try again later.");
+        // window.alert("An error occurred. Please try again later.");
+        setAlertMessage("An error occurred. Please try again later.");
+        handleShowAlert();
       }
     };
   return (

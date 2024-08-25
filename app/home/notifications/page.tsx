@@ -27,6 +27,7 @@ const Notifications: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
+  // const [notificationLength,setNotificationLength] = useState("");
 
   useEffect(() => {
     const userIDSvd = localStorage.getItem("userId");
@@ -48,6 +49,8 @@ const Notifications: React.FC = () => {
           }
         }
       );
+      // setNotificationLength(response.data.length);
+      // localStorage.setItem("notificationCount", notificationLength);
       setNotifications(response.data.notifications);
     } catch (error) {
       console.error("Error fetching notifications:", error);

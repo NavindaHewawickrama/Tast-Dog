@@ -7,6 +7,7 @@ import { IoEye,IoEyeOff } from "react-icons/io5";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signInWithGoogle, signInWithFacebook, signUpWithGoogle } from '../../auth';
+import CustomAlert from '../../alerts/customalert';
 
 interface ModalProps {
   open: boolean;
@@ -25,9 +26,16 @@ const Register = () => {
   const [enteredCode, setEnteredCode] = useState("");
   const [showPassword, setShowPassword] = useState(false); 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   var userId = ("");
 
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
+  const handleShowAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 1000); // Auto-close after 3 seconds
+  };
 
   const handleSubmit = async () => {
     if (checkPassword() && checkName() && checkEmail()) {
@@ -47,11 +55,15 @@ const Register = () => {
         const data = await response.json(); 
         if (!response.ok) {
           // throw new Error('Registration failed');
-          window.alert("Account already exists");
+          // window.alert("Account already exists");
+          setAlertMessage("Account already exists");
+        handleShowAlert();
           console.log(response);
         } else {
           // Registration successful
-          window.alert("Registration Successful");
+          // window.alert("Registration Successful");
+          setAlertMessage("Registration Successful");
+        handleShowAlert();
           localStorage.setItem("userName", fullName);
           localStorage.setItem("userEmail", email);
           localStorage.setItem("pwReg", password);
@@ -146,11 +158,15 @@ const Register = () => {
   
       if (!response.ok) {
         const errorData = await response.json();
-        window.alert(errorData.message || "Invalid contact info");
+        // window.alert(errorData.message || "Invalid contact info");
+        setAlertMessage(errorData.message || "Invalid contact info");
+        handleShowAlert();
         console.log("Error response:", errorData);
       } else {
         const data = await response.json();
-        window.alert("OTP Correct");
+        // window.alert("OTP Correct");
+        setAlertMessage("OTP Correct");
+        handleShowAlert();
         localStorage.setItem("forgotPasswordEmailorPhoneNumber", email);
         router.push('/delivery');
         // router.push('/home');
@@ -158,7 +174,9 @@ const Register = () => {
       }
     } catch (e) {
       console.log("An error occurred:", e);
-      window.alert("An error occurred. Please try again later.");
+      // window.alert("An error occurred. Please try again later.");
+      setAlertMessage("An error occurred. Please try again later.");
+      handleShowAlert();
     }
   };
 
@@ -173,6 +191,11 @@ const Register = () => {
   
   return (
     <div className="w-screen h-screen hidden md:flex flex-row overflow-hidden">
+      <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       {nextModel ? (
       <><div className="relative w-[50%]  flex flex-col items-center justify-center shadow-2xl shadow-black overflow-hidden">
           <Image src="/Logo.png" alt="logo" width={330} height={94} />
