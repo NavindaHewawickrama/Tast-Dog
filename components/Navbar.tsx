@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect,useState } from "react";
+import React,{useState,useEffect} from "react";
 import { FaCartShopping } from "react-icons/fa6";
 import { IoIosNotifications } from "react-icons/io";
 import axios from 'axios';
@@ -7,36 +7,42 @@ import Link from "next/link";
 import DropDownList from "./DropDownList";
 import SearchBar from "./SearchBar";
 
-
 const Navbar = () => {
-  const [notificationLength,setNotificationLength] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
+  const [notificationLength,setNotificationLength] = useState("");
 
-useEffect (()=>{
-
-  const userIDSvd = localStorage.getItem("userId");
+  useEffect(() => {
+    const userIDSvd = localStorage.getItem("userId");
     setUserId(userIDSvd);
+    fetchNotifications();
+  }, [userId]);
+
   const fetchNotifications = async () => {
+    
     try {
       const response = await axios.get(
         `https://tasty-dog.onrender.com/api/v1/notifications/userNoifications/${userId}`,
         {
           headers: {
             "Content-Type": "application/json",
-          },
+          }
         }
       );
-      setNotificationLength(response.data.length);
+      var messageCount = 0
+      response.data.notifications.forEach((element: { status: string; }) => {
+        if(element.status == 'unread'){
+          messageCount += 1;
+        }
+      });
+
+      setNotificationLength(messageCount.toString());
+      console.log(response.data.notifications.length);
+      localStorage.setItem("notificationCount", notificationLength);
+
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
   };
-
-  fetchNotifications();
-},[userId])
-
-
-
 
   return (
     <div className=" lg:px-[50px] md:px-[25px] py-[20px] md:ml-[45px]  lg:ml-0 shadow-xl">

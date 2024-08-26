@@ -40,13 +40,13 @@ const Home = () => {
     }
 
     const requestPermissionAndFetchToken = async () => {
-      console.log('Requesting permission...');
+      // console.log('Requesting permission...');
       try {
-        console.log('Permission:');
+        // console.log('Permission:');
         const permission = await window.Notification.requestPermission();
         
         if (permission === 'granted') {
-          console.log('Notification permission granted.');
+          // console.log('Notification permission granted.');
           // const token = await getToken(messaging, { vapidKey: 'BH_yRXi3vloIr9GxIWAE-3T5t6r1wXsCSr5wWKsLKqu_Gsevi_tb9kOic7jMTypeeV5i-NB7fwrplOu5eAiOX1E' });
           const token = '';
           console.log('Token:', token);
@@ -54,10 +54,10 @@ const Home = () => {
               console.log('Device token:', token);
               localStorage.setItem('deviceToken', token);
           } else {
-            console.log('No registration token available. Request permission to generate one.');
+            // console.log('No registration token available. Request permission to generate one.');
           }
         } else {
-          console.log('Unable to get permission to notify.');
+          // console.log('Unable to get permission to notify.');
         }
       } catch (error) {
         console.error('An error occurred while retrieving token.', error);

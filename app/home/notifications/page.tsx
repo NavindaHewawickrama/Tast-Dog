@@ -116,8 +116,8 @@ const Notifications: React.FC = () => {
   const leastRemainingOrders = milestoneWithLeastRemainingOrders?.remainingOrders;
   const expectedTotalOrders = milestoneWithLeastRemainingOrders?.expectedTotalOrders;
 
-  console.log("Least Remaining Orders:", leastRemainingOrders);
-  console.log("Expected Total Orders:", expectedTotalOrders);
+  // console.log("Least Remaining Orders:", leastRemainingOrders);
+  // console.log("Expected Total Orders:", expectedTotalOrders);
 
   return (
     <PageTransition>
@@ -149,11 +149,11 @@ const Notifications: React.FC = () => {
               {filteredNotifications.map((item) => (
                 <div
                   key={item._id}
-                  className="flex items-center gap-5 border border-gray-300 rounded-xl px-[50px] py-[25px]"
+                  className="flex items-center gap-5 border border-gray-300 rounded-xl px-[50px] py-[25px] hover:bg-green-200"
                   onClick={() => handleNotificationClick(item._id)}
                 >
                   <GiApothecary className="text-[25px] text-button2" />
-                  <div className="flex flex-col gap-2 justify-center">
+                  <div className="flex flex-col gap-2 justify-center cursor-pointer ">
                     <h3 className="text-[15px] text-detail font-semibold capitalize">
                       {item.message}
                     </h3>
