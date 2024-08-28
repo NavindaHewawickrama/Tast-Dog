@@ -261,7 +261,7 @@ console.log(newCartItems);
               </div>
               <div className="w-full h-full mx-auto mt-[70px]">
                 <h3 className="text-[20px] font-semibold capitalize">
-                  Order Summery
+                  Order Summary
                 </h3>
                 {product.length > 0 && (product.map((item: any) => (
                   <div key={item.id} className="flex flex-col justify-center gap-1 mt-4"> {/* Added key prop here */}

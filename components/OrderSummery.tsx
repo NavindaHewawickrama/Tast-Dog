@@ -189,7 +189,7 @@ const OrderSummery = () => {
           ))}
           </div>}
       <div className="w-full h-full mx-auto mt-[70px]">
-        <h3 className="text-[20px] font-semibold capitalize">Order Summery</h3>
+        <h3 className="text-[20px] font-semibold capitalize">Order Summary</h3>
         <div className="flex flex-col justify-center gap-1 mt-4">
           <div className="flex justify-between">
             <p className="text-[15px] text-detail">Item’s Total</p>
