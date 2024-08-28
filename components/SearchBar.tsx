@@ -13,6 +13,15 @@ const SearchBar: React.FC = () => {
   const filteredResults = [];
 
   useEffect(() => {
+    const filteredResults = allData.filter((item) =>
+      item.itemName.toLowerCase().includes(query.toLowerCase())
+    );
+    setSearchResults(filteredResults);
+    localStorage.setItem("searchResults", JSON.stringify(filteredResults));
+    localStorage.setItem("query", query);
+  }, [query, allData]);
+
+  useEffect(() => {
     fetchDataFromAPI();
   }, []);
 
@@ -41,9 +50,8 @@ const SearchBar: React.FC = () => {
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
     setQuery(event.target.value);
-    // fetchDataFromAPI();
+    console.log(event.target.value);
   };
 
 

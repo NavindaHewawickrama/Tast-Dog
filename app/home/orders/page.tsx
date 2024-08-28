@@ -77,7 +77,7 @@ const MyOrders = () => {
     setTime(date);
     setItemName(item.itemId.itemName);
     setItemPrice(item.price);
-    setItemId(item._id);
+    setItemId(item.itemId._id);
     setShopIdOrder(item.shopId);
   }
 
@@ -220,8 +220,8 @@ const handleContactShop = async (id:any) => {
                 <Image
                   src="/my_orders.png"
                   alt="logo"
-                  width={228}
-                  height={280}
+                  width={180}
+                  height={230}
                 />
               </div>
             ) : statusVal === "Processing" ? (

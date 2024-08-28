@@ -113,7 +113,7 @@ const Sidebar = () => {
           >
             <SiHomeadvisor className="text-white w-[24px] h-[24px]" />
             <h3 className="capitalize text-white font-semibold text-[15px] font-sans">
-              shop
+              shops
             </h3>
           </Link>
           <Link
