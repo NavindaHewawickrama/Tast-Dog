@@ -10,16 +10,16 @@ const SearchBar: React.FC = () => {
   const [allData, setAllData] = useState<any[]>([]); // State to store all data from API
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const router = useRouter();
-  const filteredResults = [];
+  const filteredResults: unknown = [];
 
-  useEffect(() => {
-    const filteredResults = allData.filter((item) =>
-      item.itemName.toLowerCase().includes(query.toLowerCase())
-    );
-    setSearchResults(filteredResults);
-    localStorage.setItem("searchResults", JSON.stringify(filteredResults));
-    localStorage.setItem("query", query);
-  }, [query, allData]);
+  // useEffect(() => {
+  //   const filteredResults = allData.filter((item) =>
+  //     item.itemName.toLowerCase().includes(query.toLowerCase())
+  //   );
+  //   setSearchResults(filteredResults);
+  //   localStorage.setItem("searchResults", JSON.stringify(filteredResults));
+  //   localStorage.setItem("query", query);
+  // }, [query, allData]);
 
   useEffect(() => {
     fetchDataFromAPI();
@@ -32,14 +32,13 @@ const SearchBar: React.FC = () => {
         { method: "POST" }
       );
 
-      console.log(response);
+      // console.log(response);
       if (!response.ok) {
-        console.log(response);
-        
+        console.log(response);  
       }else{
         const data = await response.json();
-        console.log("data is ",data);
-        console.log(response);
+        // console.log("data is ",data);
+        // console.log(response);
         // console.log(data);
         setAllData(data);
       }
@@ -62,7 +61,6 @@ try{
   // console.log(filteredResults);
   if(query == ""){
     console.log('query is empty');
-    console.log('hello');
     setSearchResults(allData);
     console.log('worldss', allData);
     localStorage.setItem("searchResults", JSON.stringify(allData));
@@ -101,7 +99,7 @@ return (
       type="text"
       value={query}
       onChange={handleInputChange}
-       onKeyPress={(event) => {
+      onKeyPress={(event) => {
     if (event.key === 'Enter') {
       handleSearch();
     }

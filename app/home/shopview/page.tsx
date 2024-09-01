@@ -142,17 +142,15 @@ const ShopView = () => {
 //contact shop
 const handleContactShop = () => {
   if (shopPhone) {
-    const choice = window.confirm("Do you want to Call the Shop?");
-    if (choice) {
-      // User wants to call
+    const choice1 = window.confirm("Do you want to Call the Shop?");
+    if(choice1){
       window.location.href = `tel:${shopPhone}`;
-    } else {
-      const choice2 = window.confirm("Do you want to Email the Shop?");
-      if (choice2) {
-        window.location.href = `mailto:${shopEmail}`;
-      }
     }
-  } else {
+    const choice2 = window.confirm("Do you want to Email the Shop?");
+    if (choice2) {
+      window.location.href = `mailto:${shopEmail}`;
+    }
+    } else {
     alert("Phone number not available for this shop.");
   }
 };

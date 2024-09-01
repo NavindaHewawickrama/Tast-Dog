@@ -23,13 +23,13 @@ const NearbyShops = () => {
     try{
       const response = await fetch("https://tasty-dog.onrender.com/api/v1/shops/shops/getTopRatedShops",{method:"POST"});
       const data = await response.json();
-      console.log('shops are', data);
+      // console.log('shops are', data);
       if(!response.ok){
         console.log(data.message || "An error occurred.");
       }else{
         setShops(data);
         if(data.length < 6){
-          setSwipersettings(5);
+          setSwipersettings(data.length);
         }else{
           setSwipersettings(7);
         }
