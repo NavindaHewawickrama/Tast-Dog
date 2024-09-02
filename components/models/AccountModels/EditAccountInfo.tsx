@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-
+import CustomAlert from "../../../app/alerts/customalert";
 interface ModalProps {
   open: boolean;
   onClose: () => void; // Add the onClose function prop
@@ -17,7 +17,13 @@ const EditAccountInfo: React.FC<ModalProps> = ({open, onClose, userName, email, 
   const [emailAddress, setEmailAddress] = useState<string | null>(email);
   // const [phone, setPhone] = useState<string | null>(phoneNumber);
   const [phone, setPhone] = useState<string>('');
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
+    const handleShowAlert = () => {
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+    };
  
   useEffect(() => {
     if (userName) setName(userName);
@@ -41,10 +47,14 @@ const EditAccountInfo: React.FC<ModalProps> = ({open, onClose, userName, email, 
       });
       const data = await response.json();
       if(!response.ok){
-        window.alert("Some kind of problem occured. Please try again.");
+        // window.alert("Some kind of problem occured. Please try again.");
+        setAlertMessage("Some kind of problem occured. Please try again.");
+       handleShowAlert();
         console.log(data);
       }else{
-        window.alert("User details updated successfully.");
+        // window.alert("User details updated successfully.");
+        setAlertMessage("User details updated successfully.");
+       handleShowAlert();
       // Optionally, update the state of your application here instead of reloading
       window.location.reload();
       }
@@ -151,6 +161,11 @@ const EditAccountInfo: React.FC<ModalProps> = ({open, onClose, userName, email, 
             </button>
           </div>
         </div>
+        <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       </motion.div>
     </div>
   );

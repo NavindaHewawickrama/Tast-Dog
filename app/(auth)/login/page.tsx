@@ -32,7 +32,7 @@ const Login = () => {
   
   const handleShowAlert = () => {
     setShowAlert(true);
-    setTimeout(() => setShowAlert(false), 1000); // Auto-close after 3 seconds
+    setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
   };
 
   const handleLogin = async () => {

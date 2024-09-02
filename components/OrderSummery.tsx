@@ -3,6 +3,7 @@ import { DiVim } from "react-icons/di";
 import { HiGiftTop } from "react-icons/hi2";
 import { AiOutlinePercentage } from "react-icons/ai";
 import axios from "axios";
+import CustomAlert from "./../app/alerts/customalert";
 
 interface Milestone {
   milestoneId: string;
@@ -22,7 +23,14 @@ const OrderSummery = () => {
   const [finalTotal, setFinalTotal] = useState("");
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
+  const handleShowAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+  };
+  
   //getting userId 
   useEffect(() => {
     const userIDSvd = localStorage.getItem("userId");
@@ -40,7 +48,9 @@ const OrderSummery = () => {
         const data = await response.json();
         console.log('data', data);
         if(!response || data.length === 0){
-          alert('Invalid promo or expired');
+          // alert('Invalid promo or expired');
+          setAlertMessage('Invalid promo or expired');
+        handleShowAlert();
         }else{
           setpromoCodeData(data);
           validatePromoCode();
@@ -65,16 +75,23 @@ const OrderSummery = () => {
             if (currentDate < validTillDate) {
                 setDiscount(element.discountAmount);
                 console.log(element.discountAmount);
-                window.alert("Promo code found! Discount added!");
+                // window.alert("Promo code found! Discount added!");
+                setAlertMessage("Promo code found! Discount added!");
+                handleShowAlert();
+                
             } else {
-                window.alert("Promo code expired.");
+                // window.alert("Promo code expired.");
+                setAlertMessage("Promo code expired.");
+                handleShowAlert();
             }
             return; // Exit the loop since we found the promo code
         }
     });
 
     if (!promoCodeFound) {
-        window.alert("Promo code incorrect.");
+        // window.alert("Promo code incorrect.");
+        setAlertMessage("Promo code incorrect.");
+        handleShowAlert();
     }
 };
 
@@ -153,7 +170,13 @@ const OrderSummery = () => {
   }
 
   return (
+    
     <div className="w-full flex flex-col">
+      <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       <div className="flex items-center gap-2">
         {" "}
         <HiGiftTop className="text-[40px] text-buttonGreen" />

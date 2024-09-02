@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import SuccessModel from "./SuccessModel";
 import { IoEye,IoEyeOff } from "react-icons/io5";
+import CustomAlert from "../../app/alerts/customalert";
 
 interface ModalProps {
   open: boolean;
@@ -15,6 +16,13 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
   const [confirmPassword,setConfirmPassword]= useState("");
   const [showPassword, setShowPassword] = useState(false); 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const handleShowAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+  };
 
   const checkpwd =()=>{
     if(newPassword === confirmPassword){
@@ -38,16 +46,24 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
             })});
             const data = response.json;
             if(!response){
-              window.alert("Something went wrong"); console.log(data);
+              // window.alert("Something went wrong"); 
+              setAlertMessage("Something went wrong");
+        handleShowAlert();
+              
+              // console.log(data);
             }else{
-              window.alert("Password Changed !!! ");
+              // window.alert("Password Changed !!! ");
+              setAlertMessage("Password Changed !!! ");
+        handleShowAlert();
             }
           }catch(e){
             console.log(e);
           }
           setSuccessModel(true);
     }else{
-      window.alert("Passwords not matching");
+      // window.alert("Passwords not matching");
+      setAlertMessage("Passwords not matching");
+        handleShowAlert();
     }
     
   }
@@ -55,6 +71,11 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
   if (!open) return null;
   return (
     <>
+    <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
         <div
           className="min-w-[400px] md:w-[500px] bg-white px-[45px] py-[25px] rounded-2xl"

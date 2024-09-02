@@ -7,6 +7,8 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import FoodReview from "@/components/models/FoodReview";
 import PageTransition from "@/components/PageTransition";
+import CustomAlert from "../../alerts/customalert";
+
 
 const MyOrders = () => {
   const [statusVal, setStatusVal] = useState("");
@@ -25,7 +27,13 @@ const MyOrders = () => {
   const [userId, setUserId] = useState<any | null>("");
   const [shopPhone, setShopPhone] = useState<string | null>(null);
   const [shopEmail, setShopEmail] = useState<string | null>(null);
-  
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const handleShowAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+  };
 
   const handleReview = () => {
     console.log(itemId, itemName);
@@ -47,7 +55,9 @@ const MyOrders = () => {
         const data = await response.json();
         if(!response){
           console.log(response);
-          window.alert("Error in loading data");
+          // window.alert("Error in loading data");
+          setAlertMessage("Error in loading data");
+        handleShowAlert();
           setOrderData(data.reverse());
         }else{
           console.log(data);
@@ -99,9 +109,13 @@ const MyOrders = () => {
       });
       const data = await response.json();
       if(!response.ok){
-        window.alert("Error in cancelling order");
+        // window.alert("Error in cancelling order");
+        setAlertMessage("Error in cancelling order");
+        handleShowAlert();
       }else{
-        window.alert("Order cancelled successfully");
+        // window.alert("Order cancelled successfully");
+        setAlertMessage("Order cancelled successfully");
+        handleShowAlert();
       }
     }catch(error){
       console.log("error in cancelling the order",error);
@@ -131,7 +145,9 @@ const handleContactShop = async (id:any) => {
       } else {
         const choice2 = window.confirm("Do you want to Email the Shop?");
         if(choice2){
-          window.alert(`Call the Shop with the number ${shopPhone}`);
+          // window.alert(`Call the Shop with the number ${shopPhone}`);
+          setAlertMessage(`Call the Shop with the number ${shopPhone}`);
+        handleShowAlert();
           window.location.href = `mailto:${shopEmail}`;
         }
       }
@@ -145,6 +161,11 @@ const handleContactShop = async (id:any) => {
  
   return (
     <>
+     <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       <PageTransition>
         <div className="w-full xl:px-[50px] md:px-[30px]  py-[30px] ">
           <h2 className="ml-[80px] text-[24px] font-bold capitalize">

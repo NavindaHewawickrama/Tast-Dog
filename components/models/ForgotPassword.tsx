@@ -3,6 +3,8 @@
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import ChangePassword from "./ChangePassword";
+import CustomAlert from "../../app/alerts/customalert";
+
 
 interface ModalProps {
   open: boolean;
@@ -16,7 +18,14 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
   const [contactInfo, setContactInfo] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [enteredCode, setEnteredCode] = useState("");
- 
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const handleShowAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+  };
+
   const handleClick = () => {
     setChangeModel(true);
   };
@@ -36,9 +45,14 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
     });
       const data = response.json;
       if(!response){
-        window.alert("Invalid contact info"); console.log(data);
+        // window.alert("Invalid contact info"); 
+        setAlertMessage("Invalid contact info");
+        handleShowAlert();
+        console.log(data);
       }else{
-        window.alert("Processing...");
+        // window.alert("Processing...");
+        setAlertMessage("Processing...");
+        handleShowAlert();
         setNextModel(false);
       }
     }catch(e){
@@ -82,10 +96,14 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
       const data = await response.json();
   
       if (!response.ok) {
-        window.alert("Invalid contact info");
+        // window.alert("Invalid contact info");
+        setAlertMessage("Invalid contact info");
+        handleShowAlert();
         console.log(response);
       } else {
-        window.alert("OTP Correct");
+        // window.alert("OTP Correct");
+        setAlertMessage("OTP Correct");
+        handleShowAlert();
         localStorage.setItem("forgotPasswordEmailorPhoneNumber", contactInfo);
         setChangeModel(true);
       }
@@ -105,6 +123,11 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
 
   return (
     <>
+     <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       <div
         className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
         onClick={onClose}

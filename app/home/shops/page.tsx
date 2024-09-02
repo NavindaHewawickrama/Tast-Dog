@@ -4,10 +4,18 @@ import React, { useState,useEffect } from 'react';
 import PageTransition from "@/components/PageTransition";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import CustomAlert from "../../alerts/customalert";
 
 const Shop = () =>{
     const router = useRouter();
     const [shops,setShops] = useState<any[]>([]);
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+
+    const handleShowAlert = () => {
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+    };
 
     useEffect(() => {
         handleShops();
@@ -18,7 +26,9 @@ const handleShops = async()=>{
         const response = await fetch("https://tasty-dog.onrender.com/api/v1/shops/shops");
         
         if(!response.ok){
-            window.alert("Error loading shops page");
+            // window.alert("Error loading shops page");
+            setAlertMessage("Error loading shops page");
+        handleShowAlert();
             console.log(response)
         }else{
             const data = await response.json();
@@ -39,6 +49,11 @@ const handleShopViewClick = (id: string, name: string, image: string) => {
 
     return (
         <>
+        <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
           <PageTransition>
             <div className="w-80% my-[50px] px-[50px] overflow-hidden">
               <h1 className="capitalize text-[32px] font-bold">Shops</h1>
