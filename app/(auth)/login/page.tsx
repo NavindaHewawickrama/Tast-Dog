@@ -279,9 +279,11 @@ const Login = () => {
               </p>
             </div>
           </div>
-          <p className="text-center text-[12px] mt-20 mb-[-50px] text-copyrightText">
-            <a href="https://www.fortxcore.com/" target="blank">Developed by FortXcore</a> 
-          </p>
+          <p className="text-center text-[12px] mt-12">
+  <a href="https://fortxcore.com" className="text-blue-500 hover:underline">
+    Developed by FortXcore
+  </a>
+</p>
         </div>
           </>
         ): (

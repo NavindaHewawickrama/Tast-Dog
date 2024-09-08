@@ -208,9 +208,11 @@ const handleShowAlert = () => {
             confirm
           </button>
         </div>
-        <p className="text-center text-[12px] mt-12 text-lightGray">
+        <p className="text-center text-[12px] mt-12">
+        <a href="https://fortxcore.com" className="text-blue-500 hover:underline">
           Developed by FortXcore
-        </p>
+        </a>
+      </p>
 
         <div className="absolute top-[-70px] left-[-215px] rotate-[-25deg] opacity-30">
           <Image
