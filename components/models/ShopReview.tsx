@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
 import { FaStar } from "react-icons/fa";
 import ReviewSuccsess from "./ReviewSuccsess";
-
+import CustomAlert from "../../app/alerts/customalert";
 interface ModalProps {
   open: boolean;
   onClose: () => void; // Add the onClose function prop
@@ -21,6 +21,14 @@ const ShopReview: React.FC<ModalProps> = ({ open, onClose }) => {
 
   const [itemName,setItemName] = useState<string | null>("");
   const[id,setId] = useState<string | null>("");
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+    const handleShowAlert = () => {
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+    };
+
 
   useEffect (()=>{
     setItemName(localStorage.getItem("reviewFoodItemName"));
@@ -48,7 +56,9 @@ const ShopReview: React.FC<ModalProps> = ({ open, onClose }) => {
         if(!response.ok){
           console.log(data.message || "An error occurred.");
         }else{
-          window.alert("Item Rating inserted");
+          // window.alert("Item Rating inserted");
+          setAlertMessage("Item Rating inserted");
+        handleShowAlert();
           console.log(data);
         }
     }catch(e){
@@ -76,9 +86,13 @@ const ShopReview: React.FC<ModalProps> = ({ open, onClose }) => {
         const data = await response.json();
         if(!response.ok){
           console.log(data.message || "An error occurred.");
-          window.alert("Data not inseted");
+          // window.alert("Data not inseted");
+          setAlertMessage("Data not inseted");
+          handleShowAlert();
         }else{
-          window.alert("Shop Review inserted");
+          // window.alert("Shop Review inserted");
+          setAlertMessage("Shop Review inserted");
+          handleShowAlert();
           setSuccessModel(true)
         }
     }catch(error){
@@ -90,6 +104,11 @@ const ShopReview: React.FC<ModalProps> = ({ open, onClose }) => {
 
   return (
     <>
+    <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       <div
         className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
         onClick={onClose}

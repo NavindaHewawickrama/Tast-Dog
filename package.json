@@ -13,6 +13,7 @@
     "@stripe/stripe-js": "^3.4.1",
     "axios": "^1.6.8",
     "country-list": "^2.3.0",
+    "country-state-city": "^3.2.1",
     "firebase": "^10.12.1",
     "framer-motion": "^11.0.6",
     "next": "^14.2.5",

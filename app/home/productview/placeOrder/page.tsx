@@ -11,6 +11,7 @@ import ChangeAddress from "@/components/models/AccountModels/ChangeAddress";
 import PageTransition from "@/components/PageTransition";
 import profilePic from "./../../../../public/Logo2.png";
 import AddNewAddress from "@/components/models/AccountModels/AddNewAddress";
+import CustomAlert from "../../../alerts/customalert";
 
 //#endregion
 
@@ -34,9 +35,16 @@ const PlaceOrder = () => {
   const [newAddress, setNewAddress] = useState(false);
   const [changeAddress, setChangeAddress] = useState(false);
   const [price, setPrice] = useState<any | null>(null);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
   //#endregion
 
 
+  const handleShowAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+  };
 
   const getUserAddress = async () => {
     const id = localStorage.getItem("userId");
@@ -79,7 +87,9 @@ webkitURL
       const response2 = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/${id}`);
       const data = await response2.json();
       if(!response2.ok){
-        window.alert("Some kind of problem occured. Please try again.");
+        // window.alert("Some kind of problem occured. Please try again.");
+        setAlertMessage("Some kind of problem occured. Please try again.");
+        handleShowAlert();
         console.log(data);
       }else{
         setAddress1(data);  
@@ -168,6 +178,11 @@ console.log(newCartItems);
 
   return (
     <>
+     <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       <PageTransition>
         <section className="w-full h-full px-[60px] xl:py-[100px] md:py-[50px] mx-auto">
           <div className="w-full h-full flex lg:flex-row md:flex-col gap-10 ">

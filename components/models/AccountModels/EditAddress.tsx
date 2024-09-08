@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
+import CustomAlert from "../../../app/alerts/customalert";
 
 interface ModalProps {
   open: boolean;
@@ -21,7 +22,13 @@ const EditAddress: React.FC<ModalProps> = ({ open, onClose, addressData }) => {
   const [state, setState] = useState(addressData.state);
   const [landmark, setLandMark] = useState(addressData.landmark);
   const [country, setCountry] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
+    const handleShowAlert = () => {
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+    };
   if (!open) return null;
 
   const handleEditAddress = async () => {
@@ -49,11 +56,15 @@ const EditAddress: React.FC<ModalProps> = ({ open, onClose, addressData }) => {
       const data = response.json;
       if(!response){
         console.log(data);
-        window.alert("cannot update the address");
+        // window.alert("cannot update the address");
+        setAlertMessage("cannot update the address");
+       handleShowAlert();
       }else{
         console.log(data);
         window.location.reload();
-        window.alert("Address edit complete");
+        // window.alert("Address edit complete");
+        setAlertMessage("Address edit complete");
+       handleShowAlert();
       }
     }catch(e){
 
@@ -186,6 +197,11 @@ const EditAddress: React.FC<ModalProps> = ({ open, onClose, addressData }) => {
               </button>
             </div>
           </div>
+          <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
         </motion.div>
       </div>
     </>

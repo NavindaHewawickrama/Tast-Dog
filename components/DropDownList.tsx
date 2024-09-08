@@ -9,6 +9,7 @@ import { MdKeyboardArrowUp } from "react-icons/md";
 import { MdArrowDropUp } from "react-icons/md";
 import { IoIosNotifications } from "react-icons/io";
 import { MdLogout } from "react-icons/md";
+import CustomAlert from "./../app/alerts/customalert";
 
 const DropDownList = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,6 +17,13 @@ const DropDownList = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [cardDetails, setCardDetails] = useState<any[]>([]);
   const [imageUrl, setImageUrl] = useState<string | null>("");
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+    const handleShowAlert = () => {
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+    };
 
   useEffect(() => {
     const userName = localStorage.getItem("userName");
@@ -48,7 +56,9 @@ const DropDownList = () => {
       const data = await response.json();
       if(!response.ok){
        // console.log(data);
-       window.alert("Some kind of problem occured. Please try again.");
+      //  window.alert("Some kind of problem occured. Please try again.");
+       setAlertMessage("Some kind of problem occured. Please try again.");
+        handleShowAlert();
        console.log(data);
       }else{
         setImageUrl(data.customer.profilePhoto);
@@ -60,6 +70,11 @@ const DropDownList = () => {
 
   return (
     <>
+    <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       <section className="relative">
         <div className="flex justify-between items-center lg:w-[210px] md:w-[200px] h-[60px] rounded-lg bg-lighterGreen px-[10px] py-[8px]">
           <Link href="/home/settings" className="flex items-center gap-4">

@@ -13,6 +13,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import PageTransition from "@/components/PageTransition";
 import AddToCart from "@/components/models/AddToCart";
+import CustomAlert from "../../alerts/customalert";
 
 const ProductView = () => {
   const router = useRouter();
@@ -28,6 +29,13 @@ const ProductView = () => {
   const[itemComments,setItemComments] = useState<any[]>([]);
   const [ratings, setRatings] = useState<any>(null);
   const [swipersettings,setSwipersettings] = useState(0);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const handleShowAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+  };
 
   useEffect(() => {
     const foodId = localStorage.getItem("productIDFavouriteFoods");
@@ -217,7 +225,9 @@ const handleShopId = async (id:any) =>{
         console.log(data.message || "An error occurred.");
       }else{
         console.log(data);
-        window.alert("Item marked as favourite !!!");
+        // window.alert("Item marked as favourite !!!");
+        setAlertMessage("Item marked as favourite !!!");
+        handleShowAlert();
       }
     }catch(e){
       console.log("An error occurred. Please try again later." , e);
@@ -226,6 +236,11 @@ const handleShopId = async (id:any) =>{
 
   return (
     <>
+     <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       <PageTransition>
         
         <div className="w-full px-[70px] py-[50px] bg-aashColor">

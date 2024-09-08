@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
 import { useRouter } from "next/navigation";
 import { IoEye,IoEyeOff } from "react-icons/io5";
-
+import CustomAlert from "../../../app/alerts/customalert";
 interface ModalProps {
   open: boolean;
   onClose: () => void; // Add the onClose function prop
@@ -15,7 +15,13 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
   const [confirmNewpwd, setConfirmNewpwd] = useState("");
   const [showPassword, setShowPassword] = useState(false); 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
+    const handleShowAlert = () => {
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+    };
   if (!open) return null;
 
   const handleChangePassword= async ()=>{
@@ -38,10 +44,14 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
         const data = await response.json();
       if(!response.ok){
        // console.log(data);
-       window.alert("Some kind of problem occured. Please try again.");
+      //  window.alert("Some kind of problem occured. Please try again.");
+       setAlertMessage("Some kind of problem occured. Please try again.");
+       handleShowAlert();
        console.log(data);
       }else{
-        window.alert("Password changed successfully.");
+        // window.alert("Password changed successfully.");
+        setAlertMessage("Password changed successfully.");
+        handleShowAlert();
         console.log(data);
         window.location.reload();
       }
@@ -139,6 +149,11 @@ const ChangePassword: React.FC<ModalProps> = ({ open, onClose }) => {
             </button>
           </div>
         </div>
+        <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       </motion.div>
     </div>
   );

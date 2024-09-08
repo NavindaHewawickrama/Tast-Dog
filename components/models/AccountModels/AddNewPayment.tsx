@@ -4,7 +4,7 @@ import dropIn from "@/utils/motion";
 import { useRouter } from "next/navigation";
 import { BsCreditCard } from "react-icons/bs";
 import { FaPaypal } from "react-icons/fa";
-
+import CustomAlert from "../../../app/alerts/customalert";
 interface ModalProps {
   open: boolean;
   onClose: () => void; // Add the onClose function prop
@@ -17,6 +17,14 @@ const AddNewPayment: React.FC<ModalProps> = ({ open, onClose }) => {
   const [cvv,setCvv] = useState("");
   const cardType = "Visa";
   const [saveForFuture,setSaveForFuture] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+    const handleShowAlert = () => {
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+    };
+  
   if (!open) return null;
   
 
@@ -37,15 +45,21 @@ const AddNewPayment: React.FC<ModalProps> = ({ open, onClose }) => {
         }),
       });
       if(!response){
-        window.alert("Some kind of problem occured. Please try again.");
+        // window.alert("Some kind of problem occured. Please try again.");
+        setAlertMessage("Some kind of problem occured. Please try again.");
+        handleShowAlert();
         console.log(response);
       }else{
-        window.alert("Payment method added successfully.");
+        // window.alert("Payment method added successfully.");
+        setAlertMessage("Payment method added successfully.");
+        handleShowAlert();
         console.log(response);
         window.location.reload();
       }
     }catch(error){
-      window.alert("Error in adding payment method");
+      // window.alert("Error in adding payment method");
+      setAlertMessage("Error in adding payment method");
+      handleShowAlert();
       console.log(error);
     }
 
@@ -215,6 +229,11 @@ const AddNewPayment: React.FC<ModalProps> = ({ open, onClose }) => {
             </button>
           </div>
         </div>
+        <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       </motion.div>
     </div>
   );

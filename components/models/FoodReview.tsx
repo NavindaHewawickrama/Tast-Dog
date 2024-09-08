@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import dropIn from "@/utils/motion";
 import { FaStar } from "react-icons/fa";
 import ShopReview from "./ShopReview";
+import CustomAlert from "../../app/alerts/customalert";
+
 
 interface ModalProps {
   open: boolean;
@@ -18,6 +20,13 @@ const FoodReview: React.FC<ModalProps> = ({ open, onClose }) => {
   const [comment, setComment] = useState("");
   const [itemName,setItemName] = useState<string | null>("");
   const[id,setId] = useState<string | null>("");
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const handleShowAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+  };
 
   useEffect (()=>{
     setItemName(localStorage.getItem("reviewFoodItemName"));
@@ -42,7 +51,9 @@ const FoodReview: React.FC<ModalProps> = ({ open, onClose }) => {
         if(!response.ok){
           console.log(data.message || "An error occurred.");
         }else{
-          window.alert("Item Rating inserted");
+          // window.alert("Item Rating inserted");
+          setAlertMessage("Item Rating inserted");
+        handleShowAlert();
           console.log(data);
         }
     }catch(e){
@@ -73,7 +84,9 @@ const FoodReview: React.FC<ModalProps> = ({ open, onClose }) => {
         if(!response.ok){
           console.log(data.message || "An error occurred.");
         }else{
-          window.alert("Item Review inserted");
+          // window.alert("Item Review inserted");
+          setAlertMessage("Item Review inserted");
+        handleShowAlert();
           console.log(data);
           setNextModel(true);
         }
@@ -95,6 +108,11 @@ const FoodReview: React.FC<ModalProps> = ({ open, onClose }) => {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
       onClick={onClose}
     >
+       <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       <motion.div
         variants={dropIn}
         initial="hidden"

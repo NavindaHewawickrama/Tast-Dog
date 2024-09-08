@@ -17,9 +17,10 @@ const SearchResults = () => {
   const [shopName, setShopName] = useState<any| null>(null);
   const [shopImage, setShopImage] = useState<any | null>(null);
   const [shopId, setShopId] = useState<any | null>(null);
+  var searchResults
 
   useEffect(() => {
-    const searchResults = localStorage.getItem("searchResults");
+     searchResults = localStorage.getItem("searchResults");
     const query = localStorage.getItem("query");
     if (searchResults) {
       setResults(JSON.parse(searchResults));
@@ -30,7 +31,7 @@ const SearchResults = () => {
 
     const searchQuery = localStorage.getItem("query");
     setQuery(searchQuery);
-  }, [query]);
+  }, [searchResults]);
 
   const handleToggle = (id: any) => {
     console.log(id);
@@ -136,7 +137,7 @@ const SearchResults = () => {
       <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 mt-[50px] gap-10">
         {results.map((item) => (
           <div
-            key={item.id}
+            key={item._id}
             className="w-full h-[320px] rounded-xl mb-7 shadow-lg z-0 cursor-pointer "
             // onClick={() => router.push("/home/productview")}
             onClick={()=>handleProductViewClick(item._id)}

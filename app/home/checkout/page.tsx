@@ -9,6 +9,8 @@ import OrderSummery from "@/components/OrderSummery";
 import PageTransition from "@/components/PageTransition";
 import OrderSuccsess from "@/components/models/OrderSuccsess";
 import PaymentCard from "@/components/PaymentCard";
+import CustomAlert from "../../alerts/customalert";
+
 
 const stripePromise = loadStripe('pk_test_51P7Kv2P2T7YncC47Pyuo5PkqEX7wM9DPFBqRvGXhTksCqiwSg50p9qazEUc11BFZiyvAM9J6iThRvn7cdt6zC7GG00ZPU92lqa');
 
@@ -23,8 +25,15 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
   const [userName, setUserName] = useState<string | null>("");
   const [addressBuyer, setAddressBuyer] = useState<string | null>("");
   const [address1, setAddress1] = useState<any | null>([]);
-
+  const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   //#endregion
+
+  const handleShowAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+  };
 
   const getUserAddress = async () => {
 
@@ -35,7 +44,9 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
       const data = await response2.json();
       console.log(data);
       if(!response2.ok){
-        window.alert("Some kind of problem occured. Please try again.");
+        // window.alert("Some kind of problem occured. Please try again.");
+        setAlertMessage("Some kind of problem occured. Please try again.");
+        handleShowAlert();
         console.log(data);
       }else{
         const addressString = `${data[0].userName}, ${data[0].aptSuite}, ${data[0].city},${data[0].landmark},${data[0].state},${data[0].streetAddress}`;
@@ -76,7 +87,9 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
       const data = await response.json();
       console.log(data);
       if (!response.ok) {
-        window.alert("Payment Unsuccessful");
+        // window.alert("Payment Unsuccessful");
+        setAlertMessage("Payment Unsuccessful");
+        handleShowAlert();
         console.log(response);
       } else {
 
@@ -117,7 +130,9 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
           console.error(confirmError);
           // window.alert("Payment failed. Please try again.");
         } else {
-          window.alert("Payment Successful");
+          // window.alert("Payment Successful");
+          setAlertMessage("Payment Successful");
+        handleShowAlert();
           setModalOpen(true);
           setCardholderName("");
         }
@@ -199,7 +214,9 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
       console.log("Order placed successfully"); 
       sessionStorage.removeItem("cartItems");   
       localStorage.removeItem("cartItems");
-      window.alert("Payment success");
+      // window.alert("Payment success");
+      setAlertMessage("Payment Successful");
+        handleShowAlert();
     } catch (error) {
       console.error("An error occurred while placing order:", error);
     }
@@ -228,6 +245,11 @@ const CheckoutForm = ({ setModalOpen, cardholderName, setCardholderName }: { set
         className="w-full h-[45px] text-center bg-Green2 text-[20px] text-white rounded-[10px] capitalize mt-10 transition-transform duration-300 ease-in-out transform hover:scale-95"
       >
         Pay Now
+        <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       </button>
     </div>
   );

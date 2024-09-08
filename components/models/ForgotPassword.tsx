@@ -3,6 +3,8 @@
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import ChangePassword from "./ChangePassword";
+import CustomAlert from "../../app/alerts/customalert";
+
 
 interface ModalProps {
   open: boolean;
@@ -83,7 +85,9 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
         window.alert("Invalid OTP");
         console.log(response);
       } else {
-        window.alert("OTP Correct");
+        // window.alert("OTP Correct");
+        setAlertMessage("OTP Correct");
+        handleShowAlert();
         localStorage.setItem("forgotPasswordEmailorPhoneNumber", contactInfo);
         setChangeModel(true);
       }
@@ -110,6 +114,11 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
 
   return (
     <>
+     <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       <div
         className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
         onClick={onClose}

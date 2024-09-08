@@ -14,7 +14,7 @@ import ChangeAddress from "./models/AccountModels/ChangeAddress";
 import { MdEdit } from "react-icons/md";
 import PageTransition from "./PageTransition";
 import { get } from "http";
-
+import CustomAlert from "./../app/alerts/customalert";
 const MyAccount = () => {
   const [openPassword, setOpenPassword] = useState(false);
   const [deleteModel, setDeleteModel] = useState(false);
@@ -34,17 +34,27 @@ const MyAccount = () => {
   const [cardname, setName]  = useState("");
   const [cardId, setCardId] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
+    const handleShowAlert = () => {
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+    };
   const handleDelete = async ()=>{
     try{
       const response = await fetch(`https://tasty-dog.onrender.com/api/v1/cards/deleteCard/${cardId}`);
       const data = await response.json();
       if(!response.ok){
-        window.alert("Some kind of problem occured. Please try again.");
+        // window.alert("Some kind of problem occured. Please try again.");
+        setAlertMessage("Some kind of problem occured. Please try again.");
+        handleShowAlert();
         console.log(data);
       }else{
         console.log(data);
-        window.alert("Card deleted successfully");
+        // window.alert("Card deleted successfully");
+        setAlertMessage("Card deleted successfully");
+        handleShowAlert();
         localStorage.removeItem("savedCardDetails");
       }
     }catch(e){
@@ -58,7 +68,9 @@ const MyAccount = () => {
       const response2 = await fetch(`https://tasty-dog.onrender.com/api/v1/addresses/${id}`);
       const data = await response2.json();
       if(!response2.ok){
-        window.alert("Some kind of problem occured. Please try again.");
+        // window.alert("Some kind of problem occured. Please try again.");
+        setAlertMessage("Some kind of problem occured. Please try again.");
+        handleShowAlert();
         console.log(data);
       }else{
         // console.log(data);
@@ -126,7 +138,9 @@ const MyAccount = () => {
       console.log(data)
       if(!response.ok){
        // console.log(data);
-       window.alert("Some kind of problem occured. Please try again.");
+      //  window.alert("Some kind of problem occured. Please try again.");
+       setAlertMessage("Some kind of problem occured. Please try again.");
+       handleShowAlert();
        console.log(data);
       }else{
         //console.log(data.customer._id);
@@ -172,12 +186,16 @@ const MyAccount = () => {
       const data = await response.json();
 
       if(!response.ok){
-        window.alert("Some kind of problem occured. Please try again.");
+        // window.alert("Some kind of problem occured. Please try again.");
+        setAlertMessage("Some kind of problem occured. Please try again.");
+        handleShowAlert();
         console.log(data);
       }else{
         console.log(data);
         setImageUrl(data.imageUrl);
-        window.alert("Profile photo updated successfully");
+        // window.alert("Profile photo updated successfully");
+        setAlertMessage("Profile photo updated successfully");
+        handleShowAlert();
       }
     } catch (error) {
       console.error(error);
@@ -188,6 +206,11 @@ const MyAccount = () => {
 
   return (
     <>
+     <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       <PageTransition>
         <div className="relative max-w-[950px] flex flex-col gap-10">
           <h2 className="text-[24px] font-semibold capitalize">my profile</h2>

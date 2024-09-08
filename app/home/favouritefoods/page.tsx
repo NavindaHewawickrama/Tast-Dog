@@ -7,6 +7,7 @@ import { FaCartShopping } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import AddToCart from "@/components/models/AddToCart";
 import PageTransition from "@/components/PageTransition";
+import CustomAlert from "../../alerts/customalert";
 
 const FavouriteFoods = () => {
     const router = useRouter();
@@ -17,6 +18,14 @@ const FavouriteFoods = () => {
     const [shopId, setShopId] = useState<any | null>(null);
     const [visibleItems, setVisibleItems] = useState<any[]>([]);
     const[userId, setUserId] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const handleShowAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+  };
 
   useEffect(() => {
     handleFavouriteFoods();
@@ -134,7 +143,9 @@ const FavouriteFoods = () => {
         console.log(data.message || "An error occurred.");
       }else{
         window.location.reload;
-        window.alert("Item Removed"); 
+        // window.alert("Item Removed"); 
+        setAlertMessage("Item Removed");
+        handleShowAlert();
       }
     }catch(error){
       console.log("An error occurred. Please try again later." , error);
@@ -143,6 +154,11 @@ const FavouriteFoods = () => {
   
   return (
     <>
+    <CustomAlert 
+              message={alertMessage}
+              show={showAlert} 
+              onClose={() => setShowAlert(false)} 
+            />
       <PageTransition>
         <div className="w-full my-[50px] px-[50px] overflow-hidden">
           <h1 className="capitalize text-[32px] font-bold">favorites</h1>

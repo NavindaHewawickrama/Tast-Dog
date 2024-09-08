@@ -26,7 +26,7 @@ const DeliveryDetails = () => {
 
 const handleShowAlert = () => {
   setShowAlert(true);
-  setTimeout(() => setShowAlert(false), 1000); // Auto-close after 3 seconds
+  setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
 };
 
   const getUserID = useCallback (async () => {
@@ -156,7 +156,7 @@ const handleShowAlert = () => {
           <div className="w-full h-[48px] mt-5 rounded-lg border-2 bg-inputBlue border-inputBorder">
             <input
               type="text"
-              placeholder="Street Address"
+              placeholder="Apt Line Address"
               className="w-full outline-none bg-transparent h-full font-normal text-[14px] text-inputText px-4"
               onChange={(e) => setAddress1(e.target.value)}
             />
@@ -165,7 +165,7 @@ const handleShowAlert = () => {
           <div className="w-full h-[48px] flex items-center  mt-3 rounded-lg bg-inputBlue border-2 border-inputBorder">
             <input
               type="text"
-              placeholder="Street Address Line 2"
+              placeholder="Street Address"
               className="w-[90%] outline-none bg-transparent h-full font-normal text-[14px] text-inputText  px-4"
               onChange={(e) => setAddress2(e.target.value)}
             />
