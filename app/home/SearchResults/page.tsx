@@ -17,10 +17,11 @@ const SearchResults = () => {
   const [shopName, setShopName] = useState<any| null>(null);
   const [shopImage, setShopImage] = useState<any | null>(null);
   const [shopId, setShopId] = useState<any | null>(null);
-  var searchResults
+
+
 
   useEffect(() => {
-     searchResults = localStorage.getItem("searchResults");
+     const searchResults = localStorage.getItem("searchResults");
     const query = localStorage.getItem("query");
     if (searchResults) {
       setResults(JSON.parse(searchResults));
@@ -31,7 +32,7 @@ const SearchResults = () => {
 
     const searchQuery = localStorage.getItem("query");
     setQuery(searchQuery);
-  }, [searchResults]);
+  }, [query]);
 
   const handleToggle = (id: any) => {
     console.log(id);
@@ -87,10 +88,10 @@ const SearchResults = () => {
     }
   }
 
-  // const handleProductView = (item: any) =>{
-  //   localStorage.setItem("productIDFavouriteFoods",item._id);
-  //   router.push("/home/productview")
-  // }
+  const handleProductView = (item: any) =>{
+    localStorage.setItem("productIDFavouriteFoods",item._id);
+    router.push("/home/productview")
+  }
 
   const handleProductViewClick = async(id: string) => {
     //getting the shopname and Image

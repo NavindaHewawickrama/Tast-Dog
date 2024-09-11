@@ -19,8 +19,14 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
   const [verificationCode, setVerificationCode] = useState("");
   const [enteredCode, setEnteredCode] = useState("");
   const [resendAttempts, setResendAttempts] = useState(3); // Initialize resend attempts
-
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
+  const handleShowAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 3000); // Auto-close after 3 seconds
+  };
 
   const handleSendCode = async () => {
     try {
@@ -215,7 +221,7 @@ const ForgotPassword: React.FC<ModalProps> = ({ open, onClose }) => {
                 disabled={resendAttempts <= 0}
                 onClick={handleResendOTP}
               >
-                I didn't receive a email
+                I didn &apos t receive a email
               </button>
               <button
                 className="w-full h-[38px] bg-buttonGreen text-white rounded-lg mt-[70px] mb-5 transition-transform duration-300 ease-in-out transform hover:scale-95"
